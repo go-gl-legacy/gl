@@ -6,3 +6,7 @@ main
 **.cgo*.go
 **.cgo*.c
 **.cgo*.8
+**/_obj
+test-gl
+test-sdl
+

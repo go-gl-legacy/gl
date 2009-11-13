@@ -4,11 +4,12 @@
 
 include $(GOROOT)/src/Make.$(GOARCH)
 
+all: test-sdl test-gl
+
 libs:
 	make -C sdl install
 	make -C gl install
 
-all: test-sdl test-gl
 
 test-sdl: test-sdl.go libs
 	$(GC) test-sdl.go
