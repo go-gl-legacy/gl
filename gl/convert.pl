@@ -75,7 +75,10 @@ sub function_name($)
 
     my $name=shift;
 
+#TODO remove ME
+    $name =~ s/^glew//;
     $name =~ s/^gl//;
+#
 
     $name =~ s/^(\w)/\u$1/;
     $name=escape_keyword($name);
@@ -137,7 +140,7 @@ foreach my $dec (split(';',$text))
             }
         }
     }
-    elsif($dec =~ /(.*) (\w+) \((.*)\)/)
+    elsif($dec =~ /(.*) (\w+)\s*\((.*)\)/)
     {
 
         print "//".$dec."\n";

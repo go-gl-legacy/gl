@@ -7,9 +7,15 @@ import "fmt"
 import "gl"
 
 func main() {
+
 	sdl.Init(sdl.INIT_VIDEO);
 
-	var screen = sdl.SetVideoMode(640, 480, 32, sdl.OPENGL);
+	sdl.SetVideoMode(640, 480, 32, sdl.OPENGL);
+
+    if(gl.Init() != 0)
+    {
+        panic("glew error");
+    }
 
 	var running = true;
 
@@ -33,9 +39,13 @@ func main() {
             }
 		}
 
-        gl.Begin(0);
+        gl.Begin(gl.TRIANGLES);
+            gl.Vertex3f(0,0,0);
+            gl.Vertex3f(0,1,0);
+            gl.Vertex3f(1,1,0);
+        gl.End();
 
-		screen.Flip();
+		sdl.GL_SwapBuffers();
         sdl.Delay(25);
 	}
 

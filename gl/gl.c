@@ -1,6 +1,7 @@
 
 #include <GL/gl.h>
-void glewInit(void);
+
+GLenum glewInit(void);
 
 
 

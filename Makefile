@@ -4,27 +4,19 @@
 
 include $(GOROOT)/src/Make.$(GOARCH)
 
-TARG=gl
+libs:
+	make -C sdl install
+	make -C gl install
 
-GOFILES:=gl_defs.go
+all: test-sdl test-gl
 
-CGOFILES:=gl.go
+test-sdl: test-sdl.go libs
+	$(GC) test-sdl.go
+	$(LD) -o $@ test-sdl.$(O)
 
-CGO_LDFLAGS:=-lGLEW
+test-gl: test-gl.go libs
+	$(GC) test-gl.go
+	$(LD) -o $@ test-gl.$(O)
 
-CGO_CFLAGS:=
-
-CLEANFILES+=gl
-
-include $(GOROOT)/src/Make.pkg
-
-gl.go: gl.c convert.pl
-	./convert.pl gl.c > gl.go
-
-gl_defs.go: gl.c
-	godefs -g gl gl.c > gl_defs.go
-
-main: main.go install
-	$(GC) main.go
-	$(LD) -o $@ main.$(O)
-
+clean:
+	rm *.8
