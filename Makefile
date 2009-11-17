@@ -20,4 +20,4 @@ test-gl: test-gl.go libs
 	$(LD) -o $@ test-gl.$(O)
 
 clean:
-	rm *.8
+	rm -f *.8 *.6 gl/*.6 gl/*.8 sdl/*.6 sdl/*.8 test-sdl test-gl shoot.png

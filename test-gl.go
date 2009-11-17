@@ -11,6 +11,8 @@ func main() {
 	sdl.Init(sdl.INIT_VIDEO);
 
 	sdl.SetVideoMode(640, 480, 32, sdl.OPENGL);
+	
+	sdl.WM_SetCaption("Go-SDL OpenGL Test", "");
 
 	if gl.Init() != 0 {
 		panic("glew error")
