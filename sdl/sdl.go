@@ -27,7 +27,11 @@ func SetVideoMode(w int, h int, bpp int, flags uint32) *Surface {
 }
 
 func WM_SetCaption(title string, icon string) {
-    C.SDL_WM_SetCaption(C.CString(title), C.CString(icon));
+    ctitle:=C.CString(title);
+    cicon:=C.CString(icon);
+    C.SDL_WM_SetCaption(ctitle,cicon);
+    C.free(unsafe.Pointer(ctitle));
+    C.free(unsafe.Pointer(cicon));
 }
 
 func GL_SwapBuffers()
@@ -108,7 +112,9 @@ func (surface *Surface) At(x, y int) image.Color
 //SDL image
 
 func Load(file string) *Surface {
-	var screen = C.IMG_Load(C.CString(file));
+    cfile := C.CString(file);
+	var screen = C.IMG_Load(cfile);
+    C.free(unsafe.Pointer(cfile));
 	return (*Surface)(cast(screen));
 }
 
