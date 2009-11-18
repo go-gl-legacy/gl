@@ -103,9 +103,8 @@ func (surface *Surface) At(x, y int) image.Color
     pixel += uintptr( y * int(surface.Pitch) + x * bpp);
 
     var color= *((*image.RGBAColor)(unsafe.Pointer(pixel)));
-    color.A=255;
 
-    return color;
+    return image.RGBAColor{color.B,color.G,color.R,255-color.A};
 
 }
 
