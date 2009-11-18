@@ -38,34 +38,92 @@ sub read_type($)
 
     my $arg = shift;
 
-    if( $arg =~ /(.*[^\w])(\w+$)/)
+    my $ptr="";
+
+    while($arg =~ s/\*/ / || $arg =~ s/\[\d*\]/ / )
     {
-        my $name=escape_keyword(trim($2));
+        $ptr.="*";
+    }
+
+    $arg =~ s/\bconst\b/ /g;
+    $arg =~ s/\bvoid\b/ /g;
+    $arg =~ s/\bextern\b/ /g;
+
+    $arg =~ s/\s+/ /g;
+    $arg = trim($arg);
+
+    if($arg eq "")
+    {
+        return {name => "",type => "",ptr => ""};
+    }
+
+    if( $arg =~ /^(\w+)( \w+)?$/)
+    {
+        my $name=$2?escape_keyword(trim($2)):undef;
         my $type=$1;
-        my $ptr="";
-        $type =~ s/const //g;
 
-        if($type =~ /\*/)
-        {
-            $ptr = $type;
-            $ptr =~ s/[^*]//g;
-        }
-
-        $type =~ s/[ *]+//g;
-
+        # convert void* -> unsafe.Pointer
         if($ptr =~ /[*]/ && ($type eq "void" || $type eq "GLvoid"))
         {
             $ptr =~ s/[*]//;
             $type = "unsafe.Pointer";
         }
 
-
+        # convert char* -> CString 
+        if($ptr eq "*" && ($type eq "GLchar" || $type eq "char"))
+        {
+            $ptr =~ s/[*]//;
+            $type = "string";
+        }
 
         return {name => $name,type => $type,ptr => $ptr};
     }
     else
     {
         die("error reading type '$arg'");
+    }
+
+}
+
+sub print_go_type($)
+{
+    my $type=shift;
+
+    return trim("$type->{name} $type->{ptr}$type->{type}");
+
+}
+
+sub print_c_cast($)
+{
+    my $type=shift;
+
+    my $cast;
+    my $name=$type->{name};
+
+    if($type->{type} eq "unsafe.Pointer")
+    {
+        $cast="";
+    }
+    elsif($type->{type} eq "string")
+    {
+        return "($type->{ptr}*_C_GLchar)(($type->{ptr}C.CString)($type->{name}))";
+    }
+    else
+    {
+        $cast="$type->{ptr}C.$type->{type}";
+    }
+
+    if($cast eq "")
+    {
+        return $name;
+    }
+    elsif($cast =~ /[*]/)
+    {
+        return "($cast)($name)"
+    }
+    else
+    {
+        return "$cast($name)"
     }
 
 }
@@ -146,18 +204,15 @@ foreach my $dec (split(';',$text))
         print "//".$dec."\n";
 
         my $name=trim($2);
+
         my $return=trim($1);
         my @params=split(',',$3);
         my @args;
 
-        $return =~ s/const//g;
-        $return =~ s/void//g;
+        my $return_type=read_type($return);
+        $return=print_go_type($return_type);
 
-        if($return =~ /[*]/)
-        {
-            $return =~ s/[*]+//g;
-            $return = "*".trim($return);
-        }
+        my $i=0;
 
         foreach my $arg (@params)
         {
@@ -166,9 +221,19 @@ foreach my $dec (split(';',$text))
 
             if($arg ne "void" && $arg =~ /\w/)
             {
-                push(@args,read_type($arg));
-            }
 
+                my $type=read_type($arg);
+
+                if(!$type->{name})
+                {
+                    $type->{name}="arg$i";
+                }
+
+                push(@args,$type);
+
+                $i++;
+
+            }
 
         }
 
@@ -187,7 +252,7 @@ foreach my $dec (split(';',$text))
                 print ", ";
             }
 
-            print "$arg->{name} $arg->{ptr}$arg->{type}";
+            print print_go_type($arg);
         }
 
         print ") $return\n";
@@ -217,18 +282,8 @@ foreach my $dec (split(';',$text))
                 print ", ";
             }
 
-            if($arg->{type} eq "unsafe.Pointer")
-            {
-                print "$arg->{name}";
-            }
-            elsif($arg->{ptr} eq "")
-            {
-                print "C.$arg->{type}($arg->{name})";
-            }
-            else
-            {
-                print "($arg->{ptr}C.$arg->{type})($arg->{name})";
-            }
+            print print_c_cast($arg);
+
 
         }
 

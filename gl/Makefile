@@ -21,12 +21,13 @@ include $(GOROOT)/src/Make.pkg
 DOLLAR:="$"
 
 gl_defs.c:
-	echo -e '#include <GL/gl.h>\nenum\n{\n' > gl_defs.c
-	cat /usr/include/GL/gl.h | sed -rne 's/#define\s*GL_(\w*).*/\t~GL_\1 = GL_\1,/p' | tr '~' '\044' >> gl_defs.c
-	cat /usr/include/GL/gl.h | sed -rne 's/#define\s*GL_([A-Z]\w*).*/\t~\1 = GL_\1,/p' | tr '~' '\044' >> gl_defs.c
+	echo -e '#define GL_GLEXT_PROTOTYPES\n#include <GL/gl.h>\n#include <GL/glext.h>\nenum\n{\n' > gl_defs.c
+	cat /usr/include/GL/gl.h /usr/include/GL/glext.h | sed -rne 's/#define\s*GL_(\w*).*/\t~GL_\1 = GL_\1,/p' | sort | uniq | tr '~' '\044' >> gl_defs.c
+	cat /usr/include/GL/gl.h /usr/include/GL/glext.h | sed -rne 's/#define\s*GL_([A-Z]\w*).*/\t~\1 = GL_\1,/p' | sort | uniq | tr '~' '\044' >> gl_defs.c
 	echo '};' >> gl_defs.c
 
 gl.go: gl.c convert.pl
+	echo "Warning: regenerating gl.go"
 	./convert.pl gl.c > gl.go
 
 gl_defs.go: gl_defs.c
