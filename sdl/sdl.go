@@ -26,6 +26,10 @@ func SetVideoMode(w int, h int, bpp int, flags uint32) *Surface {
 	return (*Surface)(cast(screen));
 }
 
+func WM_SetCaption(title string, icon string) {
+    C.SDL_WM_SetCaption(C.CString(title), C.CString(icon));
+}
+
 func GL_SwapBuffers()
 {
     C.SDL_GL_SwapBuffers();

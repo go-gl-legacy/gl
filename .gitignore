@@ -2,10 +2,12 @@
 main
 **.o
 **.8
+**.6
 .obj/
 **.cgo*.go
 **.cgo*.c
 **.cgo*.8
+**.cgo*.6
 **/_obj
 test-gl
 test-sdl

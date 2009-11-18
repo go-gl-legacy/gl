@@ -11,6 +11,8 @@ func main() {
 	sdl.Init(sdl.INIT_VIDEO);
 
 	var screen = sdl.SetVideoMode(640, 480, 32, 0);
+	
+	sdl.WM_SetCaption("Go-SDL SDL Test", "");
 
 	var image = sdl.Load("test.png");
 
