@@ -1,2 +1,3 @@
-Make sure you have SDL, SDL_image, SDL_ttf, OpenGL and GLEW (all in -dev version).
+Make sure you have OpenGL and GLEW (in -dev version).
 GL and GLEW headers should be in /usr/include/GL/
+To compile example you will also need sdl bindings from: http://github.com/banthar/Go-SDL
