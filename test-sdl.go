@@ -4,8 +4,6 @@ import (
     "sdl";
     "sdl/ttf";
     "fmt";
-    "image/png";
-    "os";
 )
 
 
@@ -33,10 +31,6 @@ func main() {
 		for e.Poll() {
 			switch e.Type {
 			case sdl.QUIT:
-				file, err := os.Open("shoot.png", os.O_CREATE|os.O_WRONLY, 0766);
-				println(err);
-				png.Encode(file, screen);
-				file.Close();
 				running = false;
 				break;
 			case sdl.KEYDOWN:
