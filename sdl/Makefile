@@ -6,7 +6,7 @@ include $(GOROOT)/src/Make.$(GOARCH)
 
 TARG=sdl
 
-GOFILES:=sdl_defs.go
+GOFILES:=sdl_defs.go sdldraw.go
 
 CGOFILES:=sdl.go
 

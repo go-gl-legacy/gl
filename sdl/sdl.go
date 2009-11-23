@@ -8,8 +8,6 @@ package sdl
 import "C"
 import "unsafe"
 
-import "image"
-
 //type Surface C.SDL_Surface;
 
 type cast unsafe.Pointer
@@ -29,7 +27,6 @@ func SetVideoMode(w int, h int, bpp int, flags uint32) *Surface {
 }
 
 func GetVideoSurface() *Surface	{ return (*Surface)(cast(C.SDL_GetVideoSurface())) }
-
 
 func VideoModeOK(width int, height int, bpp int, flags uint32) int {
 	return int(C.SDL_VideoModeOK(C.int(width), C.int(height), C.int(bpp), C.Uint32(flags)))
@@ -78,60 +75,9 @@ func (dst *Surface) FillRect(dstrect *Rect, color uint32) int {
 	return int(ret);
 }
 
-// surface --> Image
-
-func (surface *Surface) ColorModel() image.ColorModel {
-	//TODO
-	return nil
+func GetRGBA(color uint32, format *PixelFormat, r *uint8, g *uint8, b *uint8, a *uint8) {
+	C.SDL_GetRGBA(C.Uint32(color), (*C.SDL_PixelFormat)(cast(format)), (*C.Uint8)(r), (*C.Uint8)(g), (*C.Uint8)(b), (*C.Uint8)(a))
 }
-
-func (surface *Surface) Width() int	{ return int(surface.W) }
-
-func (surface *Surface) Height() int	{ return int(surface.H) }
-
-func (surface *Surface) Set(x, y int, c image.Color) {
-	//TODO endianess, bpp, alpha, etc
-
-	var bpp = int(surface.Format.BytesPerPixel);
-
-	var pixel = uintptr(unsafe.Pointer(surface.Pixels));
-
-	pixel += uintptr(y*int(surface.Pitch) + x*bpp);
-
-	var p = (*image.RGBAColor)(unsafe.Pointer(pixel));
-
-	var r, g, b, a = c.RGBA();
-
-	p.R = uint8(r);
-	p.G = uint8(g);
-	p.R = uint8(b);
-	p.A = uint8(255 - a);
-
-}
-
-
-func (surface *Surface) At(x, y int) image.Color {
-
-	var bpp = int(surface.Format.BytesPerPixel);
-
-	var pixel = uintptr(unsafe.Pointer(surface.Pixels));
-
-	pixel += uintptr(y*int(surface.Pitch) + x*bpp);
-
-	var color = *((*uint32)(unsafe.Pointer(pixel)));
-
-	var r C.Uint8;
-	var g C.Uint8;
-	var b C.Uint8;
-	var a C.Uint8;
-
-
-	C.SDL_GetRGBA(C.Uint32(color),(*C.SDL_PixelFormat)(cast(surface.Format)),&r,&g,&b,&a);
-
-	return image.RGBAColor{uint8(r),uint8(g),uint8(b),uint8(a)};
-
-}
-
 
 //SDL image
 
