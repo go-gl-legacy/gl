@@ -45,6 +45,8 @@ sub read_type($)
         $ptr.="*";
     }
 
+    $arg =~ s/__attribute__\s*\(\(.*\)\)//g;
+
     $arg =~ s/\bconst\b/ /g;
     $arg =~ s/\bvoid\b/ /g;
     $arg =~ s/\bextern\b/ /g;
@@ -80,7 +82,9 @@ sub read_type($)
     }
     else
     {
-        die("error reading type '$arg'");
+#        die("error reading type '$arg'");
+        print STDERR "error reading type '$arg'";
+        return null;
     }
 
 }
