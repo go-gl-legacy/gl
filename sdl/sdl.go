@@ -117,6 +117,11 @@ func GetKeyRepeat() (int, int) {
 type Mod C.int
 type Key C.int
 
+// Uint8 SDL_GetMouseState(int *x, int *y);
+func GetMouseState(x *int, y *int) uint8 {
+	return uint8(C.SDL_GetMouseState((*C.int)(cast(x)), (*C.int)(cast(y))))
+}
+
 // SDLMod SDL_GetModState(void)
 func GetModState() Mod	{ return Mod(C.SDL_GetModState()) }
 

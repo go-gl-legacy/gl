@@ -6,6 +6,7 @@ import "exp/draw"
 import "os"
 import "image"
 import "unsafe"
+import "time"
 
 type Context struct {
 	screen		*Surface;
@@ -25,9 +26,11 @@ func InitContext(w int, h int) (*Context, os.Error) {
 
 	this.screen.Lock();
 
+	// TODO \/
+
 	this.resize_chan = make(chan bool, 64);
 	this.key_chan = make(chan int, 64);
-	this.mouse_chan = make(chan draw.Mouse, 64);
+	this.mouse_chan = make(chan draw.Mouse, 1024);
 	this.quit_chan = make(chan bool);
 
 	return this, nil;
@@ -52,8 +55,14 @@ func (this *Context) FlushImage() {
 		case KEYDOWN:
 			this.key_chan <- int(e.Keyboard().Keysym.Sym);
 			break;
-		case MOUSEBUTTONDOWN:
-			break
+		case MOUSEBUTTONDOWN, MOUSEBUTTONUP:
+			m := e.MouseButton();
+			this.mouse_chan <- draw.Mouse{int(GetMouseState(nil, nil)), draw.Point{int(m.X), int(m.Y)}, time.Nanoseconds()};
+			break;
+		case MOUSEMOTION:
+			m := e.MouseMotion();
+			this.mouse_chan <- draw.Mouse{int(GetMouseState(nil, nil)), draw.Point{int(m.X), int(m.Y)}, time.Nanoseconds()};
+			break;
 		case VIDEORESIZE:
 			this.resize_chan <- true;
 			break;
