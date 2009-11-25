@@ -104,6 +104,7 @@ sub print_c_cast($)
     my $cast;
     my $name=$type->{name};
 
+
     if($type->{type} eq "unsafe.Pointer")
     {
         $cast="";
@@ -205,8 +206,6 @@ foreach my $dec (split(';',$text))
     elsif($dec =~ /(.*) (\w+)\s*\((.*)\)/)
     {
 
-        print "//".$dec."\n";
-
         my $name=trim($2);
 
         my $return=trim($1);
@@ -215,6 +214,15 @@ foreach my $dec (split(';',$text))
 
         my $return_type=read_type($return);
         $return=print_go_type($return_type);
+
+        
+        if($name =~ /^glu/)
+        {
+            next;
+        }
+
+        print "//".$dec."\n";
+
 
         my $i=0;
 
