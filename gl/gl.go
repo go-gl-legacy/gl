@@ -294,6 +294,8 @@ func VertexAttrib4fv(indx GLuint, values *float) {
 	//	C.glVertexAttrib4fv(C.GLuint(indx), (*C.float)(values));
 }
 
+//TODO vertexAttribPointer
+
 // UniformLocation
 
 type UniformLocation GLint
@@ -362,6 +364,15 @@ func Uniform4iv(location UniformLocation, v *int) {
 	//	C.glUniform4iv(C.GLint(location), (*C.int)(v));
 }
 
+/*
+uniformMatrix2fv
+uniformMatrix2fv
+uniformMatrix3fv
+uniformMatrix3fv
+uniformMatrix4fv
+uniformMatrix4fv
+*/
+
 // Main
 
 func ActiveTexture(texture GLenum)	{ C.glActiveTexture(C.GLenum(texture)) }
@@ -378,6 +389,10 @@ func BlendEquationSeparate(modeRGB GLenum, modeAlpha GLenum) {
 
 func BlendFunc(sfactor GLenum, dfactor GLenum) {
 	C.glBlendFunc(C.GLenum(sfactor), C.GLenum(dfactor))
+}
+
+func blendFuncSeparate(srcRGB GLenum, dstRGB GLenum, srcAlpha GLenum, dstAlpha GLenum) {
+    C.glBlendFuncSeparate(C.GLenum(srcRGB), C.GLenum(dstRGB), C.GLenum(srcAlpha), C.GLenum(dstAlpha))
 }
 
 func BufferData(target GLenum, data Pointer, usage GLenum) {
@@ -405,7 +420,6 @@ func ClearStencil(s GLint)	{ C.glClearStencil(C.GLint(s)) }
 func ColorMask(red bool, green bool, blue bool, alpha bool) {
 	C.glColorMask(glBool(red), glBool(green), glBool(blue), glBool(alpha))
 }
-
 
 func CullFace(mode GLenum)	{ C.glCullFace(C.GLenum(mode)) }
 
@@ -506,3 +520,68 @@ func TexParameteri(target GLenum, pname GLenum, param GLint) {
 func Viewport(x GLint, y GLint, width GLsizei, height GLsizei) {
 	C.glViewport(C.GLint(x), C.GLint(y), C.GLsizei(width), C.GLsizei(height))
 }
+
+func CopyTexImage2D(target GLenum, level int, internalformat GLenum, x int, y int, width int, height int, border int) {
+	C.glCopyTexImage2D(C.GLenum(target), C.GLint(level), C.GLenum(internalformat), C.GLint(x), C.GLint(y), C.GLsizei(width), C.GLsizei(height), C.GLint(border));
+}
+
+//void copyTexSubImage2D(GLenum target, GLint level, GLint xoffset, GLint yoffset, GLint x, GLint y, GLsizei width, GLsizei height)
+func CopyTexSubImage2D(target GLenum, level int, xoffset int, yoffset int, x int, y int, width int, height int) {
+	C.glCopyTexSubImage2D(C.GLenum(target), C.GLint(level), C.GLint(xoffset), C.GLint(yoffset), C.GLint(x), C.GLint(y), C.GLsizei(width), C.GLsizei(height));
+}
+
+//void renderbufferStorage(GLenum target, GLenum internalformat, GLsizei width, GLsizei height)
+func RenderbufferStorage(target GLenum, internalformat GLenum, width GLsizei, height GLsizei) {
+	C.glRenderbufferStorage(C.GLenum(target), C.GLenum(internalformat), C.GLsizei(width), C.GLsizei(height));
+}
+
+
+//void texImage2D(GLenum target, GLint level, GLenum internalformat, GLsizei width, GLsizei height, GLint border, GLenum format, GLenum type, WebGLArray pixels)
+//func TexImage2D(target GLenum, level GLint, internalformat GLenum, width GLsizei, height GLsizei, border GLint, format GLenum, type_ GLenum, pixels WebGLArray) {
+//	C.glTexImage2D(C.GLenum(target), C.GLint(level), C.GLenum(internalformat), C.GLsizei(width), C.GLsizei(height), C.GLint(border), C.GLenum(format), C.GLenum(type_), C.WebGLArray(pixels));
+//}
+
+//void texSubImage2D(GLenum target, GLint level, GLint xoffset, GLint yoffset, GLsizei width, GLsizei height, GLenum format, GLenum type, WebGLArray pixels)
+//func TexSubImage2D(target GLenum, level GLint, xoffset GLint, yoffset GLint, width GLsizei, height GLsizei, format GLenum, type_ GLenum, pixels WebGLArray) {
+//	C.glTexSubImage2D(C.GLenum(target), C.GLint(level), C.GLint(xoffset), C.GLint(yoffset), C.GLsizei(width), C.GLsizei(height), C.GLenum(format), C.GLenum(type_), C.WebGLArray(pixels));
+//}
+
+//WebGLArray readPixels(GLint x, GLint y, GLsizei width, GLsizei height, GLenum format, GLenum type)
+//func ReadPixels(x GLint, y GLint, width GLsizei, height GLsizei, format GLenum, type_ GLenum) WebGLArray
+//{
+//	return WebGLArray(C.glRreadPixels(C.GLint(x), C.GLint(y), C.GLsizei(width), C.GLsizei(height), C.GLenum(format), C.GLenum(type_)));
+//}
+
+/*
+func GetActiveUniform(program GLuint, index GLuint) WebGLActiveInfo
+{
+	return WebGLActiveInfo(C.glGetActiveUniform(C.GLuint(program), C.GLuint(index)));
+}
+
+func GetActiveAttrib(program GLuint, index GLuint) WebGLActiveInfo
+{
+	return WebGLActiveInfo(C.glGetActiveAttrib(C.GLuint(program), C.GLuint(index)));
+}
+*/
+
+func FramebufferTexture2D(target GLenum, attachment GLenum, textarget GLenum, texture Texture, level GLint) {
+	C.glFramebufferTexture2D(C.GLenum(target), C.GLenum(attachment), C.GLenum(textarget), C.GLuint(texture), C.GLint(level));
+}
+
+func FramebufferRenderbuffer(target Framebuffer, attachment GLenum, renderbuffertarget GLenum, renderbuffer Renderbuffer) {
+	C.glFramebufferRenderbuffer(C.GLenum(target), C.GLenum(attachment), C.GLenum(renderbuffertarget), C.GLuint(renderbuffer));
+}
+
+
+/* TODO
+getParameter
+getBufferParameter
+getFramebufferAttachmentParameter
+getProgramParameter
+getRenderbufferParameter
+getShaderParameter
+getTexParameter
+
+sizeInBytes
+getContextAttributes
+*/
