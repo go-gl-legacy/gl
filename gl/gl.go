@@ -5,6 +5,8 @@ package gl
 //
 // int glewInit(void);
 //
+// void* cmalloc(int s){return malloc(s);};
+//
 // #include <GL/gl.h>
 // #include <GL/glext.h>
 import "C"
@@ -76,8 +78,10 @@ func (shader Shader) GetInfoLog() string {
 	var len C.GLint;
 	C.glGetShaderiv(C.GLuint(shader), C.GLenum(GL_INFO_LOG_LENGTH), &len);
 
-	log := C.malloc(C.size_t(len + 1));
+	log := C.cmalloc(C.int(len + 1));
 	C.glGetShaderInfoLog(C.GLuint(shader), C.GLsizei(len), nil, (*C.GLchar)(log));
+
+
 
 	defer C.free(log);
 
@@ -88,7 +92,7 @@ func (shader Shader) GetSource() string {
 	var len C.GLint;
 	C.glGetShaderiv(C.GLuint(shader), C.GLenum(GL_SHADER_SOURCE_LENGTH), &len);
 
-	log := C.malloc(C.size_t(len + 1));
+	log := C.cmalloc(C.int(len + 1));
 	C.glGetShaderSource(C.GLuint(shader), C.GLsizei(len), nil, (*C.GLchar)(log));
 
 	defer C.free(log);
@@ -101,7 +105,7 @@ func (shader Shader) Source(source string) {
 	csource := glString(source);
 	defer freeString(csource);
 
-	var one C.GLint = 1;
+	var one C.GLint = C.GLint(len(source));
 
 	C.glShaderSource(C.GLuint(shader), 1, &csource, &one);
 }
@@ -148,7 +152,7 @@ func (program Program) GetInfoLog() string {
 	var len C.GLint;
 	C.glGetProgramiv(C.GLuint(program), C.GLenum(GL_INFO_LOG_LENGTH), &len);
 
-	log := C.malloc(C.size_t(len + 1));
+	log := C.cmalloc(C.int(len + 1));
 	C.glGetProgramInfoLog(C.GLuint(program), C.GLsizei(len), nil, (*C.GLchar)(log));
 
 	defer C.free(log);

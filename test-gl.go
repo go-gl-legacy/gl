@@ -19,7 +19,21 @@ func main() {
 	}
 
     vertex_shader := gl.CreateShader(gl.VERTEX_SHADER);
-    vertex_shader.Source("aasa");
+    vertex_shader.Source("void main(void){gl_Position = ftransform();}");
+    vertex_shader.Compile();
+    print(vertex_shader.GetInfoLog());
+
+    fragment_shader := gl.CreateShader(gl.FRAGMENT_SHADER);
+    fragment_shader.Source("void main(void){gl_FragColor = vec4(1.0, 0.0, 0.0, 1.0);}");
+    fragment_shader.Compile();
+    print(fragment_shader.GetInfoLog());
+
+    program := gl.CreateProgram();
+    program.AttachShader(vertex_shader);
+    program.AttachShader(fragment_shader);
+    program.Link();
+    print(program.GetInfoLog());
+    program.Use();
 
 	var running = true;
 
