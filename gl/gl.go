@@ -2,6 +2,9 @@ package gl
 
 // #include <stdlib.h>
 // #define GL_GLEXT_PROTOTYPES
+//
+// int glewInit(void);
+//
 // #include <GL/gl.h>
 // #include <GL/glext.h>
 import "C"
@@ -32,6 +35,12 @@ func glBool(v bool) C.GLboolean {
 func glString(s string) *C.GLchar	{ return (*C.GLchar)(C.CString(s)) }
 
 func freeString(ptr *C.GLchar)	{ C.free(unsafe.Pointer(ptr)) }
+
+// GLEW
+
+func Init() int{
+    return int(C.glewInit());
+}
 
 // Object
 
@@ -65,7 +74,7 @@ func DeleteShader(shader Shader)	{ C.glDeleteShader(C.GLuint(shader)) }
 
 func (shader Shader) GetInfoLog() string {
 	var len C.GLint;
-	C.glGetShaderiv(C.GLuint(shader), C.GLenum(C.GL_INFO_LOG_LENGTH), &len);
+	C.glGetShaderiv(C.GLuint(shader), C.GLenum(GL_INFO_LOG_LENGTH), &len);
 
 	log := C.malloc(C.size_t(len + 1));
 	C.glGetShaderInfoLog(C.GLuint(shader), C.GLsizei(len), nil, (*C.GLchar)(log));
@@ -77,7 +86,7 @@ func (shader Shader) GetInfoLog() string {
 
 func (shader Shader) GetSource() string {
 	var len C.GLint;
-	C.glGetShaderiv(C.GLuint(shader), C.GLenum(C.GL_SHADER_SOURCE_LENGTH), &len);
+	C.glGetShaderiv(C.GLuint(shader), C.GLenum(GL_SHADER_SOURCE_LENGTH), &len);
 
 	log := C.malloc(C.size_t(len + 1));
 	C.glGetShaderSource(C.GLuint(shader), C.GLsizei(len), nil, (*C.GLchar)(log));
@@ -87,7 +96,7 @@ func (shader Shader) GetSource() string {
 	return C.GoString((*C.char)(log));
 }
 
-func (shader Shader) ShaderSource(source string) {
+func (shader Shader) Source(source string) {
 
 	csource := glString(source);
 	defer freeString(csource);
@@ -115,7 +124,7 @@ func (program Program) AttachShader(shader Shader) {
 
 func (program Program) GetAttachedShaders() []Object {
 	var len C.GLint;
-	C.glGetProgramiv(C.GLuint(program), C.GLenum(C.GL_ACTIVE_UNIFORM_MAX_LENGTH), &len);
+	C.glGetProgramiv(C.GLuint(program), C.GLenum(GL_ACTIVE_UNIFORM_MAX_LENGTH), &len);
 
 	objects := make([]Object, len);
 	C.glGetAttachedShaders(C.GLuint(program), C.GLsizei(len), nil, *((**C.GLuint)(unsafe.Pointer(&objects))));
@@ -137,7 +146,7 @@ func (program Program) Use()	{ C.glUseProgram(C.GLuint(program)) }
 func (program Program) GetInfoLog() string {
 
 	var len C.GLint;
-	C.glGetProgramiv(C.GLuint(program), C.GLenum(C.GL_INFO_LOG_LENGTH), &len);
+	C.glGetProgramiv(C.GLuint(program), C.GLenum(GL_INFO_LOG_LENGTH), &len);
 
 	log := C.malloc(C.size_t(len + 1));
 	C.glGetProgramInfoLog(C.GLuint(program), C.GLsizei(len), nil, (*C.GLchar)(log));

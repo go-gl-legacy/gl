@@ -18,6 +18,9 @@ func main() {
 		panic("glew error")
 	}
 
+    vertex_shader := gl.CreateShader(gl.VERTEX_SHADER);
+    vertex_shader.Source("aasa");
+
 	var running = true;
 
 	for running {
@@ -34,12 +37,6 @@ func main() {
 				break;
 			}
 		}
-
-		gl.Begin(gl.TRIANGLES);
-		gl.Vertex3f(0, 0, 0);
-		gl.Vertex3f(0, 1, 0);
-		gl.Vertex3f(1, 1, 0);
-		gl.End();
 
 		sdl.GL_SwapBuffers();
 		sdl.Delay(25);

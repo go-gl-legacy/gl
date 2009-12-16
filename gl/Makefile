@@ -6,7 +6,7 @@ include $(GOROOT)/src/Make.$(GOARCH)
 
 TARG=gl
 
-GOFILES:=gl_defs.go
+GOFILES:=gl_defs.go gl_enums.go
 
 CGOFILES:=gl.go
 
