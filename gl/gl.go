@@ -270,6 +270,8 @@ func (texture Texture) Delete() {
 
 // VertexAttrib
 
+type VertexAttrib GLuint;
+
 func GetVertexAttribOffset(index GLuint, pname GLenum) GLsizeiptr {
 	return 0
 	//return GLsizeiptr(C.getVertexAttribOffset(C.GLuint(index), C.GLenum(pname)));
@@ -308,6 +310,11 @@ func VertexAttrib4fv(indx GLuint, values *float) {
 }
 
 //TODO vertexAttribPointer
+
+func VertexAttribPointer(indx VertexAttrib, size GLuint, type_ GLenum, normalized bool,  stride GLsizei,  pointer unsafe.Pointer)  {
+    C.glVertexAttribPointer(C.GLuint(indx), C.GLint(size), C.GLenum(type_), glBool(normalized), C.GLsizei(stride), pointer);
+}
+
 
 // UniformLocation
 
@@ -408,12 +415,12 @@ func blendFuncSeparate(srcRGB GLenum, dstRGB GLenum, srcAlpha GLenum, dstAlpha G
     C.glBlendFuncSeparate(C.GLenum(srcRGB), C.GLenum(dstRGB), C.GLenum(srcAlpha), C.GLenum(dstAlpha))
 }
 
-func BufferData(target GLenum, data Pointer, usage GLenum) {
-	//	C.glBufferData(C.GLenum(target), C.Pointer(data), C.GLenum(usage));
+func BufferData(target GLenum, size int, data unsafe.Pointer, usage GLenum) {
+	C.glBufferData(C.GLenum(target), C.GLsizeiptr(size), data, C.GLenum(usage));
 }
 
-func BufferSubData(target GLenum, offset GLsizeiptr, data Pointer) {
-	//	C.glBufferSubData(C.GLenum(target), C.GLsizeiptr(offset), C.Pointer(data));
+func BufferSubData(target GLenum, offset GLsizeiptr, size int, data unsafe.Pointer) {
+	C.glBufferSubData(C.GLenum(target), C.GLintptr(offset), C.GLsizeiptr(size), data);
 }
 
 func CheckFramebufferStatus(target GLenum) GLenum {
@@ -587,14 +594,52 @@ func FramebufferRenderbuffer(target Framebuffer, attachment GLenum, renderbuffer
 
 
 /* TODO
-getParameter
-getBufferParameter
-getFramebufferAttachmentParameter
-getProgramParameter
-getRenderbufferParameter
-getShaderParameter
-getTexParameter
+webgl:
+    getParameter
+    getBufferParameter
+    getFramebufferAttachmentParameter
+    getProgramParameter
+    getRenderbufferParameter
+    getShaderParameter
+    getTexParameter
 
-sizeInBytes
-getContextAttributes
+    sizeInBytes
+    getContextAttributes
+
+
+gles:
+    glClearDepthf
+    glCompressedTexImage2D
+    glCompressedTexSubImage2D
+    glDepthRangef
+    glGetBufferParameteriv
+    glGetFramebufferAttachmentParameteriv
+    glGetRenderbufferParameteriv
+    glGetShaderPrecisionFormat
+    glGetTexParameter
+    glGetVertexAttrib
+    glGetVertexAttribPointerv
+    glReadPixels
+    glReleaseShaderCompiler
+    glShaderBinary
+
+
 */
+
+// old
+
+func Vertex3f(x GLfloat, y GLfloat, z GLfloat) {
+	C.glVertex3f(C.GLfloat(x), C.GLfloat(y), C.GLfloat(z))
+}
+func Begin(mode GLenum) { C.glBegin(C.GLenum(mode)) }
+func End() { C.glEnd() }
+
+func VertexPointer(size GLint, type_ GLenum, stride GLsizei, pointer unsafe.Pointer) {
+	C.glVertexPointer(C.GLint(size), C.GLenum(type_), C.GLsizei(stride), pointer)
+}
+
+func EnableClientState(array GLenum) { C.glEnableClientState(C.GLenum(array)) }
+func DisableClientState(array GLenum) { C.glDisableClientState(C.GLenum(array)) }
+
+
+

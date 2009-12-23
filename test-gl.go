@@ -4,6 +4,8 @@ import "sdl"
 
 import "gl"
 
+import "unsafe"
+
 func main() {
 
 	sdl.Init(sdl.INIT_VIDEO);
@@ -19,7 +21,14 @@ func main() {
 	}
 
     vertex_shader := gl.CreateShader(gl.VERTEX_SHADER);
-    vertex_shader.Source("void main(void){gl_Position = ftransform();}");
+
+    vertex_shader.Source("  attribute vec3 aVertexPosition;\
+\
+  void main(void)\
+  {\
+    gl_Position = vec4(aVertexPosition, 1.0);\
+  }");
+
     vertex_shader.Compile();
     print(vertex_shader.GetInfoLog());
 
@@ -35,9 +44,19 @@ func main() {
     print(program.GetInfoLog());
     program.Use();
 
+    var array = []float{0,0,0,1,0,0,1,1,0,0,0,0,1,0,0,1,1,0,0,0,0,1,0,0,1,1,0};
+
+    //buffer := gl.CreateBuffer();
+    //buffer.Bind(gl.ELEMENT_ARRAY_BUFFER);
+    //gl.BufferData(gl.ELEMENT_ARRAY_BUFFER,9,unsafe.Pointer(&array[0]),gl.STATIC_DRAW);
+
 	var running = true;
 
 	for running {
+
+        if(gl.GetError()!=0) {
+            println(gl.GetError());
+        }
 
 		e := &sdl.Event{};
 
@@ -52,7 +71,28 @@ func main() {
 			}
 		}
 
+        program.Use();
+        //buffer.Bind(gl.ELEMENT_ARRAY_BUFFER);
+
+        println("aVertexPosition:",program.GetAttribLocation("aVertexPosition"));
+
+        gl.VertexAttribPointer(0, 3, gl.FLOAT, false, 0, unsafe.Pointer(&array[0]));
+
+        gl.EnableClientState(gl.GL_VERTEX_ARRAY);
+    
+        gl.DrawArrays(gl.POINTS, 0, 3);
+
+/*
+        gl.Begin(gl.GL_POINTS);
+            gl.Vertex3f(0,0,0);
+            gl.Vertex3f(1,0,0);
+            gl.Vertex3f(1,1,0);
+        gl.End();
+*/
+        gl.DisableClientState(gl.GL_VERTEX_ARRAY);
+
 		sdl.GL_SwapBuffers();
+
 		sdl.Delay(25);
 	}
 
