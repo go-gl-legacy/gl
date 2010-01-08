@@ -44,8 +44,6 @@ func main() {
     print(program.GetInfoLog());
     program.Use();
 
-    var array = []float{0,0,0,1,0,0,1,1,0,0,0,0,1,0,0,1,1,0,0,0,0,1,0,0,1,1,0};
-
     //buffer := gl.CreateBuffer();
     //buffer.Bind(gl.ELEMENT_ARRAY_BUFFER);
     //gl.BufferData(gl.ELEMENT_ARRAY_BUFFER,9,unsafe.Pointer(&array[0]),gl.STATIC_DRAW);
@@ -72,24 +70,18 @@ func main() {
 		}
 
         program.Use();
-        //buffer.Bind(gl.ELEMENT_ARRAY_BUFFER);
 
-        println("aVertexPosition:",program.GetAttribLocation("aVertexPosition"));
+		vertex_loc:=program.GetAttribLocation("aVertexPosition");
 
-        gl.VertexAttribPointer(0, 3, gl.FLOAT, false, 0, unsafe.Pointer(&array[0]));
+		gl.EnableVertexAttribArray(vertex_loc);
+		gl.VertexAttribPointer(vertex_loc, 3, gl.FLOAT, false, 0, unsafe.Pointer(&suzanne[0]));
 
-        gl.EnableClientState(gl.GL_VERTEX_ARRAY);
+//        gl.EnableClientState(gl.GL_VERTEX_ARRAY);
     
-        gl.DrawArrays(gl.POINTS, 0, 3);
 
-/*
-        gl.Begin(gl.GL_POINTS);
-            gl.Vertex3f(0,0,0);
-            gl.Vertex3f(1,0,0);
-            gl.Vertex3f(1,1,0);
-        gl.End();
-*/
-        gl.DisableClientState(gl.GL_VERTEX_ARRAY);
+        gl.DrawArrays(gl.GL_TRIANGLES, 0, len(suzanne)/9);
+
+  //      gl.DisableClientState(gl.GL_VERTEX_ARRAY);
 
 		sdl.GL_SwapBuffers();
 

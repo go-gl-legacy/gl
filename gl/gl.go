@@ -175,12 +175,12 @@ func (program Program) GetUniformLocation(name string) UniformLocation {
 	return UniformLocation(C.glGetUniformLocation(C.GLuint(program), cname));
 }
 
-func (program Program) GetAttribLocation(name string) AttribLocation {
+func (program Program) GetAttribLocation(name string) VertexAttrib {
 
 	cname := glString(name);
 	defer freeString(cname);
 
-	return AttribLocation(C.glGetAttribLocation(C.GLuint(program), cname));
+	return VertexAttrib(C.glGetAttribLocation(C.GLuint(program), cname));
 }
 
 
@@ -273,6 +273,7 @@ func (texture Texture) Delete() {
 type VertexAttrib GLuint;
 
 func GetVertexAttribOffset(index GLuint, pname GLenum) GLsizeiptr {
+	//TODO
 	return 0
 	//return GLsizeiptr(C.getVertexAttribOffset(C.GLuint(index), C.GLenum(pname)));
 }
@@ -282,6 +283,7 @@ func VertexAttrib1f(indx GLuint, x GLfloat) {
 }
 
 func VertexAttrib1fv(indx GLuint, values *float) {
+	//TODO
 	//	C.glVertexAttrib1fv(C.GLuint(indx), (*C.float)(values));
 }
 
@@ -290,6 +292,7 @@ func VertexAttrib2f(indx GLuint, x GLfloat, y GLfloat) {
 }
 
 func VertexAttrib2fv(indx GLuint, values *float) {
+	//TODO
 	//	C.glVertexAttrib2fv(C.GLuint(indx), (*C.float)(values));
 }
 
@@ -298,6 +301,7 @@ func VertexAttrib3f(indx GLuint, x GLfloat, y GLfloat, z GLfloat) {
 }
 
 func VertexAttrib3fv(indx GLuint, values *float) {
+	//TODO
 	//	C.glVertexAttrib3fv(C.GLuint(indx), (*C.float)(values));
 }
 
@@ -306,10 +310,9 @@ func VertexAttrib4f(indx GLuint, x GLfloat, y GLfloat, z GLfloat, w GLfloat) {
 }
 
 func VertexAttrib4fv(indx GLuint, values *float) {
+	//TODO
 	//	C.glVertexAttrib4fv(C.GLuint(indx), (*C.float)(values));
 }
-
-//TODO vertexAttribPointer
 
 func VertexAttribPointer(indx VertexAttrib, size GLuint, type_ GLenum, normalized bool,  stride GLsizei,  pointer unsafe.Pointer)  {
     C.glVertexAttribPointer(C.GLuint(indx), C.GLint(size), C.GLenum(type_), glBool(normalized), C.GLsizei(stride), pointer);
@@ -317,6 +320,8 @@ func VertexAttribPointer(indx VertexAttrib, size GLuint, type_ GLenum, normalize
 
 
 // UniformLocation
+//TODO
+
 
 type UniformLocation GLint
 
@@ -453,9 +458,9 @@ func DepthRange(zNear GLclampf, zFar GLclampf) {
 
 func Disable(cap GLenum)	{ C.glDisable(C.GLenum(cap)) }
 
-func DisableVertexAttribArray(index GLuint)	{ C.glDisableVertexAttribArray(C.GLuint(index)) }
+func DisableVertexAttribArray(index VertexAttrib)	{ C.glDisableVertexAttribArray(C.GLuint(index)) }
 
-func DrawArrays(mode GLenum, first GLint, count GLsizei) {
+func DrawArrays(mode GLenum, first GLint, count int) {
 	C.glDrawArrays(C.GLenum(mode), C.GLint(first), C.GLsizei(count))
 }
 
@@ -465,7 +470,7 @@ func DrawElements(mode GLenum, count GLsizei, type_ GLenum, offset uintptr) {
 
 func Enable(cap GLenum)	{ C.glEnable(C.GLenum(cap)) }
 
-func EnableVertexAttribArray(index GLuint)	{ C.glEnableVertexAttribArray(C.GLuint(index)) }
+func EnableVertexAttribArray(index VertexAttrib)	{ C.glEnableVertexAttribArray(C.GLuint(index)) }
 
 func Finish()	{ C.glFinish() }
 
@@ -474,8 +479,6 @@ func Flush()	{ C.glFlush() }
 func FrontFace(mode GLenum)	{ C.glFrontFace(C.GLenum(mode)) }
 
 func GenerateMipmap(target GLenum)	{ C.glGenerateMipmap(C.GLenum(target)) }
-
-type AttribLocation GLuint
 
 func GetError() GLenum	{ return GLenum(C.glGetError()) }
 
