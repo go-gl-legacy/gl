@@ -272,12 +272,6 @@ func (texture Texture) Delete() {
 
 type VertexAttrib GLuint;
 
-func GetVertexAttribOffset(index GLuint, pname GLenum) GLsizeiptr {
-	//TODO
-	return 0
-	//return GLsizeiptr(C.getVertexAttribOffset(C.GLuint(index), C.GLenum(pname)));
-}
-
 func VertexAttrib1f(indx GLuint, x GLfloat) {
 	C.glVertexAttrib1f(C.GLuint(indx), C.GLfloat(x))
 }
