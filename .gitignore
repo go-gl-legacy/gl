@@ -1,14 +1,7 @@
 **~
-main
-**.o
-**.8
-**.6
-.obj/
+**.[o86]
+**/_obj/
+**_cgo*
 **.cgo*.go
-**.cgo*.c
-**.cgo*.8
-**.cgo*.6
-**/_obj
 test-gl
-test-sdl
 

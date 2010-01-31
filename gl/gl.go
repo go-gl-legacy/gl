@@ -30,96 +30,92 @@ func glBool(v bool) C.GLboolean {
 		return 1
 	}
 
-	return 0;
+	return 0
 
 }
 
-func glString(s string) *C.GLchar	{ return (*C.GLchar)(C.CString(s)) }
+func glString(s string) *C.GLchar { return (*C.GLchar)(C.CString(s)) }
 
-func freeString(ptr *C.GLchar)	{ C.free(unsafe.Pointer(ptr)) }
+func freeString(ptr *C.GLchar) { C.free(unsafe.Pointer(ptr)) }
 
 // GLEW
 
-func Init() int{
-    return int(C.glewInit());
-}
+func Init() int { return int(C.glewInit()) }
 
 // Object
 
 type Object C.GLuint
 
-func (buffer Object) IsBuffer() bool	{ return C.glIsBuffer(C.GLuint(buffer)) != 0 }
+func (buffer Object) IsBuffer() bool { return C.glIsBuffer(C.GLuint(buffer)) != 0 }
 
 
 func (framebuffer Object) IsFramebuffer() bool {
 	return C.glIsFramebuffer(C.GLuint(framebuffer)) != 0
 }
 
-func (program Object) IsProgram() bool	{ return C.glIsProgram(C.GLuint(program)) != 0 }
+func (program Object) IsProgram() bool { return C.glIsProgram(C.GLuint(program)) != 0 }
 
 func (renderbuffer Object) IsRenderbuffer() bool {
 	return C.glIsRenderbuffer(C.GLuint(renderbuffer)) != 0
 }
 
-func (shader Object) IsShader() bool	{ return C.glIsShader(C.GLuint(shader)) != 0 }
+func (shader Object) IsShader() bool { return C.glIsShader(C.GLuint(shader)) != 0 }
 
-func (texture Object) IsTexture() bool	{ return C.glIsTexture(C.GLuint(texture)) != 0 }
+func (texture Object) IsTexture() bool { return C.glIsTexture(C.GLuint(texture)) != 0 }
 
 // Shader
 
 type Shader Object
 
-func CreateShader(type_ GLenum) Shader	{ return Shader(C.glCreateShader(C.GLenum(type_))) }
+func CreateShader(type_ GLenum) Shader { return Shader(C.glCreateShader(C.GLenum(type_))) }
 
-func DeleteShader(shader Shader)	{ C.glDeleteShader(C.GLuint(shader)) }
+func DeleteShader(shader Shader) { C.glDeleteShader(C.GLuint(shader)) }
 
 
 func (shader Shader) GetInfoLog() string {
-	var len C.GLint;
-	C.glGetShaderiv(C.GLuint(shader), C.GLenum(INFO_LOG_LENGTH), &len);
+	var len C.GLint
+	C.glGetShaderiv(C.GLuint(shader), C.GLenum(INFO_LOG_LENGTH), &len)
 
-	log := C.cmalloc(C.int(len + 1));
-	C.glGetShaderInfoLog(C.GLuint(shader), C.GLsizei(len), nil, (*C.GLchar)(log));
+	log := C.cmalloc(C.int(len + 1))
+	C.glGetShaderInfoLog(C.GLuint(shader), C.GLsizei(len), nil, (*C.GLchar)(log))
 
+	defer C.free(log)
 
-
-	defer C.free(log);
-
-	return C.GoString((*C.char)(log));
+	return C.GoString((*C.char)(log))
 }
 
 func (shader Shader) GetSource() string {
-	var len C.GLint;
-	C.glGetShaderiv(C.GLuint(shader), C.GLenum(SHADER_SOURCE_LENGTH), &len);
+	var len C.GLint
+	C.glGetShaderiv(C.GLuint(shader), C.GLenum(SHADER_SOURCE_LENGTH), &len)
 
-	log := C.cmalloc(C.int(len + 1));
-	C.glGetShaderSource(C.GLuint(shader), C.GLsizei(len), nil, (*C.GLchar)(log));
+	log := C.cmalloc(C.int(len + 1))
+	C.glGetShaderSource(C.GLuint(shader), C.GLsizei(len), nil, (*C.GLchar)(log))
 
-	defer C.free(log);
+	defer C.free(log)
 
-	return C.GoString((*C.char)(log));
+	return C.GoString((*C.char)(log))
 }
 
 func (shader Shader) Source(source string) {
 
-	csource := glString(source);
-	defer freeString(csource);
+	csource := glString(source)
+	defer freeString(csource)
 
-	var one C.GLint = C.GLint(len(source));
+	var one C.GLint = C.GLint(len(source))
 
-	C.glShaderSource(C.GLuint(shader), 1, &csource, &one);
+	C.glShaderSource(C.GLuint(shader), 1, &csource, &one)
 }
 
 
-func (shader Shader) Compile()	{ C.glCompileShader(C.GLuint(shader)) }
+func (shader Shader) Compile() { C.glCompileShader(C.GLuint(shader)) }
 
 // Program
 
 type Program Object
 
-func CreateProgram() Program	{ return Program(C.glCreateProgram()) }
+func CreateProgram() Program { return Program(C.glCreateProgram()) }
 
-func (program Program) Delete()	{ C.glDeleteProgram(C.GLuint(program)) }
+func (program Program) Delete() { C.glDeleteProgram(C.GLuint(program)) }
 
 func (program Program) AttachShader(shader Shader) {
 	C.glAttachShader(C.GLuint(program), C.GLuint(shader))
@@ -127,12 +123,12 @@ func (program Program) AttachShader(shader Shader) {
 
 
 func (program Program) GetAttachedShaders() []Object {
-	var len C.GLint;
-	C.glGetProgramiv(C.GLuint(program), C.GLenum(ACTIVE_UNIFORM_MAX_LENGTH), &len);
+	var len C.GLint
+	C.glGetProgramiv(C.GLuint(program), C.GLenum(ACTIVE_UNIFORM_MAX_LENGTH), &len)
 
-	objects := make([]Object, len);
-	C.glGetAttachedShaders(C.GLuint(program), C.GLsizei(len), nil, *((**C.GLuint)(unsafe.Pointer(&objects))));
-	return objects;
+	objects := make([]Object, len)
+	C.glGetAttachedShaders(C.GLuint(program), C.GLsizei(len), nil, *((**C.GLuint)(unsafe.Pointer(&objects))))
+	return objects
 }
 
 func (program Program) DetachShader(shader Shader) {
@@ -140,24 +136,24 @@ func (program Program) DetachShader(shader Shader) {
 }
 
 
-func (program Program) Link()	{ C.glLinkProgram(C.GLuint(program)) }
+func (program Program) Link() { C.glLinkProgram(C.GLuint(program)) }
 
-func (program Program) Validate()	{ C.glValidateProgram(C.GLuint(program)) }
+func (program Program) Validate() { C.glValidateProgram(C.GLuint(program)) }
 
-func (program Program) Use()	{ C.glUseProgram(C.GLuint(program)) }
+func (program Program) Use() { C.glUseProgram(C.GLuint(program)) }
 
 
 func (program Program) GetInfoLog() string {
 
-	var len C.GLint;
-	C.glGetProgramiv(C.GLuint(program), C.GLenum(INFO_LOG_LENGTH), &len);
+	var len C.GLint
+	C.glGetProgramiv(C.GLuint(program), C.GLenum(INFO_LOG_LENGTH), &len)
 
-	log := C.cmalloc(C.int(len + 1));
-	C.glGetProgramInfoLog(C.GLuint(program), C.GLsizei(len), nil, (*C.GLchar)(log));
+	log := C.cmalloc(C.int(len + 1))
+	C.glGetProgramInfoLog(C.GLuint(program), C.GLsizei(len), nil, (*C.GLchar)(log))
 
-	defer C.free(log);
+	defer C.free(log)
 
-	return C.GoString((*C.char)(log));
+	return C.GoString((*C.char)(log))
 
 }
 
@@ -169,27 +165,27 @@ func (program Program) GetUniform(location UniformLocation) int {
 
 func (program Program) GetUniformLocation(name string) UniformLocation {
 
-	cname := glString(name);
-	defer freeString(cname);
+	cname := glString(name)
+	defer freeString(cname)
 
-	return UniformLocation(C.glGetUniformLocation(C.GLuint(program), cname));
+	return UniformLocation(C.glGetUniformLocation(C.GLuint(program), cname))
 }
 
 func (program Program) GetAttribLocation(name string) VertexAttrib {
 
-	cname := glString(name);
-	defer freeString(cname);
+	cname := glString(name)
+	defer freeString(cname)
 
-	return VertexAttrib(C.glGetAttribLocation(C.GLuint(program), cname));
+	return VertexAttrib(C.glGetAttribLocation(C.GLuint(program), cname))
 }
 
 
 func (program Program) BindAttribLocation(index GLuint, name string) {
 
-	cname := glString(name);
-	defer freeString(cname);
+	cname := glString(name)
+	defer freeString(cname)
 
-	C.glBindAttribLocation(C.GLuint(program), C.GLuint(index), cname);
+	C.glBindAttribLocation(C.GLuint(program), C.GLuint(index), cname)
 
 }
 
@@ -198,16 +194,16 @@ func (program Program) BindAttribLocation(index GLuint, name string) {
 type Buffer Object
 
 func CreateBuffer() Buffer {
-	var b C.GLuint;
-	C.glGenBuffers(1, &b);
-	return Buffer(b);
+	var b C.GLuint
+	C.glGenBuffers(1, &b)
+	return Buffer(b)
 }
 
-func (buffer Buffer) Bind(target GLenum)	{ C.glBindBuffer(C.GLenum(target), C.GLuint(buffer)) }
+func (buffer Buffer) Bind(target GLenum) { C.glBindBuffer(C.GLenum(target), C.GLuint(buffer)) }
 
 func (buffer Buffer) Delete() {
-	b := C.GLuint(buffer);
-	C.glDeleteBuffers(1, &b);
+	b := C.GLuint(buffer)
+	C.glDeleteBuffers(1, &b)
 }
 
 // FrameBuffer
@@ -215,9 +211,9 @@ func (buffer Buffer) Delete() {
 type Framebuffer Object
 
 func CreateFramebuffer() Framebuffer {
-	var b C.GLuint;
-	C.glGenFramebuffers(1, &b);
-	return Framebuffer(b);
+	var b C.GLuint
+	C.glGenFramebuffers(1, &b)
+	return Framebuffer(b)
 }
 
 func (framebuffer Framebuffer) Bind(target GLenum) {
@@ -225,8 +221,8 @@ func (framebuffer Framebuffer) Bind(target GLenum) {
 }
 
 func (framebuffer Framebuffer) Delete() {
-	b := C.GLuint(framebuffer);
-	C.glDeleteFramebuffers(1, &b);
+	b := C.GLuint(framebuffer)
+	C.glDeleteFramebuffers(1, &b)
 }
 
 
@@ -235,9 +231,9 @@ func (framebuffer Framebuffer) Delete() {
 type Renderbuffer Object
 
 func CreateRenderbuffer() Renderbuffer {
-	var b C.GLuint;
-	C.glGenRenderbuffers(1, &b);
-	return Renderbuffer(b);
+	var b C.GLuint
+	C.glGenRenderbuffers(1, &b)
+	return Renderbuffer(b)
 }
 
 func (renderbuffer Renderbuffer) Bind(target GLenum) {
@@ -245,8 +241,8 @@ func (renderbuffer Renderbuffer) Bind(target GLenum) {
 }
 
 func (renderbuffer Renderbuffer) Delete() {
-	b := C.GLuint(renderbuffer);
-	C.glDeleteRenderbuffers(1, &b);
+	b := C.GLuint(renderbuffer)
+	C.glDeleteRenderbuffers(1, &b)
 }
 
 // Texture
@@ -254,9 +250,9 @@ func (renderbuffer Renderbuffer) Delete() {
 type Texture Object
 
 func CreateTexture() Texture {
-	var b C.GLuint;
-	C.glGenTextures(1, &b);
-	return Texture(b);
+	var b C.GLuint
+	C.glGenTextures(1, &b)
+	return Texture(b)
 }
 
 func (texture Texture) Bind(target GLenum) {
@@ -264,13 +260,13 @@ func (texture Texture) Bind(target GLenum) {
 }
 
 func (texture Texture) Delete() {
-	b := C.GLuint(texture);
-	C.glDeleteTextures(1, &b);
+	b := C.GLuint(texture)
+	C.glDeleteTextures(1, &b)
 }
 
 // VertexAttrib
 
-type VertexAttrib GLuint;
+type VertexAttrib GLuint
 
 func VertexAttrib1f(indx GLuint, x GLfloat) {
 	C.glVertexAttrib1f(C.GLuint(indx), C.GLfloat(x))
@@ -308,8 +304,8 @@ func VertexAttrib4fv(indx GLuint, values *float) {
 	//	C.glVertexAttrib4fv(C.GLuint(indx), (*C.float)(values));
 }
 
-func VertexAttribPointer(indx VertexAttrib, size GLuint, type_ GLenum, normalized bool,  stride GLsizei,  pointer unsafe.Pointer)  {
-    C.glVertexAttribPointer(C.GLuint(indx), C.GLint(size), C.GLenum(type_), glBool(normalized), C.GLsizei(stride), pointer);
+func VertexAttribPointer(indx VertexAttrib, size GLuint, type_ GLenum, normalized bool, stride GLsizei, pointer unsafe.Pointer) {
+	C.glVertexAttribPointer(C.GLuint(indx), C.GLint(size), C.GLenum(type_), glBool(normalized), C.GLsizei(stride), pointer)
 }
 
 
@@ -394,13 +390,13 @@ uniformMatrix4fv
 
 // Main
 
-func ActiveTexture(texture GLenum)	{ C.glActiveTexture(C.GLenum(texture)) }
+func ActiveTexture(texture GLenum) { C.glActiveTexture(C.GLenum(texture)) }
 
 func BlendColor(red GLclampf, green GLclampf, blue GLclampf, alpha GLclampf) {
 	C.glBlendColor(C.GLclampf(red), C.GLclampf(green), C.GLclampf(blue), C.GLclampf(alpha))
 }
 
-func BlendEquation(mode GLenum)	{ C.glBlendEquation(C.GLenum(mode)) }
+func BlendEquation(mode GLenum) { C.glBlendEquation(C.GLenum(mode)) }
 
 func BlendEquationSeparate(modeRGB GLenum, modeAlpha GLenum) {
 	C.glBlendEquationSeparate(C.GLenum(modeRGB), C.GLenum(modeAlpha))
@@ -411,48 +407,50 @@ func BlendFunc(sfactor GLenum, dfactor GLenum) {
 }
 
 func blendFuncSeparate(srcRGB GLenum, dstRGB GLenum, srcAlpha GLenum, dstAlpha GLenum) {
-    C.glBlendFuncSeparate(C.GLenum(srcRGB), C.GLenum(dstRGB), C.GLenum(srcAlpha), C.GLenum(dstAlpha))
+	C.glBlendFuncSeparate(C.GLenum(srcRGB), C.GLenum(dstRGB), C.GLenum(srcAlpha), C.GLenum(dstAlpha))
 }
 
 func BufferData(target GLenum, size int, data unsafe.Pointer, usage GLenum) {
-	C.glBufferData(C.GLenum(target), C.GLsizeiptr(size), data, C.GLenum(usage));
+	C.glBufferData(C.GLenum(target), C.GLsizeiptr(size), data, C.GLenum(usage))
 }
 
 func BufferSubData(target GLenum, offset GLsizeiptr, size int, data unsafe.Pointer) {
-	C.glBufferSubData(C.GLenum(target), C.GLintptr(offset), C.GLsizeiptr(size), data);
+	C.glBufferSubData(C.GLenum(target), C.GLintptr(offset), C.GLsizeiptr(size), data)
 }
 
 func CheckFramebufferStatus(target GLenum) GLenum {
 	return GLenum(C.glCheckFramebufferStatus(C.GLenum(target)))
 }
 
-func Clear(mask GLbitfield)	{ C.glClear(C.GLbitfield(mask)) }
+func Clear(mask GLbitfield) { C.glClear(C.GLbitfield(mask)) }
 
 func ClearColor(red GLclampf, green GLclampf, blue GLclampf, alpha GLclampf) {
 	C.glClearColor(C.GLclampf(red), C.GLclampf(green), C.GLclampf(blue), C.GLclampf(alpha))
 }
 
-func ClearDepth(depth GLclampf)	{ C.glClearDepth(C.GLclampd(depth)) }
+func ClearDepth(depth GLclampf) { C.glClearDepth(C.GLclampd(depth)) }
 
-func ClearStencil(s GLint)	{ C.glClearStencil(C.GLint(s)) }
+func ClearStencil(s GLint) { C.glClearStencil(C.GLint(s)) }
 
 func ColorMask(red bool, green bool, blue bool, alpha bool) {
 	C.glColorMask(glBool(red), glBool(green), glBool(blue), glBool(alpha))
 }
 
-func CullFace(mode GLenum)	{ C.glCullFace(C.GLenum(mode)) }
+func CullFace(mode GLenum) { C.glCullFace(C.GLenum(mode)) }
 
-func DepthFunc(func_ GLenum)	{ C.glDepthFunc(C.GLenum(func_)) }
+func DepthFunc(func_ GLenum) { C.glDepthFunc(C.GLenum(func_)) }
 
-func DepthMask(flag bool)	{ C.glDepthMask(glBool(flag)) }
+func DepthMask(flag bool) { C.glDepthMask(glBool(flag)) }
 
 func DepthRange(zNear GLclampf, zFar GLclampf) {
 	C.glDepthRange(C.GLclampd(zNear), C.GLclampd(zFar))
 }
 
-func Disable(cap GLenum)	{ C.glDisable(C.GLenum(cap)) }
+func Disable(cap GLenum) { C.glDisable(C.GLenum(cap)) }
 
-func DisableVertexAttribArray(index VertexAttrib)	{ C.glDisableVertexAttribArray(C.GLuint(index)) }
+func DisableVertexAttribArray(index VertexAttrib) {
+	C.glDisableVertexAttribArray(C.GLuint(index))
+}
 
 func DrawArrays(mode GLenum, first GLint, count int) {
 	C.glDrawArrays(C.GLenum(mode), C.GLint(first), C.GLsizei(count))
@@ -462,30 +460,32 @@ func DrawElements(mode GLenum, count GLsizei, type_ GLenum, offset uintptr) {
 	C.glDrawElements(C.GLenum(mode), C.GLsizei(count), C.GLenum(type_), unsafe.Pointer(offset))
 }
 
-func Enable(cap GLenum)	{ C.glEnable(C.GLenum(cap)) }
+func Enable(cap GLenum) { C.glEnable(C.GLenum(cap)) }
 
-func EnableVertexAttribArray(index VertexAttrib)	{ C.glEnableVertexAttribArray(C.GLuint(index)) }
-
-func Finish()	{ C.glFinish() }
-
-func Flush()	{ C.glFlush() }
-
-func FrontFace(mode GLenum)	{ C.glFrontFace(C.GLenum(mode)) }
-
-func GenerateMipmap(target GLenum)	{ C.glGenerateMipmap(C.GLenum(target)) }
-
-func GetError() GLenum	{ return GLenum(C.glGetError()) }
-
-func GetString(name GLenum) string {
-	s := (*C.char)(unsafe.Pointer(C.glGetString(C.GLenum(name))));
-	return C.GoString(s);
+func EnableVertexAttribArray(index VertexAttrib) {
+	C.glEnableVertexAttribArray(C.GLuint(index))
 }
 
-func Hint(target GLenum, mode GLenum)	{ C.glHint(C.GLenum(target), C.GLenum(mode)) }
+func Finish() { C.glFinish() }
 
-func IsEnabled(cap GLenum) bool	{ return C.glIsEnabled(C.GLenum(cap)) != 0 }
+func Flush() { C.glFlush() }
 
-func LineWidth(width GLfloat)	{ C.glLineWidth(C.GLfloat(width)) }
+func FrontFace(mode GLenum) { C.glFrontFace(C.GLenum(mode)) }
+
+func GenerateMipmap(target GLenum) { C.glGenerateMipmap(C.GLenum(target)) }
+
+func GetError() GLenum { return GLenum(C.glGetError()) }
+
+func GetString(name GLenum) string {
+	s := (*C.char)(unsafe.Pointer(C.glGetString(C.GLenum(name))))
+	return C.GoString(s)
+}
+
+func Hint(target GLenum, mode GLenum) { C.glHint(C.GLenum(target), C.GLenum(mode)) }
+
+func IsEnabled(cap GLenum) bool { return C.glIsEnabled(C.GLenum(cap)) != 0 }
+
+func LineWidth(width GLfloat) { C.glLineWidth(C.GLfloat(width)) }
 
 
 func PixelStorei(pname GLenum, param GLint) {
@@ -512,7 +512,7 @@ func StencilFuncSeparate(face GLenum, func_ GLenum, ref GLint, mask GLuint) {
 	C.glStencilFuncSeparate(C.GLenum(face), C.GLenum(func_), C.GLint(ref), C.GLuint(mask))
 }
 
-func StencilMask(mask GLuint)	{ C.glStencilMask(C.GLuint(mask)) }
+func StencilMask(mask GLuint) { C.glStencilMask(C.GLuint(mask)) }
 
 func StencilMaskSeparate(face GLenum, mask GLuint) {
 	C.glStencilMaskSeparate(C.GLenum(face), C.GLuint(mask))
@@ -539,17 +539,17 @@ func Viewport(x GLint, y GLint, width GLsizei, height GLsizei) {
 }
 
 func CopyTexImage2D(target GLenum, level int, internalformat GLenum, x int, y int, width int, height int, border int) {
-	C.glCopyTexImage2D(C.GLenum(target), C.GLint(level), C.GLenum(internalformat), C.GLint(x), C.GLint(y), C.GLsizei(width), C.GLsizei(height), C.GLint(border));
+	C.glCopyTexImage2D(C.GLenum(target), C.GLint(level), C.GLenum(internalformat), C.GLint(x), C.GLint(y), C.GLsizei(width), C.GLsizei(height), C.GLint(border))
 }
 
 //void copyTexSubImage2D(GLenum target, GLint level, GLint xoffset, GLint yoffset, GLint x, GLint y, GLsizei width, GLsizei height)
 func CopyTexSubImage2D(target GLenum, level int, xoffset int, yoffset int, x int, y int, width int, height int) {
-	C.glCopyTexSubImage2D(C.GLenum(target), C.GLint(level), C.GLint(xoffset), C.GLint(yoffset), C.GLint(x), C.GLint(y), C.GLsizei(width), C.GLsizei(height));
+	C.glCopyTexSubImage2D(C.GLenum(target), C.GLint(level), C.GLint(xoffset), C.GLint(yoffset), C.GLint(x), C.GLint(y), C.GLsizei(width), C.GLsizei(height))
 }
 
 //void renderbufferStorage(GLenum target, GLenum internalformat, GLsizei width, GLsizei height)
 func RenderbufferStorage(target GLenum, internalformat GLenum, width GLsizei, height GLsizei) {
-	C.glRenderbufferStorage(C.GLenum(target), C.GLenum(internalformat), C.GLsizei(width), C.GLsizei(height));
+	C.glRenderbufferStorage(C.GLenum(target), C.GLenum(internalformat), C.GLsizei(width), C.GLsizei(height))
 }
 
 
@@ -582,11 +582,11 @@ func GetActiveAttrib(program GLuint, index GLuint) WebGLActiveInfo
 */
 
 func FramebufferTexture2D(target GLenum, attachment GLenum, textarget GLenum, texture Texture, level GLint) {
-	C.glFramebufferTexture2D(C.GLenum(target), C.GLenum(attachment), C.GLenum(textarget), C.GLuint(texture), C.GLint(level));
+	C.glFramebufferTexture2D(C.GLenum(target), C.GLenum(attachment), C.GLenum(textarget), C.GLuint(texture), C.GLint(level))
 }
 
 func FramebufferRenderbuffer(target Framebuffer, attachment GLenum, renderbuffertarget GLenum, renderbuffer Renderbuffer) {
-	C.glFramebufferRenderbuffer(C.GLenum(target), C.GLenum(attachment), C.GLenum(renderbuffertarget), C.GLuint(renderbuffer));
+	C.glFramebufferRenderbuffer(C.GLenum(target), C.GLenum(attachment), C.GLenum(renderbuffertarget), C.GLuint(renderbuffer))
 }
 
 
@@ -629,14 +629,11 @@ func Vertex3f(x GLfloat, y GLfloat, z GLfloat) {
 	C.glVertex3f(C.GLfloat(x), C.GLfloat(y), C.GLfloat(z))
 }
 func Begin(mode GLenum) { C.glBegin(C.GLenum(mode)) }
-func End() { C.glEnd() }
+func End()              { C.glEnd() }
 
 func VertexPointer(size GLint, type_ GLenum, stride GLsizei, pointer unsafe.Pointer) {
 	C.glVertexPointer(C.GLint(size), C.GLenum(type_), C.GLsizei(stride), pointer)
 }
 
-func EnableClientState(array GLenum) { C.glEnableClientState(C.GLenum(array)) }
+func EnableClientState(array GLenum)  { C.glEnableClientState(C.GLenum(array)) }
 func DisableClientState(array GLenum) { C.glDisableClientState(C.GLenum(array)) }
-
-
-
