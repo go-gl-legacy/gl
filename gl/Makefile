@@ -6,7 +6,7 @@ include $(GOROOT)/src/Make.$(GOARCH)
 
 TARG=gl
 
-GOFILES:=gl_defs.go gl_enums.go
+GOFILES:=gl_defs.go
 
 CGOFILES:=gl.go
 
@@ -21,9 +21,9 @@ include $(GOROOT)/src/Make.pkg
 DOLLAR:="$"
 
 gl_defs.c:
-	echo -e '#define GL_GLEXT_PROTOTYPES\n#include <GL/gl.h>\n#include <GL/glext.h>\nenum\n{\n' > gl_defs.c
-	cat /usr/include/GL/gl.h /usr/include/GL/glext.h | sed -rne 's/#define\s*GL_(\w*).*/\t~GL_\1 = GL_\1,/p' | sort | uniq | tr '~' '\044' >> gl_defs.c
-	cat /usr/include/GL/gl.h /usr/include/GL/glext.h | sed -rne 's/#define\s*GL_([A-Z]\w*).*/\t~\1 = GL_\1,/p' | sort | uniq | tr '~' '\044' >> gl_defs.c
+	echo '#define GL_GLEXT_PROTOTYPES\n#include <GL/gl.h>\n#include <GL/glext.h>\nenum\n{\n' > gl_defs.c
+	cat /usr/include/GL/gl.h /usr/include/GL/glext.h | sed -rne 's/#define\s*GL_([0-9]\w*).*/\t~GL_\1 = GL_\1,/p' | egrep -vi "(_EXT|_NV|_ATI|_APPLE|_AMD|_MESA|_SUN|_GREMEDY|_SGI|_3DFX|_ARB|_INTEL|_IBM|_OML|_HP|_WIN|_OES|_INGR|_PGI|_S3)" | sort | uniq | tr '~' '\044' >> gl_defs.c
+	cat /usr/include/GL/gl.h /usr/include/GL/glext.h | sed -rne 's/#define\s*GL_([A-Z]\w*).*/\t~\1 = GL_\1,/p' | egrep -vi "(_EXT|_NV|_ATI|_APPLE|_AMD|_MESA|_SUN|_GREMEDY|_SGI|_3DFX|_ARB|_INTEL|_IBM|_OML|_HP|_WIN|_OES|_INGR|_PGI|_S3)" | sort | uniq | tr '~' '\044' >> gl_defs.c
 	echo '};' >> gl_defs.c
 
 gl_defs.go: gl_defs.c

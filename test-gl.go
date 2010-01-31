@@ -76,12 +76,7 @@ func main() {
 		gl.EnableVertexAttribArray(vertex_loc);
 		gl.VertexAttribPointer(vertex_loc, 3, gl.FLOAT, false, 0, unsafe.Pointer(&suzanne[0]));
 
-//        gl.EnableClientState(gl.GL_VERTEX_ARRAY);
-    
-
-        gl.DrawArrays(gl.GL_TRIANGLES, 0, len(suzanne)/9);
-
-  //      gl.DisableClientState(gl.GL_VERTEX_ARRAY);
+        gl.DrawArrays(gl.TRIANGLES, 0, len(suzanne)/9);
 
 		sdl.GL_SwapBuffers();
 
