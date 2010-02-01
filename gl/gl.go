@@ -20,6 +20,7 @@ type GLsizeiptr C.GLsizeiptr
 type GLuint C.GLuint
 type GLfloat C.GLfloat
 type GLclampf C.GLclampf
+type GLushort C.GLushort
 
 type Pointer unsafe.Pointer
 
@@ -33,6 +34,7 @@ func glBool(v bool) C.GLboolean {
 	return 0
 
 }
+
 
 func glString(s string) *C.GLchar { return (*C.GLchar)(C.CString(s)) }
 
@@ -216,6 +218,14 @@ func CreateBuffer() Buffer {
 	var b C.GLuint
 	C.glGenBuffers(1, &b)
 	return Buffer(b)
+}
+
+func GenBuffers(numbufs GLsizei) []Buffer {
+	rv := make([]Buffer, numbufs)
+	ptr := &rv[0]
+
+	C.glGenBuffers(C.GLsizei(numbufs), (*C.GLuint)(unsafe.Pointer(ptr)))
+	return rv
 }
 
 func (buffer Buffer) Bind(target GLenum) { C.glBindBuffer(C.GLenum(target), C.GLuint(buffer)) }
