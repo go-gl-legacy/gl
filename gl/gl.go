@@ -72,6 +72,10 @@ func CreateShader(type_ GLenum) Shader { return Shader(C.glCreateShader(C.GLenum
 func DeleteShader(shader Shader) { C.glDeleteShader(C.GLuint(shader)) }
 
 
+func (shader Shader) Delete() {
+	C.glDeleteShader(C.GLuint(shader))
+}
+
 func (shader Shader) GetInfoLog() string {
 	var len C.GLint
 	C.glGetShaderiv(C.GLuint(shader), C.GLenum(INFO_LOG_LENGTH), &len)
@@ -163,6 +167,14 @@ func (program Program) GetInfoLog() string {
 	return C.GoString((*C.char)(log))
 
 }
+
+func (program Program) Get(param GLenum) GLint {
+	var rv C.GLint
+	
+	C.glGetProgramiv(C.GLuint(program), C.GLenum(param), &rv)
+	return GLint(rv)
+}
+
 
 func (program Program) GetUniform(location UniformLocation) int {
 	//TODO
@@ -273,7 +285,7 @@ func (texture Texture) Delete() {
 
 // VertexAttrib
 
-type VertexAttrib GLuint
+type VertexAttrib GLint
 
 func VertexAttrib1f(indx GLuint, x GLfloat) {
 	C.glVertexAttrib1f(C.GLuint(indx), C.GLfloat(x))
