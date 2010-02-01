@@ -109,6 +109,13 @@ func (shader Shader) Source(source string) {
 
 func (shader Shader) Compile() { C.glCompileShader(C.GLuint(shader)) }
 
+func (shader Shader) Get(param GLenum) GLint {
+	var rv C.GLint
+
+	C.glGetShaderiv(C.GLuint(shader), C.GLenum(param), &rv)
+	return GLint(rv)
+}
+
 // Program
 
 type Program Object
