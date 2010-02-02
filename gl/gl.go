@@ -20,6 +20,7 @@ type GLsizeiptr C.GLsizeiptr
 type GLuint C.GLuint
 type GLfloat C.GLfloat
 type GLclampf C.GLclampf
+type GLushort C.GLushort
 
 type Pointer unsafe.Pointer
 
@@ -33,6 +34,7 @@ func glBool(v bool) C.GLboolean {
 	return 0
 
 }
+
 
 func glString(s string) *C.GLchar { return (*C.GLchar)(C.CString(s)) }
 
@@ -72,6 +74,10 @@ func CreateShader(type_ GLenum) Shader { return Shader(C.glCreateShader(C.GLenum
 func DeleteShader(shader Shader) { C.glDeleteShader(C.GLuint(shader)) }
 
 
+func (shader Shader) Delete() {
+	C.glDeleteShader(C.GLuint(shader))
+}
+
 func (shader Shader) GetInfoLog() string {
 	var len C.GLint
 	C.glGetShaderiv(C.GLuint(shader), C.GLenum(INFO_LOG_LENGTH), &len)
@@ -108,6 +114,13 @@ func (shader Shader) Source(source string) {
 
 
 func (shader Shader) Compile() { C.glCompileShader(C.GLuint(shader)) }
+
+func (shader Shader) Get(param GLenum) GLint {
+	var rv C.GLint
+
+	C.glGetShaderiv(C.GLuint(shader), C.GLenum(param), &rv)
+	return GLint(rv)
+}
 
 // Program
 
@@ -157,6 +170,14 @@ func (program Program) GetInfoLog() string {
 
 }
 
+func (program Program) Get(param GLenum) GLint {
+	var rv C.GLint
+	
+	C.glGetProgramiv(C.GLuint(program), C.GLenum(param), &rv)
+	return GLint(rv)
+}
+
+
 func (program Program) GetUniform(location UniformLocation) int {
 	//TODO
 	return 0
@@ -197,6 +218,14 @@ func CreateBuffer() Buffer {
 	var b C.GLuint
 	C.glGenBuffers(1, &b)
 	return Buffer(b)
+}
+
+func GenBuffers(numbufs GLsizei) []Buffer {
+	rv := make([]Buffer, numbufs)
+	ptr := &rv[0]
+
+	C.glGenBuffers(C.GLsizei(numbufs), (*C.GLuint)(unsafe.Pointer(ptr)))
+	return rv
 }
 
 func (buffer Buffer) Bind(target GLenum) { C.glBindBuffer(C.GLenum(target), C.GLuint(buffer)) }
@@ -266,7 +295,7 @@ func (texture Texture) Delete() {
 
 // VertexAttrib
 
-type VertexAttrib GLuint
+type VertexAttrib GLint
 
 func VertexAttrib1f(indx GLuint, x GLfloat) {
 	C.glVertexAttrib1f(C.GLuint(indx), C.GLfloat(x))
