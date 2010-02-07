@@ -71,9 +71,7 @@ type Shader Object
 
 func CreateShader(type_ GLenum) Shader { return Shader(C.glCreateShader(C.GLenum(type_))) }
 
-func (shader Shader) Delete() {
-	C.glDeleteShader(C.GLuint(shader))
-}
+func (shader Shader) Delete() { C.glDeleteShader(C.GLuint(shader)) }
 
 func (shader Shader) GetInfoLog() string {
 	var len C.GLint
@@ -169,7 +167,7 @@ func (program Program) GetInfoLog() string {
 
 func (program Program) Get(param GLenum) GLint {
 	var rv C.GLint
-	
+
 	C.glGetProgramiv(C.GLuint(program), C.GLenum(param), &rv)
 	return GLint(rv)
 }
@@ -177,12 +175,12 @@ func (program Program) Get(param GLenum) GLint {
 
 func (program Program) GetUniformiv(location UniformLocation, values []int) {
 	// no range check
-	C.glGetUniformiv(C.GLuint(program), C.GLint(location), (*C.GLint)(unsafe.Pointer(&(values[0]))));
+	C.glGetUniformiv(C.GLuint(program), C.GLint(location), (*C.GLint)(unsafe.Pointer(&(values[0]))))
 }
 
 func (program Program) GetUniformfv(location UniformLocation, values []float) {
 	// no range check
-	C.glGetUniformfv(C.GLuint(program), C.GLint(location), (*C.GLfloat)(unsafe.Pointer(&(values[0]))));
+	C.glGetUniformfv(C.GLuint(program), C.GLint(location), (*C.GLfloat)(unsafe.Pointer(&(values[0]))))
 }
 
 func (program Program) GetUniformLocation(name string) UniformLocation {
@@ -304,34 +302,34 @@ func VertexAttrib1f(indx GLuint, x GLfloat) {
 
 func VertexAttrib1fv(indx GLuint, values []float) {
 	//no range check
-	C.glVertexAttrib1fv(C.GLuint(indx), (*C.GLfloat)(unsafe.Pointer(&values[0])));
+	C.glVertexAttrib1fv(C.GLuint(indx), (*C.GLfloat)(unsafe.Pointer(&values[0])))
 }
 
 func VertexAttrib2f(indx GLuint, x GLfloat, y GLfloat) {
 	C.glVertexAttrib2f(C.GLuint(indx), C.GLfloat(x), C.GLfloat(y))
 }
 
-func VertexAttrib2fv(indx GLuint, values *float) {
+func VertexAttrib2fv(indx GLuint, values []float) {
 	//no range check
-	C.glVertexAttrib2fv(C.GLuint(indx), (*C.GLfloat)(unsafe.Pointer(&values[0])));
+	C.glVertexAttrib2fv(C.GLuint(indx), (*C.GLfloat)(unsafe.Pointer(&values[0])))
 }
 
 func VertexAttrib3f(indx GLuint, x GLfloat, y GLfloat, z GLfloat) {
 	C.glVertexAttrib3f(C.GLuint(indx), C.GLfloat(x), C.GLfloat(y), C.GLfloat(z))
 }
 
-func VertexAttrib3fv(indx GLuint, values *float) {
+func VertexAttrib3fv(indx GLuint, values []float) {
 	//no range check
-	C.glVertexAttrib3fv(C.GLuint(indx), (*C.GLfloat)(unsafe.Pointer(&values[0])));
+	C.glVertexAttrib3fv(C.GLuint(indx), (*C.GLfloat)(unsafe.Pointer(&values[0])))
 }
 
 func VertexAttrib4f(indx GLuint, x GLfloat, y GLfloat, z GLfloat, w GLfloat) {
 	C.glVertexAttrib4f(C.GLuint(indx), C.GLfloat(x), C.GLfloat(y), C.GLfloat(z), C.GLfloat(w))
 }
 
-func VertexAttrib4fv(indx GLuint, values *float) {
+func VertexAttrib4fv(indx GLuint, values []float) {
 	//no range check
-	C.glVertexAttrib4fv(C.GLuint(indx), (*C.GLfloat)(unsafe.Pointer(&values[0])));
+	C.glVertexAttrib4fv(C.GLuint(indx), (*C.GLfloat)(unsafe.Pointer(&values[0])))
 }
 
 func VertexAttribPointer(indx VertexAttrib, size GLuint, type_ GLenum, normalized bool, stride GLsizei, pointer unsafe.Pointer) {
