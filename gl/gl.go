@@ -7,8 +7,13 @@ package gl
 //
 // void* cmalloc(int s){return malloc(s);};
 //
-// #include <GL/gl.h>
-// #include <GL/glext.h>
+// #ifdef __Darwin
+// # include <OpenGL/gl.h>
+// # include <OpenGL/glext.h>
+// #else
+// # include <GL/gl.h>
+// # include <GL/glext.h>
+// #endif
 import "C"
 import "unsafe"
 

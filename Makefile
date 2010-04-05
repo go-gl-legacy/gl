@@ -9,10 +9,6 @@ all: test-gl libs
 libs:
 	make -C gl install
 
-test-sdl: test-sdl.go libs
-	$(GC) test-sdl.go
-	$(LD) -o $@ test-sdl.$(O)
-
 test-gl: test-gl.go suzanne.go libs
 	$(GC) test-gl.go suzanne.go
 	$(LD) -o $@ test-gl.$(O)
