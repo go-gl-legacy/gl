@@ -1,4 +1,4 @@
-// godefs -g gl gl_defs.c
+// godefs -f -D__Linux -g gl gl_defs.c
 
 // MACHINE GENERATED - DO NOT EDIT.
 
@@ -1205,7 +1205,7 @@ const (
 	TEXTURE_WRAP_T                                = 0x2803
 	TEXTURE                                       = 0x1702
 	TIMEOUT_EXPIRED                               = 0x911b
-	TIMEOUT_IGNORED                               = 0xffffffff
+	TIMEOUT_IGNORED                               = -0x1
 	TRANSFORM_BIT                                 = 0x1000
 	TRANSFORM_FEEDBACK_BUFFER_BINDING             = 0x8c8f
 	TRANSFORM_FEEDBACK_BUFFER_MODE                = 0x8c7f
