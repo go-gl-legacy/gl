@@ -7,7 +7,7 @@ include $(GOROOT)/src/Make.$(GOARCH)
 all: test-gl libs
 
 libs:
-	make -C gl install
+	make -C gl10 install
 
 test-sdl: test-sdl.go libs
 	$(GC) test-sdl.go
