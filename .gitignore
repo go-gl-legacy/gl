@@ -8,6 +8,7 @@ main
 **.cgo*.c
 **.cgo*.8
 **.cgo*.6
+**_cgo_*
 **/_obj
 test-gl
 test-sdl
