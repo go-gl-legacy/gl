@@ -18,5 +18,7 @@ test-gl: test-gl.go libs
 	$(LD) -o $@ test-gl.$(O)
 
 clean:
-	make -C gl clean
+	make -C gl10 clean
+	make -C gl20 clean
+	make -C gl30 clean
 	rm -f -r *.8 *.6 *.o */*.8 */*.6 */*.o */_obj test-gl
