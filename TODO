@@ -1,7 +1,5 @@
 * gl.go is missing some functions look for TODO in comments, commented out functions and functions missing at all
 * make more/better test/example programs
-* change GLint, GLfloat etc. to standart Go types
 * add godoc comments
 * change pointers to slices in *v functions
 * probably split GLenum into more types
-* add *texImage* functions
