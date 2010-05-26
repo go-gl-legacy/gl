@@ -2,6 +2,6 @@
 **.[o86]
 **/_obj/
 **_cgo*
-**.cgo*.go
+**.cgo*.*
 test-gl
 

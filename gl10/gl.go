@@ -1,8 +1,10 @@
 package gl
 
 // #ifdef __Darwin
+// # include <OpenGL/glew.h>
 // # include <OpenGL/gl.h>
 // #else
+// # include <GL/glew.h>
 // # include <GL/gl.h>
 // #endif
 //
@@ -539,6 +541,11 @@ func GetDoublev(pname GLenum, params *GLdouble) {
 //GLenum glGetError (void)
 func GetError() GLenum {
 	return GLenum(C.glGetError())
+}
+
+func GetErrorString(error GLenum) string {
+  raw := (*C.char)(unsafe.Pointer(C.glewGetErrorString(C.GLenum(error))))
+  return C.GoString(raw)
 }
 
 //void glGetFloatv (GLenum pname, GLfloat *params)
@@ -1705,21 +1712,6 @@ func VertexPointer(size GLint, type_ GLenum, stride GLsizei, pointer unsafe.Poin
 func Viewport(x GLint, y GLint, width GLsizei, height GLsizei) {
 	C.glViewport(C.GLint(x), C.GLint(y), C.GLsizei(width), C.GLsizei(height))
 }
-
-type ptrdiff_t C.ptrdiff_t
-type size_t C.size_t
-type wchar_t C.wchar_t
-type GLchar C.GLchar
-type GLintptr C.GLintptr
-type GLsizeiptr C.GLsizeiptr
-type GLintptrARB C.GLintptrARB
-type GLsizeiptrARB C.GLsizeiptrARB
-type GLcharARB C.GLcharARB
-type GLhandleARB C.GLhandleARB
-type GLhalfARB C.GLhalfARB
-type GLhalfNV C.GLhalfNV
-type GLint64EXT C.GLint64EXT
-type GLuint64EXT C.GLuint64EXT
 
 //GLenum glewInit(void)
 func Init() GLenum {
