@@ -44,8 +44,8 @@ func (pen *Pen) lineTo(p Point) {
 
 		if p.distanceTo(s) < 20.0 {
 
-			gl.Vertex2i(p.x, p.y)
-			gl.Vertex2i(s.x, s.y)
+			gl.Vertex2i(gl.GLint(p.x), gl.GLint(p.y))
+			gl.Vertex2i(gl.GLint(s.x), gl.GLint(s.y))
 
 		}
 
@@ -84,7 +84,7 @@ func main() {
 
 	gl.Viewport(0, 0, gl.GLsizei(screen.W), gl.GLsizei(screen.H))
 	gl.LoadIdentity()
-	gl.Ortho(0, float64(screen.W), float64(screen.H), 0, -1.0, 1.0)
+	gl.Ortho(0, gl.GLdouble(screen.W), gl.GLdouble(screen.H), 0, -1.0, 1.0)
 
 	gl.ClearColor(1, 1, 1, 0)
 	gl.Clear(gl.COLOR_BUFFER_BIT)
