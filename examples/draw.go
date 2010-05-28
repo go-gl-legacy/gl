@@ -16,7 +16,9 @@ type Point struct {
 }
 
 func (p0 Point) distanceTo(p1 Point) float64 {
-	return math.Sqrt(float64((p0.x-p1.x)*(p0.x-p1.x) + (p0.y-p1.y)*(p0.y-p1.y)))
+	dx := (p0.x - p1.x)
+	dy := (p0.y - p1.y)
+	return math.Sqrt(float64(dx*dx + dy*dy))
 }
 
 type Pen struct {
