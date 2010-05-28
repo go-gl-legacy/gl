@@ -6,9 +6,11 @@ include $(GOROOT)/src/Make.$(GOARCH)
 
 all:
 	make -C gl10 install
+	make -C glu install
 	make -C examples
 
 clean:
 	make -C gl10 clean
 	make -C gl20 clean
+	make -C glu clean
 	make -C examples clean
