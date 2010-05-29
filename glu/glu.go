@@ -1,4 +1,4 @@
-package gl
+package glu
 
 // #ifdef __Darwin
 // # include <OpenGL/glu.h>
@@ -21,4 +21,13 @@ func Build2DMipmaps(target gl.GLenum, internalFormat gl.GLint, width, height gl.
 		C.GLenum(kind),
 		data,
 	))
+}
+
+func Perspective(fovy, aspect, zNear, zFar gl.GLdouble) {
+	C.gluPerspective(
+		C.GLdouble(fovy),
+		C.GLdouble(aspect),
+		C.GLdouble(zNear),
+		C.GLdouble(zFar),
+	)
 }
