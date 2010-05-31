@@ -7,6 +7,6 @@ To install type:
 
 If you want advenced functionality like shaders, buffers type:
     cd gl20
-    make
+    make install
 
 Before calling any gl function call gl.Init() that will use GLEW to initialize all opengl functions.
