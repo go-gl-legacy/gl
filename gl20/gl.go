@@ -24,6 +24,18 @@ type GLclampd C.GLclampd
 
 type Pointer unsafe.Pointer
 
+// those types are left for compatibility reasons
+type GLboolean C.GLboolean
+type GLbyte C.GLbyte
+type GLshort C.GLshort
+type GLint C.GLint
+type GLsizei C.GLsizei
+type GLubyte C.GLubyte
+type GLushort C.GLushort
+type GLuint C.GLuint
+type GLfloat C.GLfloat
+type GLdouble C.GLdouble
+
 // helpers
 
 func glBool(v bool) C.GLboolean {
