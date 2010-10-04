@@ -5,12 +5,12 @@
 include $(GOROOT)/src/Make.inc
 
 all:
-	make -C gl10 install
-	make -C glu install
-	make -C examples
+	gomake -C gl10 install
+	gomake -C glu install
+	gomake -C examples
 
 clean:
-	make -C gl10 clean
-	make -C gl20 clean
-	make -C glu clean
-	make -C examples clean
+	gomake -C gl10 clean
+	gomake -C gl20 clean
+	gomake -C glu clean
+	gomake -C examples clean
