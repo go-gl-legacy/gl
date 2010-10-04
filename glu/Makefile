@@ -14,8 +14,8 @@ ifeq ($(PLATFORM),Darwin)
 CGO_LDFLAGS:=-framework OpenGL -lGLEW
 CGO_CFLAGS:=-D__Darwin -framework OpenGL
 else
-CGO_LDFLAGS:=-lGLEW
-CGO_CFLAGS:=-D__$(PLATFORM)
+CGO_LDFLAGS:=-lGLEW -L /usr/local/lib
+CGO_CFLAGS:=-D__$(PLATFORM) -I /usr/local/include
 endif
 
 include $(GOROOT)/src/Make.pkg
