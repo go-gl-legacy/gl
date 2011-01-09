@@ -3,10 +3,9 @@ GL and GLEW headers should be in /usr/include/GL/
 To compile example you will also need sdl bindings from: http://github.com/banthar/Go-SDL
 
 To install type:
-    make
+	make install
 
 If you want advenced functionality like shaders, buffers type:
-    cd gl20
-    make install
+    make VER=20 install
 
 Before calling any gl function call gl.Init() that will use GLEW to initialize all opengl functions.
