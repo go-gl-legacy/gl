@@ -23,7 +23,7 @@ func Build2DMipmaps(target gl.GLenum, internalFormat int, width, height int, for
 	))
 }
 
-func Perspective(fovy, aspect, zNear, zFar float64) {
+func Perspective(fovy, aspect, zNear, zFar float) {
 	C.gluPerspective(
 		C.GLdouble(fovy),
 		C.GLdouble(aspect),
@@ -32,7 +32,7 @@ func Perspective(fovy, aspect, zNear, zFar float64) {
 	)
 }
 
-func LookAt(eyeX, eyeY, eyeZ, centerX, centerY, centerZ, upX, upY, upZ float64) {
+func LookAt(eyeX, eyeY, eyeZ, centerX, centerY, centerZ, upX, upY, upZ float) {
 	C.gluLookAt(
 		C.GLdouble(eyeX),
 		C.GLdouble(eyeY),
