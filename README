@@ -5,7 +5,10 @@ To compile example you will also need sdl bindings from: http://github.com/banth
 To install type:
 	make install
 
-If you want advenced functionality like shaders, buffers type:
-    make VER=20 install
+To import, use the following:
+	import "gl/gl10"
+
+If you want advenced functionality like shaders, buffers use the following:
+	import "gl/gl20"
 
 Before calling any gl function call gl.Init() that will use GLEW to initialize all opengl functions.

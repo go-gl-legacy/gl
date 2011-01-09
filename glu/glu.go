@@ -9,7 +9,7 @@ package glu
 //
 import "C"
 import "unsafe"
-import "gl"
+import "gl/gl20"
 
 func Build2DMipmaps(target gl.GLenum, internalFormat int, width, height int, format, kind gl.GLenum, data unsafe.Pointer) int {
 	return int(C.gluBuild2DMipmaps(

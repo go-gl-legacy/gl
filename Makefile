@@ -4,14 +4,16 @@
 
 include $(GOROOT)/src/Make.inc
 
-VER=10
+.PHONY: all install examples clean
 
 all:
-	gomake -C "gl$(VER)"
+	gomake -C gl10
+	gomake -C gl20
 	gomake -C glu
 
 install: all
-	gomake -C "gl$(VER)" install
+	gomake -C gl10 install
+	gomake -C gl20 install
 	gomake -C glu install
 
 examples:
