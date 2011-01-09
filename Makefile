@@ -4,14 +4,14 @@
 
 include $(GOROOT)/src/Make.inc
 
-ver=10
+VER=10
 
 all:
-	gomake -C "gl$(ver)"
+	gomake -C "gl$(VER)"
 	gomake -C glu
 
 install: all
-	gomake -C "gl$(ver)" install
+	gomake -C "gl$(VER)" install
 	gomake -C glu install
 
 examples:
