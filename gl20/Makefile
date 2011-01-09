@@ -4,7 +4,7 @@
 
 include $(GOROOT)/src/Make.inc
 
-TARG=gl
+TARG=gl/gl20
 
 GOFILES:=gl_defs.go
 
@@ -35,4 +35,3 @@ gl_defs.c:
 gl_defs.go: gl_defs.c
 	godefs `echo $(CGO_CFLAGS) | sed 's/\([^ ^$(DOLLAR)]*\)/-f \1/g'` -g gl gl_defs.c > gl_defs.go
 	gofmt -w gl_defs.go
-

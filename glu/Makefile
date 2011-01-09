@@ -4,7 +4,7 @@
 
 include $(GOROOT)/src/Make.inc
 
-TARG=glu
+TARG=gl/glu
 
 CGOFILES:=glu.go
 
@@ -17,5 +17,7 @@ else
 CGO_LDFLAGS:=-lGLEW
 CGO_CFLAGS:=-D__$(PLATFORM)
 endif
+
+GC="${O}g" -I ../gl20/_obj
 
 include $(GOROOT)/src/Make.pkg
