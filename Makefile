@@ -7,18 +7,18 @@ include $(GOROOT)/src/Make.inc
 ver=10
 
 all:
-	make -C "gl$(ver)"
-	make -C glu
+	gomake -C "gl$(ver)"
+	gomake -C glu
 
 install: all
-	make -C "gl$(ver)" install
-	make -C glu install
+	gomake -C "gl$(ver)" install
+	gomake -C glu install
 
 examples:
-	make -C examples
+	gomake -C examples
 
 clean:
-	make -C gl10 clean
-	make -C gl20 clean
-	make -C glu clean
-	make -C examples clean
+	gomake -C gl10 clean
+	gomake -C gl20 clean
+	gomake -C glu clean
+	gomake -C examples clean
