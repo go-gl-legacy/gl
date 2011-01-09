@@ -6,9 +6,9 @@ To install type:
 	make install
 
 To import, use the following:
-	import "gl/gl10"
+	import "gl"
 
-If you want advenced functionality like shaders, buffers use the following:
+If you want advenced functionality like shaders, buffers use the following instead:
 	import "gl/gl20"
 
 Before calling any gl function call gl.Init() that will use GLEW to initialize all opengl functions.
