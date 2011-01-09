@@ -4,9 +4,17 @@
 
 include $(GOROOT)/src/Make.inc
 
+ver=10
+
 all:
-	make -C gl10 install
+	make -C "gl$(ver)"
+	make -C glu
+
+install: all
+	make -C "gl$(ver)" install
 	make -C glu install
+
+examples:
 	make -C examples
 
 clean:
