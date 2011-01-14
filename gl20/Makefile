@@ -16,7 +16,7 @@ ifeq ($(PLATFORM),Darwin)
 CGO_LDFLAGS:=-framework OpenGL -lGLEW
 CGO_CFLAGS:=-D__Darwin -framework OpenGL
 else
-CGO_LDFLAGS:=-lGLEW
+CGO_LDFLAGS:=-lGLEW -lGL
 CGO_CFLAGS:=-D__$(PLATFORM)
 endif
 
