@@ -3,3 +3,4 @@
 * add godoc comments
 * change pointers to slices in *v functions
 * probably split GLenum into more types
+* remove gl10
