@@ -1,14 +1,10 @@
 package gl
 
 // #ifdef __Darwin
-// # include <OpenGL/glew.h>
 // # include <OpenGL/gl.h>
 // #else
-// # include <GL/glew.h>
 // # include <GL/gl.h>
 // #endif
-//
-// GLenum glewInit(void);
 //
 import "C"
 import "unsafe"
@@ -544,7 +540,7 @@ func GetError() GLenum {
 }
 
 func GetErrorString(error GLenum) string {
-  raw := (*C.char)(unsafe.Pointer(C.glewGetErrorString(C.GLenum(error))))
+  raw := (*C.char)(unsafe.Pointer(C.glGetString(C.GLenum(error))))
   return C.GoString(raw)
 }
 
@@ -1715,6 +1711,6 @@ func Viewport(x GLint, y GLint, width GLsizei, height GLsizei) {
 
 //GLenum glewInit(void)
 func Init() GLenum {
-	return GLenum(C.glewInit())
+	return GLenum(0)
 }
 

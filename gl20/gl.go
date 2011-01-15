@@ -3,8 +3,6 @@ package gl
 // #include <stdlib.h>
 // #define GL_GLEXT_PROTOTYPES
 //
-// int glewInit(void);
-//
 // void* cmalloc(int s){return malloc(s);};
 //
 // #ifdef __Darwin
@@ -54,10 +52,6 @@ func goBool(v C.GLboolean) bool {
 func glString(s string) *C.GLchar { return (*C.GLchar)(C.CString(s)) }
 
 func freeString(ptr *C.GLchar) { C.free(unsafe.Pointer(ptr)) }
-
-// GLEW
-
-func Init() int { return int(C.glewInit()) }
 
 // Object
 

@@ -1,5 +1,5 @@
-Make sure you have OpenGL and GLEW (in -dev version).
-GL and GLEW headers should be in /usr/include/GL/
+Make sure you have OpenGL (in -dev version).
+GL headers should be in /usr/include/GL/
 To compile example you will also need sdl bindings from: http://github.com/banthar/Go-SDL
 
 To install type:
@@ -22,5 +22,3 @@ For the backwards-compatible GLU bindings, use the following:
 
 For the newer, better bindings, use the following:
 	import "gl/glu"
-
-Before calling any gl function call gl.Init() that will use GLEW to initialize all opengl functions.
