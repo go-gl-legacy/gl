@@ -1154,8 +1154,9 @@ func GetPolygonStipple(mask *uint8) {
 }
 
 //const uint8 * glGetString (GLenum name)
-func GetString(name GLenum) *uint8 {
-	return (*uint8)(C.glGetString(C.GLenum(name)))
+func GetString(name GLenum) string {
+    s := unsafe.Pointer(C.glGetString(C.GLenum(name)))
+	return C.GoString((*C.char)(s))
 }
 
 //void glHint (GLenum target, GLenum mode)

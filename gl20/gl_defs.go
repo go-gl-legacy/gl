@@ -328,6 +328,7 @@ const (
 	EVAL_BIT                                      = 0x10000
 	EXP2                                          = 0x801
 	EXP                                           = 0x800
+    EXTENSIONS                                    = 0x1F03
 	EYE_LINEAR                                    = 0x2400
 	EYE_PLANE                                     = 0x2502
 	FALSE                                         = 0
