@@ -1,0 +1,2 @@
+2011-01-15:
+    * Go-OpenGL no longer uses GLEW, you don't need it and don't have to call gl.Init
