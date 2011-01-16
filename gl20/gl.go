@@ -290,8 +290,8 @@ func TexEnvf(target GLenum, pname GLenum, param float) {
 }
 
 //void glTexEnvfv (GLenum target, GLenum pname, const float *params)
-func TexEnvfv(target GLenum, pname GLenum, params *float32) {
-	C.glTexEnvfv(C.GLenum(target), C.GLenum(pname), (*C.GLfloat)(params))
+func TexEnvfv(target GLenum, pname GLenum, params []float32) {
+	C.glTexEnvfv(C.GLenum(target), C.GLenum(pname), (*C.GLfloat)(&params[0]))
 }
 
 //void glTexEnvi (GLenum target, GLenum pname, int param)
@@ -300,8 +300,8 @@ func TexEnvi(target GLenum, pname GLenum, param int) {
 }
 
 //void glTexEnviv (GLenum target, GLenum pname, const int *params)
-func TexEnviv(target GLenum, pname GLenum, params *int32) {
-	C.glTexEnviv(C.GLenum(target), C.GLenum(pname), (*C.GLint)(params))
+func TexEnviv(target GLenum, pname GLenum, params []int32) {
+	C.glTexEnviv(C.GLenum(target), C.GLenum(pname), (*C.GLint)(&params[0]))
 }
 
 //void glTexGend (GLenum coord, GLenum pname, float64 param)
@@ -310,8 +310,8 @@ func TexGend(coord GLenum, pname GLenum, param float64) {
 }
 
 //void glTexGendv (GLenum coord, GLenum pname, const float64 *params)
-func TexGendv(coord GLenum, pname GLenum, params *float64) {
-	C.glTexGendv(C.GLenum(coord), C.GLenum(pname), (*C.GLdouble)(params))
+func TexGendv(coord GLenum, pname GLenum, params []float64) {
+	C.glTexGendv(C.GLenum(coord), C.GLenum(pname), (*C.GLdouble)(&params[0]))
 }
 
 //void glTexGenf (GLenum coord, GLenum pname, float param)
@@ -320,8 +320,8 @@ func TexGenf(coord GLenum, pname GLenum, param float) {
 }
 
 //void glTexGenfv (GLenum coord, GLenum pname, const float *params)
-func TexGenfv(coord GLenum, pname GLenum, params *float32) {
-	C.glTexGenfv(C.GLenum(coord), C.GLenum(pname), (*C.GLfloat)(params))
+func TexGenfv(coord GLenum, pname GLenum, params []float32) {
+	C.glTexGenfv(C.GLenum(coord), C.GLenum(pname), (*C.GLfloat)(&params[0]))
 }
 
 //void glTexGeni (GLenum coord, GLenum pname, int param)
@@ -330,8 +330,8 @@ func TexGeni(coord GLenum, pname GLenum, param int) {
 }
 
 //void glTexGeniv (GLenum coord, GLenum pname, const int *params)
-func TexGeniv(coord GLenum, pname GLenum, params *int32) {
-	C.glTexGeniv(C.GLenum(coord), C.GLenum(pname), (*C.GLint)(params))
+func TexGeniv(coord GLenum, pname GLenum, params []int32) {
+	C.glTexGeniv(C.GLenum(coord), C.GLenum(pname), (*C.GLint)(&params[0]))
 }
 
 //void glTexParameterf (GLenum target, GLenum pname, float param)
@@ -340,8 +340,8 @@ func TexParameterf(target GLenum, pname GLenum, param float) {
 }
 
 //void glTexParameterfv (GLenum target, GLenum pname, const float *params)
-func TexParameterfv(target GLenum, pname GLenum, params *float32) {
-	C.glTexParameterfv(C.GLenum(target), C.GLenum(pname), (*C.GLfloat)(params))
+func TexParameterfv(target GLenum, pname GLenum, params []float32) {
+	C.glTexParameterfv(C.GLenum(target), C.GLenum(pname), (*C.GLfloat)(&params[0]))
 }
 
 //void glTexParameteri (GLenum target, GLenum pname, int param)
@@ -350,8 +350,8 @@ func TexParameteri(target GLenum, pname GLenum, param int) {
 }
 
 //void glTexParameteriv (GLenum target, GLenum pname, const int *params)
-func TexParameteriv(target GLenum, pname GLenum, params *int32) {
-	C.glTexParameteriv(C.GLenum(target), C.GLenum(pname), (*C.GLint)(params))
+func TexParameteriv(target GLenum, pname GLenum, params []int32) {
+	C.glTexParameteriv(C.GLenum(target), C.GLenum(pname), (*C.GLint)(&params[0]))
 }
 
 //void glPrioritizeTextures (GLsizei n, const uint *textures, const GLclampf *priorities)
@@ -360,28 +360,28 @@ func PrioritizeTextures(n int, textures *uint32, priorities *GLclampf) {
 }
 
 //void glGetTexEnvfv (GLenum target, GLenum pname, float *params)
-func GetTexEnvfv(target GLenum, pname GLenum, params *float32) {
-	C.glGetTexEnvfv(C.GLenum(target), C.GLenum(pname), (*C.GLfloat)(params))
+func GetTexEnvfv(target GLenum, pname GLenum, params []float32) {
+	C.glGetTexEnvfv(C.GLenum(target), C.GLenum(pname), (*C.GLfloat)(&params[0]))
 }
 
 //void glGetTexEnviv (GLenum target, GLenum pname, int *params)
-func GetTexEnviv(target GLenum, pname GLenum, params *int32) {
-	C.glGetTexEnviv(C.GLenum(target), C.GLenum(pname), (*C.GLint)(params))
+func GetTexEnviv(target GLenum, pname GLenum, params []int32) {
+	C.glGetTexEnviv(C.GLenum(target), C.GLenum(pname), (*C.GLint)(&params[0]))
 }
 
 //void glGetTexGendv (GLenum coord, GLenum pname, float64 *params)
-func GetTexGendv(coord GLenum, pname GLenum, params *float64) {
-	C.glGetTexGendv(C.GLenum(coord), C.GLenum(pname), (*C.GLdouble)(params))
+func GetTexGendv(coord GLenum, pname GLenum, params []float64) {
+	C.glGetTexGendv(C.GLenum(coord), C.GLenum(pname), (*C.GLdouble)(&params[0]))
 }
 
 //void glGetTexGenfv (GLenum coord, GLenum pname, float *params)
-func GetTexGenfv(coord GLenum, pname GLenum, params *float32) {
-	C.glGetTexGenfv(C.GLenum(coord), C.GLenum(pname), (*C.GLfloat)(params))
+func GetTexGenfv(coord GLenum, pname GLenum, params []float32) {
+	C.glGetTexGenfv(C.GLenum(coord), C.GLenum(pname), (*C.GLfloat)(&params[0]))
 }
 
 //void glGetTexGeniv (GLenum coord, GLenum pname, int *params)
-func GetTexGeniv(coord GLenum, pname GLenum, params *int32) {
-	C.glGetTexGeniv(C.GLenum(coord), C.GLenum(pname), (*C.GLint)(params))
+func GetTexGeniv(coord GLenum, pname GLenum, params []int32) {
+	C.glGetTexGeniv(C.GLenum(coord), C.GLenum(pname), (*C.GLint)(&params[0]))
 }
 
 //void glGetTexImage (GLenum target, int level, GLenum format, GLenum type, GLvoid *pixels)
@@ -390,23 +390,23 @@ func GetTexImage(target GLenum, level int, format GLenum, type_ GLenum, pixels u
 }
 
 //void glGetTexLevelParameterfv (GLenum target, int level, GLenum pname, float *params)
-func GetTexLevelParameterfv(target GLenum, level int, pname GLenum, params *float32) {
-	C.glGetTexLevelParameterfv(C.GLenum(target), C.GLint(level), C.GLenum(pname), (*C.GLfloat)(params))
+func GetTexLevelParameterfv(target GLenum, level int, pname GLenum, params []float32) {
+	C.glGetTexLevelParameterfv(C.GLenum(target), C.GLint(level), C.GLenum(pname), (*C.GLfloat)(&params[0]))
 }
 
 //void glGetTexLevelParameteriv (GLenum target, int level, GLenum pname, int *params)
-func GetTexLevelParameteriv(target GLenum, level int, pname GLenum, params *int32) {
-	C.glGetTexLevelParameteriv(C.GLenum(target), C.GLint(level), C.GLenum(pname), (*C.GLint)(params))
+func GetTexLevelParameteriv(target GLenum, level int, pname GLenum, params []int32) {
+	C.glGetTexLevelParameteriv(C.GLenum(target), C.GLint(level), C.GLenum(pname), (*C.GLint)(&params[0]))
 }
 
 //void glGetTexParameterfv (GLenum target, GLenum pname, float *params)
-func GetTexParameterfv(target GLenum, pname GLenum, params *float32) {
-	C.glGetTexParameterfv(C.GLenum(target), C.GLenum(pname), (*C.GLfloat)(params))
+func GetTexParameterfv(target GLenum, pname GLenum, params []float32) {
+	C.glGetTexParameterfv(C.GLenum(target), C.GLenum(pname), (*C.GLfloat)(&params[0]))
 }
 
 //void glGetTexParameteriv (GLenum target, GLenum pname, int *params)
-func GetTexParameteriv(target GLenum, pname GLenum, params *int32) {
-	C.glGetTexParameteriv(C.GLenum(target), C.GLenum(pname), (*C.GLint)(params))
+func GetTexParameteriv(target GLenum, pname GLenum, params []int32) {
+	C.glGetTexParameteriv(C.GLenum(target), C.GLenum(pname), (*C.GLint)(&params[0]))
 }
 
 // VertexAttrib
@@ -466,7 +466,7 @@ func (location UniformLocation) setFloat(x float) {
 
 func (location UniformLocation) setFloatv(v []float) {
 	panic("unimplemented")
-	//	C.glUniform1fv(C.GLint(location), (*C.float)(v));
+	//	C.glUniform1fv(C.GLint(location), (*C.float)(&v[0]));
 }
 
 func (location UniformLocation) setInt(x int) {
@@ -475,61 +475,61 @@ func (location UniformLocation) setInt(x int) {
 
 func (location UniformLocation) setIntv(v []int) {
 	panic("unimplemented")
-	//	C.glUniform1iv(C.GLint(location), (*C.int)(v));
+	//	C.glUniform1iv(C.GLint(location), (*C.int)(&v[0]));
 }
 
 func (location UniformLocation) Set2Float(x float, y float) {
 	C.glUniform2f(C.GLint(location), C.GLfloat(x), C.GLfloat(y))
 }
 
-func Uniform2fv(location UniformLocation, v *float32) {
+func Uniform2fv(location UniformLocation, v []float32) {
 	panic("unimplemented")
-	//	C.glUniform2fv(C.GLint(location), (*C.float)(v));
+	//	C.glUniform2fv(C.GLint(location), (*C.float)(&v[0]));
 }
 
 func Uniform2i(location UniformLocation, x int, y int) {
 	C.glUniform2i(C.GLint(location), C.GLint(x), C.GLint(y))
 }
 
-func Uniform2iv(location UniformLocation, v *int32) {
+func Uniform2iv(location UniformLocation, v []int32) {
 	panic("unimplemented")
-	//	C.glUniform2iv(C.GLint(location), (*C.int)(v));
+	//	C.glUniform2iv(C.GLint(location), (*C.int)(&v[0]));
 }
 
 func Uniform3f(location UniformLocation, x float, y float, z float) {
 	C.glUniform3f(C.GLint(location), C.GLfloat(x), C.GLfloat(y), C.GLfloat(z))
 }
 
-func Uniform3fv(location UniformLocation, v *float32) {
+func Uniform3fv(location UniformLocation, v []float32) {
 	panic("unimplemented")
-	//	C.glUniform3fv(C.GLint(location), (*C.float)(v));
+	//	C.glUniform3fv(C.GLint(location), (*C.float)(&v[0]));
 }
 
 func Uniform3i(location UniformLocation, x int, y int, z int) {
 	C.glUniform3i(C.GLint(location), C.GLint(x), C.GLint(y), C.GLint(z))
 }
 
-func Uniform3iv(location UniformLocation, v *int32) {
+func Uniform3iv(location UniformLocation, v []int32) {
 	panic("unimplemented")
-	//	C.glUniform3iv(C.GLint(location), (*C.int)(v));
+	//	C.glUniform3iv(C.GLint(location), (*C.int)(&v[0]));
 }
 
 func Uniform4f(location UniformLocation, x float, y float, z float, w float) {
 	C.glUniform4f(C.GLint(location), C.GLfloat(x), C.GLfloat(y), C.GLfloat(z), C.GLfloat(w))
 }
 
-func Uniform4fv(location UniformLocation, v *float32) {
+func Uniform4fv(location UniformLocation, v []float32) {
 	panic("unimplemented")
-	//	C.glUniform4fv(C.GLint(location), (*C.float)(v));
+	//	C.glUniform4fv(C.GLint(location), (*C.float)(&v[0]));
 }
 
 func Uniform4i(location UniformLocation, x int, y int, z int, w int) {
 	C.glUniform4i(C.GLint(location), C.GLint(x), C.GLint(y), C.GLint(z), C.GLint(w))
 }
 
-func Uniform4iv(location UniformLocation, v *int32) {
+func Uniform4iv(location UniformLocation, v []int32) {
 	panic("unimplemented")
-	//	C.glUniform4iv(C.GLint(location), (*C.int)(v));
+	//	C.glUniform4iv(C.GLint(location), (*C.int)(&v[0]));
 }
 
 /*
@@ -685,8 +685,8 @@ func Color3b(red int8, green int8, blue int8) {
 }
 
 //void glColor3bv (const int8 *v)
-func Color3bv(v *int8) {
-	C.glColor3bv((*C.GLbyte)(v))
+func Color3bv(v []int8) {
+	C.glColor3bv((*C.GLbyte)(&v[0]))
 }
 
 //void glColor3d (float64 red, float64 green, float64 blue)
@@ -695,8 +695,8 @@ func Color3d(red float64, green float64, blue float64) {
 }
 
 //void glColor3dv (const float64 *v)
-func Color3dv(v *float64) {
-	C.glColor3dv((*C.GLdouble)(v))
+func Color3dv(v []float64) {
+	C.glColor3dv((*C.GLdouble)(&v[0]))
 }
 
 //void glColor3f (float red, float green, float blue)
@@ -705,8 +705,8 @@ func Color3f(red float, green float, blue float) {
 }
 
 //void glColor3fv (const float *v)
-func Color3fv(v *float32) {
-	C.glColor3fv((*C.GLfloat)(v))
+func Color3fv(v []float32) {
+	C.glColor3fv((*C.GLfloat)(&v[0]))
 }
 
 //void glColor3i (int red, int green, int blue)
@@ -715,8 +715,8 @@ func Color3i(red int, green int, blue int) {
 }
 
 //void glColor3iv (const int *v)
-func Color3iv(v *int32) {
-	C.glColor3iv((*C.GLint)(v))
+func Color3iv(v []int32) {
+	C.glColor3iv((*C.GLint)(&v[0]))
 }
 
 //void glColor3s (int16 red, int16 green, int16 blue)
@@ -725,8 +725,8 @@ func Color3s(red int16, green int16, blue int16) {
 }
 
 //void glColor3sv (const int16 *v)
-func Color3sv(v *int16) {
-	C.glColor3sv((*C.GLshort)(v))
+func Color3sv(v []int16) {
+	C.glColor3sv((*C.GLshort)(&v[0]))
 }
 
 //void glColor3ub (uint8 red, uint8 green, uint8 blue)
@@ -735,8 +735,8 @@ func Color3ub(red uint8, green uint8, blue uint8) {
 }
 
 //void glColor3ubv (const uint8 *v)
-func Color3ubv(v *uint8) {
-	C.glColor3ubv((*C.GLubyte)(v))
+func Color3ubv(v []uint8) {
+	C.glColor3ubv((*C.GLubyte)(&v[0]))
 }
 
 //void glColor3ui (uint red, uint green, uint blue)
@@ -745,8 +745,8 @@ func Color3ui(red uint, green uint, blue uint) {
 }
 
 //void glColor3uiv (const uint *v)
-func Color3uiv(v *uint32) {
-	C.glColor3uiv((*C.GLuint)(v))
+func Color3uiv(v []uint32) {
+	C.glColor3uiv((*C.GLuint)(&v[0]))
 }
 
 //void glColor3us (uint16 red, uint16 green, uint16 blue)
@@ -755,8 +755,8 @@ func Color3us(red uint16, green uint16, blue uint16) {
 }
 
 //void glColor3usv (const uint16 *v)
-func Color3usv(v *uint16) {
-	C.glColor3usv((*C.GLushort)(v))
+func Color3usv(v []uint16) {
+	C.glColor3usv((*C.GLushort)(&v[0]))
 }
 
 //void glColor4b (int8 red, int8 green, int8 blue, int8 alpha)
@@ -765,8 +765,8 @@ func Color4b(red int8, green int8, blue int8, alpha int8) {
 }
 
 //void glColor4bv (const int8 *v)
-func Color4bv(v *int8) {
-	C.glColor4bv((*C.GLbyte)(v))
+func Color4bv(v []int8) {
+	C.glColor4bv((*C.GLbyte)(&v[0]))
 }
 
 //void glColor4d (float64 red, float64 green, float64 blue, float64 alpha)
@@ -775,8 +775,8 @@ func Color4d(red float64, green float64, blue float64, alpha float64) {
 }
 
 //void glColor4dv (const float64 *v)
-func Color4dv(v *float64) {
-	C.glColor4dv((*C.GLdouble)(v))
+func Color4dv(v []float64) {
+	C.glColor4dv((*C.GLdouble)(&v[0]))
 }
 
 //void glColor4f (float red, float green, float blue, float alpha)
@@ -785,8 +785,8 @@ func Color4f(red float, green float, blue float, alpha float) {
 }
 
 //void glColor4fv (const float *v)
-func Color4fv(v *float32) {
-	C.glColor4fv((*C.GLfloat)(v))
+func Color4fv(v []float32) {
+	C.glColor4fv((*C.GLfloat)(&v[0]))
 }
 
 //void glColor4i (int red, int green, int blue, int alpha)
@@ -795,8 +795,8 @@ func Color4i(red int, green int, blue int, alpha int) {
 }
 
 //void glColor4iv (const int *v)
-func Color4iv(v *int32) {
-	C.glColor4iv((*C.GLint)(v))
+func Color4iv(v []int32) {
+	C.glColor4iv((*C.GLint)(&v[0]))
 }
 
 //void glColor4s (int16 red, int16 green, int16 blue, int16 alpha)
@@ -805,8 +805,8 @@ func Color4s(red int16, green int16, blue int16, alpha int16) {
 }
 
 //void glColor4sv (const int16 *v)
-func Color4sv(v *int16) {
-	C.glColor4sv((*C.GLshort)(v))
+func Color4sv(v []int16) {
+	C.glColor4sv((*C.GLshort)(&v[0]))
 }
 
 //void glColor4ub (uint8 red, uint8 green, uint8 blue, uint8 alpha)
@@ -815,8 +815,8 @@ func Color4ub(red uint8, green uint8, blue uint8, alpha uint8) {
 }
 
 //void glColor4ubv (const uint8 *v)
-func Color4ubv(v *uint8) {
-	C.glColor4ubv((*C.GLubyte)(v))
+func Color4ubv(v []uint8) {
+	C.glColor4ubv((*C.GLubyte)(&v[0]))
 }
 
 //void glColor4ui (uint red, uint green, uint blue, uint alpha)
@@ -825,8 +825,8 @@ func Color4ui(red uint, green uint, blue uint, alpha uint) {
 }
 
 //void glColor4uiv (const uint *v)
-func Color4uiv(v *uint32) {
-	C.glColor4uiv((*C.GLuint)(v))
+func Color4uiv(v []uint32) {
+	C.glColor4uiv((*C.GLuint)(&v[0]))
 }
 
 //void glColor4us (uint16 red, uint16 green, uint16 blue, uint16 alpha)
@@ -835,8 +835,8 @@ func Color4us(red uint16, green uint16, blue uint16, alpha uint16) {
 }
 
 //void glColor4usv (const uint16 *v)
-func Color4usv(v *uint16) {
-	C.glColor4usv((*C.GLushort)(v))
+func Color4usv(v []uint16) {
+	C.glColor4usv((*C.GLushort)(&v[0]))
 }
 
 //void glColorMask (bool red, bool green, bool blue, bool alpha)
@@ -967,8 +967,8 @@ func EvalCoord1f(u float) {
 }
 
 //void glEvalCoord1fv (const float *u)
-func EvalCoord1fv(u *float32) {
-	C.glEvalCoord1fv((*C.GLfloat)(u))
+func EvalCoord1fv(u []float32) {
+	C.glEvalCoord1fv((*C.GLfloat)(&u[0]))
 }
 
 //void glEvalCoord2d (float64 u, float64 v)
@@ -987,8 +987,8 @@ func EvalCoord2f(u float, v float) {
 }
 
 //void glEvalCoord2fv (const float *u)
-func EvalCoord2fv(u *float32) {
-	C.glEvalCoord2fv((*C.GLfloat)(u))
+func EvalCoord2fv(u []float32) {
+	C.glEvalCoord2fv((*C.GLfloat)(&u[0]))
 }
 
 //void glEvalMesh1 (GLenum mode, int i1, int i2)
@@ -1032,8 +1032,8 @@ func Fogf(pname GLenum, param float) {
 }
 
 //void glFogfv (GLenum pname, const float *params)
-func Fogfv(pname GLenum, params *float32) {
-	C.glFogfv(C.GLenum(pname), (*C.GLfloat)(params))
+func Fogfv(pname GLenum, params []float32) {
+	C.glFogfv(C.GLenum(pname), (*C.GLfloat)(&params[0]))
 }
 
 //void glFogi (GLenum pname, int param)
@@ -1042,8 +1042,8 @@ func Fogi(pname GLenum, param int) {
 }
 
 //void glFogiv (GLenum pname, const int *params)
-func Fogiv(pname GLenum, params *int32) {
-	C.glFogiv(C.GLenum(pname), (*C.GLint)(params))
+func Fogiv(pname GLenum, params []int32) {
+	C.glFogiv(C.GLenum(pname), (*C.GLint)(&params[0]))
 }
 
 //void glFrontFace (GLenum mode)
@@ -1062,10 +1062,10 @@ func GenLists(range_ int) uint {
 }
 
 //void glGetBooleanv (GLenum pname, bool *params)
-func GetBooleanv(pname GLenum, params *bool) {
+func GetBooleanv(pname GLenum, params []bool) {
 	//TODO
 	panic("unimplemented")
-	//C.glGetBooleanv(C.GLenum(pname), (*C.GLboolean)(params))
+	//C.glGetBooleanv(C.GLenum(pname), (*C.GLboolean)(&params[0]))
 }
 
 //void glGetClipPlane (GLenum plane, float64 *equation)
@@ -1074,8 +1074,8 @@ func GetClipPlane(plane GLenum, equation *float64) {
 }
 
 //void glGetDoublev (GLenum pname, float64 *params)
-func GetDoublev(pname GLenum, params *float64) {
-	C.glGetDoublev(C.GLenum(pname), (*C.GLdouble)(params))
+func GetDoublev(pname GLenum, params []float64) {
+	C.glGetDoublev(C.GLenum(pname), (*C.GLdouble)(&params[0]))
 }
 
 //GLenum glGetError (void)
@@ -1084,53 +1084,53 @@ func GetError() GLenum {
 }
 
 //void glGetFloatv (GLenum pname, float *params)
-func GetFloatv(pname GLenum, params *float32) {
-	C.glGetFloatv(C.GLenum(pname), (*C.GLfloat)(params))
+func GetFloatv(pname GLenum, params []float32) {
+	C.glGetFloatv(C.GLenum(pname), (*C.GLfloat)(&params[0]))
 }
 
 //void glGetIntegerv (GLenum pname, int *params)
-func GetIntegerv(pname GLenum, params *int32) {
-	C.glGetIntegerv(C.GLenum(pname), (*C.GLint)(params))
+func GetIntegerv(pname GLenum, params []int32) {
+	C.glGetIntegerv(C.GLenum(pname), (*C.GLint)(&params[0]))
 }
 
 //void glGetLightfv (GLenum light, GLenum pname, float *params)
-func GetLightfv(light GLenum, pname GLenum, params *float32) {
-	C.glGetLightfv(C.GLenum(light), C.GLenum(pname), (*C.GLfloat)(params))
+func GetLightfv(light GLenum, pname GLenum, params []float32) {
+	C.glGetLightfv(C.GLenum(light), C.GLenum(pname), (*C.GLfloat)(&params[0]))
 }
 
 //void glGetLightiv (GLenum light, GLenum pname, int *params)
-func GetLightiv(light GLenum, pname GLenum, params *int32) {
-	C.glGetLightiv(C.GLenum(light), C.GLenum(pname), (*C.GLint)(params))
+func GetLightiv(light GLenum, pname GLenum, params []int32) {
+	C.glGetLightiv(C.GLenum(light), C.GLenum(pname), (*C.GLint)(&params[0]))
 }
 
 //void glGetMapdv (GLenum target, GLenum query, float64 *v)
-func GetMapdv(target GLenum, query GLenum, v *float64) {
-	C.glGetMapdv(C.GLenum(target), C.GLenum(query), (*C.GLdouble)(v))
+func GetMapdv(target GLenum, query GLenum, v []float64) {
+	C.glGetMapdv(C.GLenum(target), C.GLenum(query), (*C.GLdouble)(&v[0]))
 }
 
 //void glGetMapfv (GLenum target, GLenum query, float *v)
-func GetMapfv(target GLenum, query GLenum, v *float32) {
-	C.glGetMapfv(C.GLenum(target), C.GLenum(query), (*C.GLfloat)(v))
+func GetMapfv(target GLenum, query GLenum, v []float32) {
+	C.glGetMapfv(C.GLenum(target), C.GLenum(query), (*C.GLfloat)(&v[0]))
 }
 
 //void glGetMapiv (GLenum target, GLenum query, int *v)
-func GetMapiv(target GLenum, query GLenum, v *int32) {
-	C.glGetMapiv(C.GLenum(target), C.GLenum(query), (*C.GLint)(v))
+func GetMapiv(target GLenum, query GLenum, v []int32) {
+	C.glGetMapiv(C.GLenum(target), C.GLenum(query), (*C.GLint)(&v[0]))
 }
 
 //void glGetMaterialfv (GLenum face, GLenum pname, float *params)
-func GetMaterialfv(face GLenum, pname GLenum, params *float32) {
-	C.glGetMaterialfv(C.GLenum(face), C.GLenum(pname), (*C.GLfloat)(params))
+func GetMaterialfv(face GLenum, pname GLenum, params []float32) {
+	C.glGetMaterialfv(C.GLenum(face), C.GLenum(pname), (*C.GLfloat)(&params[0]))
 }
 
 //void glGetMaterialiv (GLenum face, GLenum pname, int *params)
-func GetMaterialiv(face GLenum, pname GLenum, params *int32) {
-	C.glGetMaterialiv(C.GLenum(face), C.GLenum(pname), (*C.GLint)(params))
+func GetMaterialiv(face GLenum, pname GLenum, params []int32) {
+	C.glGetMaterialiv(C.GLenum(face), C.GLenum(pname), (*C.GLint)(&params[0]))
 }
 
 //void glGetPixelMapfv (GLenum map, float *values)
-func GetPixelMapfv(map_ GLenum, values *float32) {
-	C.glGetPixelMapfv(C.GLenum(map_), (*C.GLfloat)(values))
+func GetPixelMapfv(map_ GLenum, values []float32) {
+	C.glGetPixelMapfv(C.GLenum(map_), (*C.GLfloat)(&values[0]))
 }
 
 //void glGetPixelMapuiv (GLenum map, uint *values)
@@ -1144,8 +1144,8 @@ func GetPixelMapusv(map_ GLenum, values *uint16) {
 }
 
 //void glGetPointerv (GLenum pname, GLvoid* *params)
-func GetPointerv(pname GLenum, params *unsafe.Pointer) {
-	C.glGetPointerv(C.GLenum(pname), params)
+func GetPointerv(pname GLenum, params []unsafe.Pointer) {
+	C.glGetPointerv(C.GLenum(pname), &params[0])
 }
 
 //void glGetPolygonStipple (uint8 *mask)
@@ -1250,8 +1250,8 @@ func LightModelf(pname GLenum, param float) {
 }
 
 //void glLightModelfv (GLenum pname, const float *params)
-func LightModelfv(pname GLenum, params *float32) {
-	C.glLightModelfv(C.GLenum(pname), (*C.GLfloat)(params))
+func LightModelfv(pname GLenum, params []float32) {
+	C.glLightModelfv(C.GLenum(pname), (*C.GLfloat)(&params[0]))
 }
 
 //void glLightModeli (GLenum pname, int param)
@@ -1260,8 +1260,8 @@ func LightModeli(pname GLenum, param int) {
 }
 
 //void glLightModeliv (GLenum pname, const int *params)
-func LightModeliv(pname GLenum, params *int32) {
-	C.glLightModeliv(C.GLenum(pname), (*C.GLint)(params))
+func LightModeliv(pname GLenum, params []int32) {
+	C.glLightModeliv(C.GLenum(pname), (*C.GLint)(&params[0]))
 }
 
 //void glLightf (GLenum light, GLenum pname, float param)
@@ -1270,8 +1270,8 @@ func Lightf(light GLenum, pname GLenum, param float) {
 }
 
 //void glLightfv (GLenum light, GLenum pname, const float *params)
-func Lightfv(light GLenum, pname GLenum, params *float32) {
-	C.glLightfv(C.GLenum(light), C.GLenum(pname), (*C.GLfloat)(params))
+func Lightfv(light GLenum, pname GLenum, params []float32) {
+	C.glLightfv(C.GLenum(light), C.GLenum(pname), (*C.GLfloat)(&params[0]))
 }
 
 //void glLighti (GLenum light, GLenum pname, int param)
@@ -1280,8 +1280,8 @@ func Lighti(light GLenum, pname GLenum, param int) {
 }
 
 //void glLightiv (GLenum light, GLenum pname, const int *params)
-func Lightiv(light GLenum, pname GLenum, params *int32) {
-	C.glLightiv(C.GLenum(light), C.GLenum(pname), (*C.GLint)(params))
+func Lightiv(light GLenum, pname GLenum, params []int32) {
+	C.glLightiv(C.GLenum(light), C.GLenum(pname), (*C.GLint)(&params[0]))
 }
 
 //void glLineStipple (int factor, uint16 pattern)
@@ -1370,8 +1370,8 @@ func Materialf(face GLenum, pname GLenum, param float) {
 }
 
 //void glMaterialfv (GLenum face, GLenum pname, const float *params)
-func Materialfv(face GLenum, pname GLenum, params *float32) {
-	C.glMaterialfv(C.GLenum(face), C.GLenum(pname), (*C.GLfloat)(params))
+func Materialfv(face GLenum, pname GLenum, params []float32) {
+	C.glMaterialfv(C.GLenum(face), C.GLenum(pname), (*C.GLfloat)(&params[0]))
 }
 
 //void glMateriali (GLenum face, GLenum pname, int param)
@@ -1380,8 +1380,8 @@ func Materiali(face GLenum, pname GLenum, param int) {
 }
 
 //void glMaterialiv (GLenum face, GLenum pname, const int *params)
-func Materialiv(face GLenum, pname GLenum, params *int32) {
-	C.glMaterialiv(C.GLenum(face), C.GLenum(pname), (*C.GLint)(params))
+func Materialiv(face GLenum, pname GLenum, params []int32) {
+	C.glMaterialiv(C.GLenum(face), C.GLenum(pname), (*C.GLint)(&params[0]))
 }
 
 //void glMatrixMode (GLenum mode)
@@ -1410,8 +1410,8 @@ func Normal3b(nx int8, ny int8, nz int8) {
 }
 
 //void glNormal3bv (const int8 *v)
-func Normal3bv(v *int8) {
-	C.glNormal3bv((*C.GLbyte)(v))
+func Normal3bv(v []int8) {
+	C.glNormal3bv((*C.GLbyte)(&v[0]))
 }
 
 //void glNormal3d (float64 nx, float64 ny, float64 nz)
@@ -1420,8 +1420,8 @@ func Normal3d(nx float64, ny float64, nz float64) {
 }
 
 //void glNormal3dv (const float64 *v)
-func Normal3dv(v *float64) {
-	C.glNormal3dv((*C.GLdouble)(v))
+func Normal3dv(v []float64) {
+	C.glNormal3dv((*C.GLdouble)(&v[0]))
 }
 
 //void glNormal3f (float nx, float ny, float nz)
@@ -1430,8 +1430,8 @@ func Normal3f(nx float, ny float, nz float) {
 }
 
 //void glNormal3fv (const float *v)
-func Normal3fv(v *float32) {
-	C.glNormal3fv((*C.GLfloat)(v))
+func Normal3fv(v []float32) {
+	C.glNormal3fv((*C.GLfloat)(&v[0]))
 }
 
 //void glNormal3i (int nx, int ny, int nz)
@@ -1440,8 +1440,8 @@ func Normal3i(nx int, ny int, nz int) {
 }
 
 //void glNormal3iv (const int *v)
-func Normal3iv(v *int32) {
-	C.glNormal3iv((*C.GLint)(v))
+func Normal3iv(v []int32) {
+	C.glNormal3iv((*C.GLint)(&v[0]))
 }
 
 //void glNormal3s (int16 nx, int16 ny, int16 nz)
@@ -1450,8 +1450,8 @@ func Normal3s(nx int16, ny int16, nz int16) {
 }
 
 //void glNormal3sv (const int16 *v)
-func Normal3sv(v *int16) {
-	C.glNormal3sv((*C.GLshort)(v))
+func Normal3sv(v []int16) {
+	C.glNormal3sv((*C.GLshort)(&v[0]))
 }
 
 //void glNormalPointer (GLenum type, int stride, const GLvoid *pointer)
@@ -1470,8 +1470,8 @@ func PassThrough(token float) {
 }
 
 //void glPixelMapfv (GLenum map, int mapsize, const float *values)
-func PixelMapfv(map_ GLenum, mapsize int, values *float32) {
-	C.glPixelMapfv(C.GLenum(map_), C.GLsizei(mapsize), (*C.GLfloat)(values))
+func PixelMapfv(map_ GLenum, mapsize int, values []float32) {
+	C.glPixelMapfv(C.GLenum(map_), C.GLsizei(mapsize), (*C.GLfloat)(&values[0]))
 }
 
 //void glPixelMapuiv (GLenum map, int mapsize, const uint *values)
@@ -1575,8 +1575,8 @@ func RasterPos2d(x float64, y float64) {
 }
 
 //void glRasterPos2dv (const float64 *v)
-func RasterPos2dv(v *float64) {
-	C.glRasterPos2dv((*C.GLdouble)(v))
+func RasterPos2dv(v []float64) {
+	C.glRasterPos2dv((*C.GLdouble)(&v[0]))
 }
 
 //void glRasterPos2f (float x, float y)
@@ -1585,8 +1585,8 @@ func RasterPos2f(x float, y float) {
 }
 
 //void glRasterPos2fv (const float *v)
-func RasterPos2fv(v *float32) {
-	C.glRasterPos2fv((*C.GLfloat)(v))
+func RasterPos2fv(v []float32) {
+	C.glRasterPos2fv((*C.GLfloat)(&v[0]))
 }
 
 //void glRasterPos2i (int x, int y)
@@ -1595,8 +1595,8 @@ func RasterPos2i(x int, y int) {
 }
 
 //void glRasterPos2iv (const int *v)
-func RasterPos2iv(v *int32) {
-	C.glRasterPos2iv((*C.GLint)(v))
+func RasterPos2iv(v []int32) {
+	C.glRasterPos2iv((*C.GLint)(&v[0]))
 }
 
 //void glRasterPos2s (int16 x, int16 y)
@@ -1605,8 +1605,8 @@ func RasterPos2s(x int16, y int16) {
 }
 
 //void glRasterPos2sv (const int16 *v)
-func RasterPos2sv(v *int16) {
-	C.glRasterPos2sv((*C.GLshort)(v))
+func RasterPos2sv(v []int16) {
+	C.glRasterPos2sv((*C.GLshort)(&v[0]))
 }
 
 //void glRasterPos3d (float64 x, float64 y, float64 z)
@@ -1615,8 +1615,8 @@ func RasterPos3d(x float64, y float64, z float64) {
 }
 
 //void glRasterPos3dv (const float64 *v)
-func RasterPos3dv(v *float64) {
-	C.glRasterPos3dv((*C.GLdouble)(v))
+func RasterPos3dv(v []float64) {
+	C.glRasterPos3dv((*C.GLdouble)(&v[0]))
 }
 
 //void glRasterPos3f (float x, float y, float z)
@@ -1625,8 +1625,8 @@ func RasterPos3f(x float, y float, z float) {
 }
 
 //void glRasterPos3fv (const float *v)
-func RasterPos3fv(v *float32) {
-	C.glRasterPos3fv((*C.GLfloat)(v))
+func RasterPos3fv(v []float32) {
+	C.glRasterPos3fv((*C.GLfloat)(&v[0]))
 }
 
 //void glRasterPos3i (int x, int y, int z)
@@ -1635,8 +1635,8 @@ func RasterPos3i(x int, y int, z int) {
 }
 
 //void glRasterPos3iv (const int *v)
-func RasterPos3iv(v *int32) {
-	C.glRasterPos3iv((*C.GLint)(v))
+func RasterPos3iv(v []int32) {
+	C.glRasterPos3iv((*C.GLint)(&v[0]))
 }
 
 //void glRasterPos3s (int16 x, int16 y, int16 z)
@@ -1645,8 +1645,8 @@ func RasterPos3s(x int16, y int16, z int16) {
 }
 
 //void glRasterPos3sv (const int16 *v)
-func RasterPos3sv(v *int16) {
-	C.glRasterPos3sv((*C.GLshort)(v))
+func RasterPos3sv(v []int16) {
+	C.glRasterPos3sv((*C.GLshort)(&v[0]))
 }
 
 //void glRasterPos4d (float64 x, float64 y, float64 z, float64 w)
@@ -1655,8 +1655,8 @@ func RasterPos4d(x float64, y float64, z float64, w float64) {
 }
 
 //void glRasterPos4dv (const float64 *v)
-func RasterPos4dv(v *float64) {
-	C.glRasterPos4dv((*C.GLdouble)(v))
+func RasterPos4dv(v []float64) {
+	C.glRasterPos4dv((*C.GLdouble)(&v[0]))
 }
 
 //void glRasterPos4f (float x, float y, float z, float w)
@@ -1665,8 +1665,8 @@ func RasterPos4f(x float, y float, z float, w float) {
 }
 
 //void glRasterPos4fv (const float *v)
-func RasterPos4fv(v *float32) {
-	C.glRasterPos4fv((*C.GLfloat)(v))
+func RasterPos4fv(v []float32) {
+	C.glRasterPos4fv((*C.GLfloat)(&v[0]))
 }
 
 //void glRasterPos4i (int x, int y, int z, int w)
@@ -1675,8 +1675,8 @@ func RasterPos4i(x int, y int, z int, w int) {
 }
 
 //void glRasterPos4iv (const int *v)
-func RasterPos4iv(v *int32) {
-	C.glRasterPos4iv((*C.GLint)(v))
+func RasterPos4iv(v []int32) {
+	C.glRasterPos4iv((*C.GLint)(&v[0]))
 }
 
 //void glRasterPos4s (int16 x, int16 y, int16 z, int16 w)
@@ -1685,8 +1685,8 @@ func RasterPos4s(x int16, y int16, z int16, w int16) {
 }
 
 //void glRasterPos4sv (const int16 *v)
-func RasterPos4sv(v *int16) {
-	C.glRasterPos4sv((*C.GLshort)(v))
+func RasterPos4sv(v []int16) {
+	C.glRasterPos4sv((*C.GLshort)(&v[0]))
 }
 
 //void glReadBuffer (GLenum mode)
@@ -1715,8 +1715,8 @@ func Rectf(x1 float, y1 float, x2 float, y2 float) {
 }
 
 //void glRectfv (const float *v1, const float *v2)
-func Rectfv(v1 *float32, v2 *float32) {
-	C.glRectfv((*C.GLfloat)(v1), (*C.GLfloat)(v2))
+func Rectfv(v1 []float32, v2 []float32) {
+	C.glRectfv((*C.GLfloat)(&v1[0]), (*C.GLfloat)(&v2[0]))
 }
 
 //void glRecti (int x1, int y1, int x2, int y2)
@@ -1800,8 +1800,8 @@ func TexCoord1d(s float64) {
 }
 
 //void glTexCoord1dv (const float64 *v)
-func TexCoord1dv(v *float64) {
-	C.glTexCoord1dv((*C.GLdouble)(v))
+func TexCoord1dv(v []float64) {
+	C.glTexCoord1dv((*C.GLdouble)(&v[0]))
 }
 
 //void glTexCoord1f (float s)
@@ -1810,8 +1810,8 @@ func TexCoord1f(s float) {
 }
 
 //void glTexCoord1fv (const float *v)
-func TexCoord1fv(v *float32) {
-	C.glTexCoord1fv((*C.GLfloat)(v))
+func TexCoord1fv(v []float32) {
+	C.glTexCoord1fv((*C.GLfloat)(&v[0]))
 }
 
 //void glTexCoord1i (int s)
@@ -1820,8 +1820,8 @@ func TexCoord1i(s int) {
 }
 
 //void glTexCoord1iv (const int *v)
-func TexCoord1iv(v *int32) {
-	C.glTexCoord1iv((*C.GLint)(v))
+func TexCoord1iv(v []int32) {
+	C.glTexCoord1iv((*C.GLint)(&v[0]))
 }
 
 //void glTexCoord1s (int16 s)
@@ -1830,8 +1830,8 @@ func TexCoord1s(s int16) {
 }
 
 //void glTexCoord1sv (const int16 *v)
-func TexCoord1sv(v *int16) {
-	C.glTexCoord1sv((*C.GLshort)(v))
+func TexCoord1sv(v []int16) {
+	C.glTexCoord1sv((*C.GLshort)(&v[0]))
 }
 
 //void glTexCoord2d (float64 s, float64 t)
@@ -1840,8 +1840,8 @@ func TexCoord2d(s float64, t float64) {
 }
 
 //void glTexCoord2dv (const float64 *v)
-func TexCoord2dv(v *float64) {
-	C.glTexCoord2dv((*C.GLdouble)(v))
+func TexCoord2dv(v []float64) {
+	C.glTexCoord2dv((*C.GLdouble)(&v[0]))
 }
 
 //void glTexCoord2f (float s, float t)
@@ -1850,8 +1850,8 @@ func TexCoord2f(s float, t float) {
 }
 
 //void glTexCoord2fv (const float *v)
-func TexCoord2fv(v *float32) {
-	C.glTexCoord2fv((*C.GLfloat)(v))
+func TexCoord2fv(v []float32) {
+	C.glTexCoord2fv((*C.GLfloat)(&v[0]))
 }
 
 //void glTexCoord2i (int s, int t)
@@ -1860,8 +1860,8 @@ func TexCoord2i(s int, t int) {
 }
 
 //void glTexCoord2iv (const int *v)
-func TexCoord2iv(v *int32) {
-	C.glTexCoord2iv((*C.GLint)(v))
+func TexCoord2iv(v []int32) {
+	C.glTexCoord2iv((*C.GLint)(&v[0]))
 }
 
 //void glTexCoord2s (int16 s, int16 t)
@@ -1870,8 +1870,8 @@ func TexCoord2s(s int16, t int16) {
 }
 
 //void glTexCoord2sv (const int16 *v)
-func TexCoord2sv(v *int16) {
-	C.glTexCoord2sv((*C.GLshort)(v))
+func TexCoord2sv(v []int16) {
+	C.glTexCoord2sv((*C.GLshort)(&v[0]))
 }
 
 //void glTexCoord3d (float64 s, float64 t, float64 r)
@@ -1880,8 +1880,8 @@ func TexCoord3d(s float64, t float64, r float64) {
 }
 
 //void glTexCoord3dv (const float64 *v)
-func TexCoord3dv(v *float64) {
-	C.glTexCoord3dv((*C.GLdouble)(v))
+func TexCoord3dv(v []float64) {
+	C.glTexCoord3dv((*C.GLdouble)(&v[0]))
 }
 
 //void glTexCoord3f (float s, float t, float r)
@@ -1890,8 +1890,8 @@ func TexCoord3f(s float, t float, r float) {
 }
 
 //void glTexCoord3fv (const float *v)
-func TexCoord3fv(v *float32) {
-	C.glTexCoord3fv((*C.GLfloat)(v))
+func TexCoord3fv(v []float32) {
+	C.glTexCoord3fv((*C.GLfloat)(&v[0]))
 }
 
 //void glTexCoord3i (int s, int t, int r)
@@ -1900,8 +1900,8 @@ func TexCoord3i(s int, t int, r int) {
 }
 
 //void glTexCoord3iv (const int *v)
-func TexCoord3iv(v *int32) {
-	C.glTexCoord3iv((*C.GLint)(v))
+func TexCoord3iv(v []int32) {
+	C.glTexCoord3iv((*C.GLint)(&v[0]))
 }
 
 //void glTexCoord3s (int16 s, int16 t, int16 r)
@@ -1910,8 +1910,8 @@ func TexCoord3s(s int16, t int16, r int16) {
 }
 
 //void glTexCoord3sv (const int16 *v)
-func TexCoord3sv(v *int16) {
-	C.glTexCoord3sv((*C.GLshort)(v))
+func TexCoord3sv(v []int16) {
+	C.glTexCoord3sv((*C.GLshort)(&v[0]))
 }
 
 //void glTexCoord4d (float64 s, float64 t, float64 r, float64 q)
@@ -1920,8 +1920,8 @@ func TexCoord4d(s float64, t float64, r float64, q float64) {
 }
 
 //void glTexCoord4dv (const float64 *v)
-func TexCoord4dv(v *float64) {
-	C.glTexCoord4dv((*C.GLdouble)(v))
+func TexCoord4dv(v []float64) {
+	C.glTexCoord4dv((*C.GLdouble)(&v[0]))
 }
 
 //void glTexCoord4f (float s, float t, float r, float q)
@@ -1930,8 +1930,8 @@ func TexCoord4f(s float, t float, r float, q float) {
 }
 
 //void glTexCoord4fv (const float *v)
-func TexCoord4fv(v *float32) {
-	C.glTexCoord4fv((*C.GLfloat)(v))
+func TexCoord4fv(v []float32) {
+	C.glTexCoord4fv((*C.GLfloat)(&v[0]))
 }
 
 //void glTexCoord4i (int s, int t, int r, int q)
@@ -1940,8 +1940,8 @@ func TexCoord4i(s int, t int, r int, q int) {
 }
 
 //void glTexCoord4iv (const int *v)
-func TexCoord4iv(v *int32) {
-	C.glTexCoord4iv((*C.GLint)(v))
+func TexCoord4iv(v []int32) {
+	C.glTexCoord4iv((*C.GLint)(&v[0]))
 }
 
 //void glTexCoord4s (int16 s, int16 t, int16 r, int16 q)
@@ -1950,8 +1950,8 @@ func TexCoord4s(s int16, t int16, r int16, q int16) {
 }
 
 //void glTexCoord4sv (const int16 *v)
-func TexCoord4sv(v *int16) {
-	C.glTexCoord4sv((*C.GLshort)(v))
+func TexCoord4sv(v []int16) {
+	C.glTexCoord4sv((*C.GLshort)(&v[0]))
 }
 
 //void glTexCoordPointer (int size, GLenum type, int stride, const GLvoid *pointer)
@@ -1975,8 +1975,8 @@ func Vertex2d(x float64, y float64) {
 }
 
 //void glVertex2dv (const float64 *v)
-func Vertex2dv(v *float64) {
-	C.glVertex2dv((*C.GLdouble)(v))
+func Vertex2dv(v []float64) {
+	C.glVertex2dv((*C.GLdouble)(&v[0]))
 }
 
 //void glVertex2f (float x, float y)
@@ -1985,8 +1985,8 @@ func Vertex2f(x float, y float) {
 }
 
 //void glVertex2fv (const float *v)
-func Vertex2fv(v *float32) {
-	C.glVertex2fv((*C.GLfloat)(v))
+func Vertex2fv(v []float32) {
+	C.glVertex2fv((*C.GLfloat)(&v[0]))
 }
 
 //void glVertex2i (int x, int y)
@@ -1995,8 +1995,8 @@ func Vertex2i(x int, y int) {
 }
 
 //void glVertex2iv (const int *v)
-func Vertex2iv(v *int32) {
-	C.glVertex2iv((*C.GLint)(v))
+func Vertex2iv(v []int32) {
+	C.glVertex2iv((*C.GLint)(&v[0]))
 }
 
 //void glVertex2s (int16 x, int16 y)
@@ -2005,8 +2005,8 @@ func Vertex2s(x int16, y int16) {
 }
 
 //void glVertex2sv (const int16 *v)
-func Vertex2sv(v *int16) {
-	C.glVertex2sv((*C.GLshort)(v))
+func Vertex2sv(v []int16) {
+	C.glVertex2sv((*C.GLshort)(&v[0]))
 }
 
 //void glVertex3d (float64 x, float64 y, float64 z)
@@ -2015,8 +2015,8 @@ func Vertex3d(x float64, y float64, z float64) {
 }
 
 //void glVertex3dv (const float64 *v)
-func Vertex3dv(v *float64) {
-	C.glVertex3dv((*C.GLdouble)(v))
+func Vertex3dv(v []float64) {
+	C.glVertex3dv((*C.GLdouble)(&v[0]))
 }
 
 //void glVertex3f (float x, float y, float z)
@@ -2025,8 +2025,8 @@ func Vertex3f(x float, y float, z float) {
 }
 
 //void glVertex3fv (const float *v)
-func Vertex3fv(v *float32) {
-	C.glVertex3fv((*C.GLfloat)(v))
+func Vertex3fv(v []float32) {
+	C.glVertex3fv((*C.GLfloat)(&v[0]))
 }
 
 //void glVertex3i (int x, int y, int z)
@@ -2035,8 +2035,8 @@ func Vertex3i(x int, y int, z int) {
 }
 
 //void glVertex3iv (const int *v)
-func Vertex3iv(v *int32) {
-	C.glVertex3iv((*C.GLint)(v))
+func Vertex3iv(v []int32) {
+	C.glVertex3iv((*C.GLint)(&v[0]))
 }
 
 //void glVertex3s (int16 x, int16 y, int16 z)
@@ -2045,8 +2045,8 @@ func Vertex3s(x int16, y int16, z int16) {
 }
 
 //void glVertex3sv (const int16 *v)
-func Vertex3sv(v *int16) {
-	C.glVertex3sv((*C.GLshort)(v))
+func Vertex3sv(v []int16) {
+	C.glVertex3sv((*C.GLshort)(&v[0]))
 }
 
 //void glVertex4d (float64 x, float64 y, float64 z, float64 w)
@@ -2055,8 +2055,8 @@ func Vertex4d(x float64, y float64, z float64, w float64) {
 }
 
 //void glVertex4dv (const float64 *v)
-func Vertex4dv(v *float64) {
-	C.glVertex4dv((*C.GLdouble)(v))
+func Vertex4dv(v []float64) {
+	C.glVertex4dv((*C.GLdouble)(&v[0]))
 }
 
 //void glVertex4f (float x, float y, float z, float w)
@@ -2065,8 +2065,8 @@ func Vertex4f(x float, y float, z float, w float) {
 }
 
 //void glVertex4fv (const float *v)
-func Vertex4fv(v *float32) {
-	C.glVertex4fv((*C.GLfloat)(v))
+func Vertex4fv(v []float32) {
+	C.glVertex4fv((*C.GLfloat)(&v[0]))
 }
 
 //void glVertex4i (int x, int y, int z, int w)
@@ -2075,8 +2075,8 @@ func Vertex4i(x int, y int, z int, w int) {
 }
 
 //void glVertex4iv (const int *v)
-func Vertex4iv(v *int32) {
-	C.glVertex4iv((*C.GLint)(v))
+func Vertex4iv(v []int32) {
+	C.glVertex4iv((*C.GLint)(&v[0]))
 }
 
 //void glVertex4s (int16 x, int16 y, int16 z, int16 w)
@@ -2085,8 +2085,8 @@ func Vertex4s(x int16, y int16, z int16, w int16) {
 }
 
 //void glVertex4sv (const int16 *v)
-func Vertex4sv(v *int16) {
-	C.glVertex4sv((*C.GLshort)(v))
+func Vertex4sv(v []int16) {
+	C.glVertex4sv((*C.GLshort)(&v[0]))
 }
 
 //void glVertexPointer (int size, GLenum type, int stride, const GLvoid *pointer)
