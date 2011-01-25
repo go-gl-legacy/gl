@@ -179,7 +179,7 @@ func (program Program) GetUniformiv(location UniformLocation, values []int) {
 	C.glGetUniformiv(C.GLuint(program), C.GLint(location), (*C.GLint)(unsafe.Pointer(&(values[0]))))
 }
 
-func (program Program) GetUniformfv(location UniformLocation, values []float) {
+func (program Program) GetUniformfv(location UniformLocation, values []float32) {
 	// no range check
 	C.glGetUniformfv(C.GLuint(program), C.GLint(location), (*C.GLfloat)(unsafe.Pointer(&(values[0]))))
 }
@@ -285,7 +285,7 @@ func CopyTexSubImage2D(target GLenum, level int, xoffset int, yoffset int, x int
 // TODO 3D textures
 
 //void glTexEnvf (GLenum target, GLenum pname, float param)
-func TexEnvf(target GLenum, pname GLenum, param float) {
+func TexEnvf(target GLenum, pname GLenum, param float32) {
 	C.glTexEnvf(C.GLenum(target), C.GLenum(pname), C.GLfloat(param))
 }
 
@@ -315,7 +315,7 @@ func TexGendv(coord GLenum, pname GLenum, params *float64) {
 }
 
 //void glTexGenf (GLenum coord, GLenum pname, float param)
-func TexGenf(coord GLenum, pname GLenum, param float) {
+func TexGenf(coord GLenum, pname GLenum, param float32) {
 	C.glTexGenf(C.GLenum(coord), C.GLenum(pname), C.GLfloat(param))
 }
 
@@ -335,7 +335,7 @@ func TexGeniv(coord GLenum, pname GLenum, params *int32) {
 }
 
 //void glTexParameterf (GLenum target, GLenum pname, float param)
-func TexParameterf(target GLenum, pname GLenum, param float) {
+func TexParameterf(target GLenum, pname GLenum, param float32) {
 	C.glTexParameterf(C.GLenum(target), C.GLenum(pname), C.GLfloat(param))
 }
 
@@ -413,38 +413,38 @@ func GetTexParameteriv(target GLenum, pname GLenum, params *int32) {
 
 type VertexAttrib int
 
-func VertexAttrib1f(indx uint, x float) {
+func VertexAttrib1f(indx uint, x float32) {
 	C.glVertexAttrib1f(C.GLuint(indx), C.GLfloat(x))
 }
 
-func VertexAttrib1fv(indx uint, values []float) {
+func VertexAttrib1fv(indx uint, values []float32) {
 	//no range check
 	C.glVertexAttrib1fv(C.GLuint(indx), (*C.GLfloat)(unsafe.Pointer(&values[0])))
 }
 
-func VertexAttrib2f(indx uint, x float, y float) {
+func VertexAttrib2f(indx uint, x float32, y float32) {
 	C.glVertexAttrib2f(C.GLuint(indx), C.GLfloat(x), C.GLfloat(y))
 }
 
-func VertexAttrib2fv(indx uint, values []float) {
+func VertexAttrib2fv(indx uint, values []float32) {
 	//no range check
 	C.glVertexAttrib2fv(C.GLuint(indx), (*C.GLfloat)(unsafe.Pointer(&values[0])))
 }
 
-func VertexAttrib3f(indx uint, x float, y float, z float) {
+func VertexAttrib3f(indx uint, x float32, y float32, z float32) {
 	C.glVertexAttrib3f(C.GLuint(indx), C.GLfloat(x), C.GLfloat(y), C.GLfloat(z))
 }
 
-func VertexAttrib3fv(indx uint, values []float) {
+func VertexAttrib3fv(indx uint, values []float32) {
 	//no range check
 	C.glVertexAttrib3fv(C.GLuint(indx), (*C.GLfloat)(unsafe.Pointer(&values[0])))
 }
 
-func VertexAttrib4f(indx uint, x float, y float, z float, w float) {
+func VertexAttrib4f(indx uint, x float32, y float32, z float32, w float32) {
 	C.glVertexAttrib4f(C.GLuint(indx), C.GLfloat(x), C.GLfloat(y), C.GLfloat(z), C.GLfloat(w))
 }
 
-func VertexAttrib4fv(indx uint, values []float) {
+func VertexAttrib4fv(indx uint, values []float32) {
 	//no range check
 	C.glVertexAttrib4fv(C.GLuint(indx), (*C.GLfloat)(unsafe.Pointer(&values[0])))
 }
@@ -460,11 +460,11 @@ func VertexAttribPointer(indx VertexAttrib, size uint, type_ GLenum, normalized 
 
 type UniformLocation int
 
-func (location UniformLocation) setFloat(x float) {
+func (location UniformLocation) setFloat(x float32) {
 	C.glUniform1f(C.GLint(location), C.GLfloat(x))
 }
 
-func (location UniformLocation) setFloatv(v []float) {
+func (location UniformLocation) setFloatv(v []float32) {
 	panic("unimplemented")
 	//	C.glUniform1fv(C.GLint(location), (*C.float)(v));
 }
@@ -478,7 +478,7 @@ func (location UniformLocation) setIntv(v []int) {
 	//	C.glUniform1iv(C.GLint(location), (*C.int)(v));
 }
 
-func (location UniformLocation) Set2Float(x float, y float) {
+func (location UniformLocation) Set2Float(x float32, y float32) {
 	C.glUniform2f(C.GLint(location), C.GLfloat(x), C.GLfloat(y))
 }
 
@@ -496,7 +496,7 @@ func Uniform2iv(location UniformLocation, v *int32) {
 	//	C.glUniform2iv(C.GLint(location), (*C.int)(v));
 }
 
-func Uniform3f(location UniformLocation, x float, y float, z float) {
+func Uniform3f(location UniformLocation, x float32, y float32, z float32) {
 	C.glUniform3f(C.GLint(location), C.GLfloat(x), C.GLfloat(y), C.GLfloat(z))
 }
 
@@ -514,7 +514,7 @@ func Uniform3iv(location UniformLocation, v *int32) {
 	//	C.glUniform3iv(C.GLint(location), (*C.int)(v));
 }
 
-func Uniform4f(location UniformLocation, x float, y float, z float, w float) {
+func Uniform4f(location UniformLocation, x float32, y float32, z float32, w float32) {
 	C.glUniform4f(C.GLint(location), C.GLfloat(x), C.GLfloat(y), C.GLfloat(z), C.GLfloat(w))
 }
 
@@ -592,7 +592,7 @@ func StencilOpSeparate(face GLenum, fail GLenum, zfail GLenum, zpass GLenum) {
 }
 
 //void glAccum (GLenum op, float value)
-func Accum(op GLenum, value float) {
+func Accum(op GLenum, value float32) {
 	C.glAccum(C.GLenum(op), C.GLfloat(value))
 }
 
@@ -625,7 +625,7 @@ func BindTexture(target GLenum, texture uint) {
 }
 
 //void glBitmap (GLsizei width, int height, float xorig, float yorig, float xmove, float ymove, const uint8 *bitmap)
-func Bitmap(width int, height int, xorig float, yorig float, xmove float, ymove float, bitmap *uint8) {
+func Bitmap(width int, height int, xorig float32, yorig float32, xmove float32, ymove float32, bitmap *uint8) {
 	C.glBitmap(C.GLsizei(width), C.GLsizei(height), C.GLfloat(xorig), C.GLfloat(yorig), C.GLfloat(xmove), C.GLfloat(ymove), (*C.GLubyte)(bitmap))
 }
 
@@ -650,7 +650,7 @@ func Clear(mask GLbitfield) {
 }
 
 //void glClearAccum (float red, float green, float blue, float alpha)
-func ClearAccum(red float, green float, blue float, alpha float) {
+func ClearAccum(red float32, green float32, blue float32, alpha float32) {
 	C.glClearAccum(C.GLfloat(red), C.GLfloat(green), C.GLfloat(blue), C.GLfloat(alpha))
 }
 
@@ -665,7 +665,7 @@ func ClearDepth(depth GLclampd) {
 }
 
 //void glClearIndex (float c)
-func ClearIndex(c float) {
+func ClearIndex(c float32) {
 	C.glClearIndex(C.GLfloat(c))
 }
 
@@ -700,7 +700,7 @@ func Color3dv(v *float64) {
 }
 
 //void glColor3f (float red, float green, float blue)
-func Color3f(red float, green float, blue float) {
+func Color3f(red float32, green float32, blue float32) {
 	C.glColor3f(C.GLfloat(red), C.GLfloat(green), C.GLfloat(blue))
 }
 
@@ -780,7 +780,7 @@ func Color4dv(v *float64) {
 }
 
 //void glColor4f (float red, float green, float blue, float alpha)
-func Color4f(red float, green float, blue float, alpha float) {
+func Color4f(red float32, green float32, blue float32, alpha float32) {
 	C.glColor4f(C.GLfloat(red), C.GLfloat(green), C.GLfloat(blue), C.GLfloat(alpha))
 }
 
@@ -962,7 +962,7 @@ func EvalCoord1dv(u *float64) {
 }
 
 //void glEvalCoord1f (float u)
-func EvalCoord1f(u float) {
+func EvalCoord1f(u float32) {
 	C.glEvalCoord1f(C.GLfloat(u))
 }
 
@@ -982,7 +982,7 @@ func EvalCoord2dv(u *float64) {
 }
 
 //void glEvalCoord2f (float u, float v)
-func EvalCoord2f(u float, v float) {
+func EvalCoord2f(u float32, v float32) {
 	C.glEvalCoord2f(C.GLfloat(u), C.GLfloat(v))
 }
 
@@ -1027,7 +1027,7 @@ func Flush() {
 }
 
 //void glFogf (GLenum pname, float param)
-func Fogf(pname GLenum, param float) {
+func Fogf(pname GLenum, param float32) {
 	C.glFogf(C.GLenum(pname), C.GLfloat(param))
 }
 
@@ -1185,7 +1185,7 @@ func Indexdv(c *float64) {
 }
 
 //void glIndexf (float c)
-func Indexf(c float) {
+func Indexf(c float32) {
 	C.glIndexf(C.GLfloat(c))
 }
 
@@ -1245,7 +1245,7 @@ func IsList(list uint) bool {
 }
 
 //void glLightModelf (GLenum pname, float param)
-func LightModelf(pname GLenum, param float) {
+func LightModelf(pname GLenum, param float32) {
 	C.glLightModelf(C.GLenum(pname), C.GLfloat(param))
 }
 
@@ -1265,7 +1265,7 @@ func LightModeliv(pname GLenum, params *int32) {
 }
 
 //void glLightf (GLenum light, GLenum pname, float param)
-func Lightf(light GLenum, pname GLenum, param float) {
+func Lightf(light GLenum, pname GLenum, param float32) {
 	C.glLightf(C.GLenum(light), C.GLenum(pname), C.GLfloat(param))
 }
 
@@ -1290,7 +1290,7 @@ func LineStipple(factor int, pattern uint16) {
 }
 
 //void glLineWidth (float width)
-func LineWidth(width float) {
+func LineWidth(width float32) {
 	C.glLineWidth(C.GLfloat(width))
 }
 
@@ -1330,7 +1330,7 @@ func Map1d(target GLenum, u1 float64, u2 float64, stride int, order int, points 
 }
 
 //void glMap1f (GLenum target, float u1, float u2, int stride, int order, const float *points)
-func Map1f(target GLenum, u1 float, u2 float, stride int, order int, points *float32) {
+func Map1f(target GLenum, u1 float32, u2 float32, stride int, order int, points *float32) {
 	C.glMap1f(C.GLenum(target), C.GLfloat(u1), C.GLfloat(u2), C.GLint(stride), C.GLint(order), (*C.GLfloat)(points))
 }
 
@@ -1340,7 +1340,7 @@ func Map2d(target GLenum, u1 float64, u2 float64, ustride int, uorder int, v1 fl
 }
 
 //void glMap2f (GLenum target, float u1, float u2, int ustride, int uorder, float v1, float v2, int vstride, int vorder, const float *points)
-func Map2f(target GLenum, u1 float, u2 float, ustride int, uorder int, v1 float, v2 float, vstride int, vorder int, points *float32) {
+func Map2f(target GLenum, u1 float32, u2 float32, ustride int, uorder int, v1 float32, v2 float32, vstride int, vorder int, points *float32) {
 	C.glMap2f(C.GLenum(target), C.GLfloat(u1), C.GLfloat(u2), C.GLint(ustride), C.GLint(uorder), C.GLfloat(v1), C.GLfloat(v2), C.GLint(vstride), C.GLint(vorder), (*C.GLfloat)(points))
 }
 
@@ -1350,7 +1350,7 @@ func MapGrid1d(un int, u1 float64, u2 float64) {
 }
 
 //void glMapGrid1f (int un, float u1, float u2)
-func MapGrid1f(un int, u1 float, u2 float) {
+func MapGrid1f(un int, u1 float32, u2 float32) {
 	C.glMapGrid1f(C.GLint(un), C.GLfloat(u1), C.GLfloat(u2))
 }
 
@@ -1360,12 +1360,12 @@ func MapGrid2d(un int, u1 float64, u2 float64, vn int, v1 float64, v2 float64) {
 }
 
 //void glMapGrid2f (int un, float u1, float u2, int vn, float v1, float v2)
-func MapGrid2f(un int, u1 float, u2 float, vn int, v1 float, v2 float) {
+func MapGrid2f(un int, u1 float32, u2 float32, vn int, v1 float32, v2 float32) {
 	C.glMapGrid2f(C.GLint(un), C.GLfloat(u1), C.GLfloat(u2), C.GLint(vn), C.GLfloat(v1), C.GLfloat(v2))
 }
 
 //void glMaterialf (GLenum face, GLenum pname, float param)
-func Materialf(face GLenum, pname GLenum, param float) {
+func Materialf(face GLenum, pname GLenum, param float32) {
 	C.glMaterialf(C.GLenum(face), C.GLenum(pname), C.GLfloat(param))
 }
 
@@ -1425,7 +1425,7 @@ func Normal3dv(v *float64) {
 }
 
 //void glNormal3f (float nx, float ny, float nz)
-func Normal3f(nx float, ny float, nz float) {
+func Normal3f(nx float32, ny float32, nz float32) {
 	C.glNormal3f(C.GLfloat(nx), C.GLfloat(ny), C.GLfloat(nz))
 }
 
@@ -1465,7 +1465,7 @@ func Ortho(left float64, right float64, bottom float64, top float64, zNear float
 }
 
 //void glPassThrough (float token)
-func PassThrough(token float) {
+func PassThrough(token float32) {
 	C.glPassThrough(C.GLfloat(token))
 }
 
@@ -1485,7 +1485,7 @@ func PixelMapusv(map_ GLenum, mapsize int, values *uint16) {
 }
 
 //void glPixelStoref (GLenum pname, float param)
-func PixelStoref(pname GLenum, param float) {
+func PixelStoref(pname GLenum, param float32) {
 	C.glPixelStoref(C.GLenum(pname), C.GLfloat(param))
 }
 
@@ -1495,7 +1495,7 @@ func PixelStorei(pname GLenum, param int) {
 }
 
 //void glPixelTransferf (GLenum pname, float param)
-func PixelTransferf(pname GLenum, param float) {
+func PixelTransferf(pname GLenum, param float32) {
 	C.glPixelTransferf(C.GLenum(pname), C.GLfloat(param))
 }
 
@@ -1505,12 +1505,12 @@ func PixelTransferi(pname GLenum, param int) {
 }
 
 //void glPixelZoom (float xfactor, float yfactor)
-func PixelZoom(xfactor float, yfactor float) {
+func PixelZoom(xfactor float32, yfactor float32) {
 	C.glPixelZoom(C.GLfloat(xfactor), C.GLfloat(yfactor))
 }
 
 //void glPointSize (float size)
-func PointSize(size float) {
+func PointSize(size float32) {
 	C.glPointSize(C.GLfloat(size))
 }
 
@@ -1520,7 +1520,7 @@ func PolygonMode(face GLenum, mode GLenum) {
 }
 
 //void glPolygonOffset (float factor, float units)
-func PolygonOffset(factor float, units float) {
+func PolygonOffset(factor float32, units float32) {
 	C.glPolygonOffset(C.GLfloat(factor), C.GLfloat(units))
 }
 
@@ -1580,7 +1580,7 @@ func RasterPos2dv(v *float64) {
 }
 
 //void glRasterPos2f (float x, float y)
-func RasterPos2f(x float, y float) {
+func RasterPos2f(x float32, y float32) {
 	C.glRasterPos2f(C.GLfloat(x), C.GLfloat(y))
 }
 
@@ -1620,7 +1620,7 @@ func RasterPos3dv(v *float64) {
 }
 
 //void glRasterPos3f (float x, float y, float z)
-func RasterPos3f(x float, y float, z float) {
+func RasterPos3f(x float32, y float32, z float32) {
 	C.glRasterPos3f(C.GLfloat(x), C.GLfloat(y), C.GLfloat(z))
 }
 
@@ -1660,7 +1660,7 @@ func RasterPos4dv(v *float64) {
 }
 
 //void glRasterPos4f (float x, float y, float z, float w)
-func RasterPos4f(x float, y float, z float, w float) {
+func RasterPos4f(x float32, y float32, z float32, w float32) {
 	C.glRasterPos4f(C.GLfloat(x), C.GLfloat(y), C.GLfloat(z), C.GLfloat(w))
 }
 
@@ -1710,7 +1710,7 @@ func Rectdv(v1 *float64, v2 *float64) {
 }
 
 //void glRectf (float x1, float y1, float x2, float y2)
-func Rectf(x1 float, y1 float, x2 float, y2 float) {
+func Rectf(x1 float32, y1 float32, x2 float32, y2 float32) {
 	C.glRectf(C.GLfloat(x1), C.GLfloat(y1), C.GLfloat(x2), C.GLfloat(y2))
 }
 
@@ -1750,7 +1750,7 @@ func Rotated(angle float64, x float64, y float64, z float64) {
 }
 
 //void glRotatef (float angle, float x, float y, float z)
-func Rotatef(angle float, x float, y float, z float) {
+func Rotatef(angle float32, x float32, y float32, z float32) {
 	C.glRotatef(C.GLfloat(angle), C.GLfloat(x), C.GLfloat(y), C.GLfloat(z))
 }
 
@@ -1760,7 +1760,7 @@ func Scaled(x float64, y float64, z float64) {
 }
 
 //void glScalef (float x, float y, float z)
-func Scalef(x float, y float, z float) {
+func Scalef(x float32, y float32, z float32) {
 	C.glScalef(C.GLfloat(x), C.GLfloat(y), C.GLfloat(z))
 }
 
@@ -1805,7 +1805,7 @@ func TexCoord1dv(v *float64) {
 }
 
 //void glTexCoord1f (float s)
-func TexCoord1f(s float) {
+func TexCoord1f(s float32) {
 	C.glTexCoord1f(C.GLfloat(s))
 }
 
@@ -1845,7 +1845,7 @@ func TexCoord2dv(v *float64) {
 }
 
 //void glTexCoord2f (float s, float t)
-func TexCoord2f(s float, t float) {
+func TexCoord2f(s float32, t float32) {
 	C.glTexCoord2f(C.GLfloat(s), C.GLfloat(t))
 }
 
@@ -1885,7 +1885,7 @@ func TexCoord3dv(v *float64) {
 }
 
 //void glTexCoord3f (float s, float t, float r)
-func TexCoord3f(s float, t float, r float) {
+func TexCoord3f(s float32, t float32, r float32) {
 	C.glTexCoord3f(C.GLfloat(s), C.GLfloat(t), C.GLfloat(r))
 }
 
@@ -1925,7 +1925,7 @@ func TexCoord4dv(v *float64) {
 }
 
 //void glTexCoord4f (float s, float t, float r, float q)
-func TexCoord4f(s float, t float, r float, q float) {
+func TexCoord4f(s float32, t float32, r float32, q float32) {
 	C.glTexCoord4f(C.GLfloat(s), C.GLfloat(t), C.GLfloat(r), C.GLfloat(q))
 }
 
@@ -1965,7 +1965,7 @@ func Translated(x float64, y float64, z float64) {
 }
 
 //void glTranslatef (float x, float y, float z)
-func Translatef(x float, y float, z float) {
+func Translatef(x float32, y float32, z float32) {
 	C.glTranslatef(C.GLfloat(x), C.GLfloat(y), C.GLfloat(z))
 }
 
@@ -1980,7 +1980,7 @@ func Vertex2dv(v *float64) {
 }
 
 //void glVertex2f (float x, float y)
-func Vertex2f(x float, y float) {
+func Vertex2f(x float32, y float32) {
 	C.glVertex2f(C.GLfloat(x), C.GLfloat(y))
 }
 
@@ -2020,7 +2020,7 @@ func Vertex3dv(v *float64) {
 }
 
 //void glVertex3f (float x, float y, float z)
-func Vertex3f(x float, y float, z float) {
+func Vertex3f(x float32, y float32, z float32) {
 	C.glVertex3f(C.GLfloat(x), C.GLfloat(y), C.GLfloat(z))
 }
 
@@ -2060,7 +2060,7 @@ func Vertex4dv(v *float64) {
 }
 
 //void glVertex4f (float x, float y, float z, float w)
-func Vertex4f(x float, y float, z float, w float) {
+func Vertex4f(x float32, y float32, z float32, w float32) {
 	C.glVertex4f(C.GLfloat(x), C.GLfloat(y), C.GLfloat(z), C.GLfloat(w))
 }
 
