@@ -1,2 +1,7 @@
 2011-01-15:
     * Go-OpenGL no longer uses GLEW, you don't need it and don't have to call gl.Init
+
+2011-01-25:
+	* gl10 has been removed from master branch, use new api or branch "old"
+	* pointers has been changed to slices in most functions, nothing checks their length yet
+	* float has been changed to float32
