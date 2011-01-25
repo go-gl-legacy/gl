@@ -13,12 +13,11 @@ CGOFILES:=gl.go
 PLATFORM:=$(shell uname -s)
 
 ifeq ($(PLATFORM),Darwin)
-CGO_LDFLAGS:=-framework OpenGL -lGL
-CGO_CFLAGS:=-D__Darwin -framework OpenGL
+CGO_LDFLAGS:=-framework OpenGL
 else
 CGO_LDFLAGS:=-lGL
-CGO_CFLAGS:=-D__$(PLATFORM)
 endif
+CGO_CFLAGS:=-D__$(PLATFORM)
 
 CLEANFILES+=gl
 
