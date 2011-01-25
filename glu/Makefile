@@ -14,6 +14,6 @@ else
 CGO_LDFLAGS:=-lGLU
 endif
 
-GC="${O}g" -I ../gl20/_obj
+GC="${O}g" -I ../gl/_obj
 
 include $(GOROOT)/src/Make.pkg

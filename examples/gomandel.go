@@ -10,39 +10,38 @@ import (
 
 var iterations *int = flag.Int("i", 1024, "number of iterations")
 
-func drawQuad(x, y, w, h int, u, v, u2, v2 float) {
+func drawQuad(x, y, w, h int, u, v, u2, v2 float32) {
 	gl.Begin(gl.QUADS)
 
-	gl.TexCoord2f(gl.GLfloat(u), gl.GLfloat(v))
-	gl.Vertex2i(gl.GLint(x), gl.GLint(y))
+	gl.TexCoord2f(float32(u), float32(v))
+	gl.Vertex2i(int(x), int(y))
 
-	gl.TexCoord2f(gl.GLfloat(u2), gl.GLfloat(v))
-	gl.Vertex2i(gl.GLint(x+w), gl.GLint(y))
+	gl.TexCoord2f(float32(u2), float32(v))
+	gl.Vertex2i(int(x+w), int(y))
 
-	gl.TexCoord2f(gl.GLfloat(u2), gl.GLfloat(v2))
-	gl.Vertex2i(gl.GLint(x+w), gl.GLint(y+h))
+	gl.TexCoord2f(float32(u2), float32(v2))
+	gl.Vertex2i(int(x+w), int(y+h))
 
-	gl.TexCoord2f(gl.GLfloat(u), gl.GLfloat(v2))
-	gl.Vertex2i(gl.GLint(x), gl.GLint(y+h))
+	gl.TexCoord2f(float32(u), float32(v2))
+	gl.Vertex2i(int(x), int(y+h))
 
 	gl.End()
 }
 
-func uploadTexture_RGBA32(w, h int, data []byte) gl.GLuint {
-	var id gl.GLuint
+func uploadTexture_RGBA32(w, h int, data []byte) gl.Texture {
 
-	gl.GenTextures(1, &id)
-	gl.BindTexture(gl.TEXTURE_2D, id)
+	id := gl.GenTexture()
+	id.Bind(gl.TEXTURE_2D)
 	gl.TexParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR)
 	gl.TexParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR)
 	gl.TexParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE)
 	gl.TexParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE)
 	gl.TexParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_R, gl.CLAMP_TO_EDGE)
-	gl.TexImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.GLsizei(w), gl.GLsizei(h), 0, gl.RGBA,
+	gl.TexImage2D(gl.TEXTURE_2D, 0, gl.RGBA, int(w), int(h), 0, gl.RGBA,
 		gl.UNSIGNED_BYTE, unsafe.Pointer(&data[0]))
 
 	if gl.GetError() != gl.NO_ERROR {
-		gl.DeleteTextures(1, &id)
+		id.Delete()
 		panic("Failed to load a texture")
 		return 0
 	}
@@ -55,7 +54,7 @@ type Color struct {
 
 type ColorRange struct {
 	Start, End Color
-	Range      float
+	Range      float32
 }
 
 var (
@@ -78,12 +77,12 @@ var colorScale = [...]ColorRange{
 
 var palette []Color
 
-func interpolateColor(c1, c2 Color, f float) Color {
+func interpolateColor(c1, c2 Color, f float32) Color {
 	var c Color
-	c.R = byte(float(c1.R)*f + float(c2.R)*(1.0-f))
-	c.G = byte(float(c1.G)*f + float(c2.G)*(1.0-f))
-	c.B = byte(float(c1.B)*f + float(c2.B)*(1.0-f))
-	c.A = byte(float(c1.A)*f + float(c2.A)*(1.0-f))
+	c.R = byte(float32(c1.R)*f + float32(c2.R)*(1.0-f))
+	c.G = byte(float32(c1.G)*f + float32(c2.G)*(1.0-f))
+	c.B = byte(float32(c1.B)*f + float32(c2.B)*(1.0-f))
+	c.A = byte(float32(c1.A)*f + float32(c2.A)*(1.0-f))
 	return c
 }
 
@@ -91,9 +90,9 @@ func buildPalette() {
 	palette = make([]Color, *iterations+1)
 	p := 0
 	for _, r := range colorScale {
-		n := int(r.Range*float(*iterations) + 0.5)
+		n := int(r.Range*float32(*iterations) + 0.5)
 		for i := 0; i < n && p < *iterations; i++ {
-			c := interpolateColor(r.Start, r.End, float(i)/float(n))
+			c := interpolateColor(r.Start, r.End, float32(i)/float32(n))
 			palette[p] = c
 			p++
 		}
@@ -146,7 +145,7 @@ func mandelbrot(w, h int, what Rect, discard <-chan bool, progress chan int) <-c
 			// discard value if we have something
 			_, ok = <-progress
 			if len(progress) == 0 {
-				percents := int(float(y) / float(h-1) * 100)
+				percents := int(float32(y) / float32(h-1) * 100)
 				if percents < 0 {
 					percents = 0
 				} else if percents > 100 {
@@ -203,8 +202,8 @@ func drawProgress(w, h, percents, pending int) {
 		drawQuad(0, h-BarSize, w, BarSize, 0, 0, 1, 1)
 		gl.Color3ub(200, 0, 0)
 	}
-	step := float(w) / 100
-	drawQuad(0, h-BarSize, int(float(percents)*step), BarSize, 0, 0, 1, 1)
+	step := float32(w) / 100
+	drawQuad(0, h-BarSize, int(float32(percents)*step), BarSize, 0, 0, 1, 1)
 	gl.Color3ub(255, 255, 255)
 }
 
@@ -213,17 +212,17 @@ func drawSelection(p1, p2 Point) {
 
 	gl.Color3ub(255, 0, 0)
 	gl.Begin(gl.LINES)
-	gl.Vertex2i(gl.GLint(min.X), gl.GLint(min.Y))
-	gl.Vertex2i(gl.GLint(max.X), gl.GLint(min.Y))
+	gl.Vertex2i(int(min.X), int(min.Y))
+	gl.Vertex2i(int(max.X), int(min.Y))
 
-	gl.Vertex2i(gl.GLint(min.X), gl.GLint(min.Y))
-	gl.Vertex2i(gl.GLint(min.X), gl.GLint(max.Y))
+	gl.Vertex2i(int(min.X), int(min.Y))
+	gl.Vertex2i(int(min.X), int(max.Y))
 
-	gl.Vertex2i(gl.GLint(max.X), gl.GLint(max.Y))
-	gl.Vertex2i(gl.GLint(max.X), gl.GLint(min.Y))
+	gl.Vertex2i(int(max.X), int(max.Y))
+	gl.Vertex2i(int(max.X), int(min.Y))
 
-	gl.Vertex2i(gl.GLint(max.X), gl.GLint(max.Y))
-	gl.Vertex2i(gl.GLint(min.X), gl.GLint(max.Y))
+	gl.Vertex2i(int(max.X), int(max.Y))
+	gl.Vertex2i(int(min.X), int(max.Y))
 	gl.End()
 	gl.Color3ub(255, 255, 255)
 }
@@ -255,7 +254,7 @@ func rectFromSelection(p1, p2 Point, scrw, scrh int, cur Rect) Rect {
 }
 
 type TexCoords struct {
-	TX, TY, TX2, TY2 float
+	TX, TY, TX2, TY2 float32
 }
 
 func texCoordsFromSelection(p1, p2 Point, w, h int, tcold TexCoords) (tc TexCoords) {
@@ -274,13 +273,13 @@ func texCoordsFromSelection(p1, p2 Point, w, h int, tcold TexCoords) (tc TexCoor
 	modx := tcold.TX2 - tcold.TX
 	mody := tcold.TY2 - tcold.TY
 
-	stepx := (1 / float(w)) * modx
-	stepy := (1 / float(h)) * mody
+	stepx := (1 / float32(w)) * modx
+	stepy := (1 / float32(h)) * mody
 
-	tc.TX = tcold.TX + float(min.X)*stepx
-	tc.TX2 = tcold.TX + float(max.X)*stepx
-	tc.TY = tcold.TY + float(min.Y)*stepy
-	tc.TY2 = tcold.TY + float(max.Y)*stepy
+	tc.TX = tcold.TX + float32(min.X)*stepx
+	tc.TX2 = tcold.TX + float32(max.X)*stepx
+	tc.TY = tcold.TY + float32(min.Y)*stepy
+	tc.TY2 = tcold.TY + float32(max.Y)*stepy
 	return
 }
 
@@ -310,9 +309,9 @@ type MandelbrotRequest struct {
 	PercentsReady int
 }
 
-func ReuploadTexture(tex *gl.GLuint, w, h int, data []byte) {
+func ReuploadTexture(tex *gl.Texture, w, h int, data []byte) {
 	if *tex > 0 {
-		gl.DeleteTextures(1, tex)
+		tex.Delete()
 	}
 	*tex = uploadTexture_RGBA32(w, h, data)
 }
@@ -342,7 +341,7 @@ func (self *MandelbrotRequest) Drop() {
 	}
 }
 
-func (self *MandelbrotRequest) Update(tex *gl.GLuint, tc *TexCoords) int {
+func (self *MandelbrotRequest) Update(tex *gl.Texture, tc *TexCoords) int {
 	// if request is pending check status
 	progress := -1
 	if self.Pending > 0 {
@@ -370,7 +369,7 @@ func (self *MandelbrotRequest) Update(tex *gl.GLuint, tc *TexCoords) int {
 	return progress
 }
 
-func (self *MandelbrotRequest) WaitFor(pending int, tex *gl.GLuint, tc *TexCoords) {
+func (self *MandelbrotRequest) WaitFor(pending int, tex *gl.Texture, tc *TexCoords) {
 	*tc = TexCoords{0, 0, 1, 1}
 	switch pending {
 	case Small:
@@ -405,10 +404,6 @@ func main() {
 
 	sdl.WM_SetCaption("Gomandel", "Gomandel")
 
-	if gl.Init() != 0 {
-		panic("glew error")
-	}
-
 	gl.Enable(gl.TEXTURE_2D)
 	gl.Viewport(0, 0, 512, 512)
 	gl.MatrixMode(gl.PROJECTION)
@@ -422,7 +417,7 @@ func main() {
 	var dndDragging bool = false
 	var dndStart Point
 	var dndEnd Point
-	var tex gl.GLuint
+	var tex gl.Texture
 	var tc TexCoords
 	var lastProgress int
 	initialRect := Rect{-1.5, -1.5, 3, 3}
@@ -469,7 +464,7 @@ func main() {
 		}
 
 		gl.Clear(gl.COLOR_BUFFER_BIT)
-		gl.BindTexture(gl.TEXTURE_2D, tex)
+		tex.Bind(gl.TEXTURE_2D)
 		drawQuad(0, 0, 512, 512, tc.TX, tc.TY, tc.TX2, tc.TY2)
 		gl.BindTexture(gl.TEXTURE_2D, 0)
 		if dndDragging {

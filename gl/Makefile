@@ -4,7 +4,7 @@
 
 include $(GOROOT)/src/Make.inc
 
-TARG=gl/gl20
+TARG=gl
 
 GOFILES:=gl_defs.go
 
