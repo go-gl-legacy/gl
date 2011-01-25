@@ -1,6 +1,6 @@
 package gl
 
-// #ifdef __Darwin
+// #ifdef __APPLE__
 // # include <OpenGL/gl.h>
 // #else
 // # include <GL/gl.h>
@@ -984,21 +984,6 @@ func PassThrough(token GLfloat) {
 	C.glPassThrough(C.GLfloat(token))
 }
 
-//void glPixelMapfv (GLenum map, GLsizei mapsize, const GLfloat *values)
-func PixelMapfv(map_ GLenum, mapsize GLsizei, values *GLfloat) {
-	C.glPixelMapfv(C.GLenum(map_), C.GLsizei(mapsize), (*C.GLfloat)(values))
-}
-
-//void glPixelMapuiv (GLenum map, GLsizei mapsize, const GLuint *values)
-func PixelMapuiv(map_ GLenum, mapsize GLsizei, values *GLuint) {
-	C.glPixelMapuiv(C.GLenum(map_), C.GLsizei(mapsize), (*C.GLuint)(values))
-}
-
-//void glPixelMapusv (GLenum map, GLsizei mapsize, const GLushort *values)
-func PixelMapusv(map_ GLenum, mapsize GLsizei, values *GLushort) {
-	C.glPixelMapusv(C.GLenum(map_), C.GLsizei(mapsize), (*C.GLushort)(values))
-}
-
 //void glPixelStoref (GLenum pname, GLfloat param)
 func PixelStoref(pname GLenum, param GLfloat) {
 	C.glPixelStoref(C.GLenum(pname), C.GLfloat(param))
@@ -1527,16 +1512,6 @@ func TexGeni(coord GLenum, pname GLenum, param GLint) {
 //void glTexGeniv (GLenum coord, GLenum pname, const GLint *params)
 func TexGeniv(coord GLenum, pname GLenum, params *GLint) {
 	C.glTexGeniv(C.GLenum(coord), C.GLenum(pname), (*C.GLint)(params))
-}
-
-//void glTexImage1D (GLenum target, GLint level, GLint internalformat, GLsizei width, GLint border, GLenum format, GLenum type, const GLvoid *pixels)
-func TexImage1D(target GLenum, level GLint, internalformat GLint, width GLsizei, border GLint, format GLenum, type_ GLenum, pixels unsafe.Pointer) {
-	C.glTexImage1D(C.GLenum(target), C.GLint(level), C.GLint(internalformat), C.GLsizei(width), C.GLint(border), C.GLenum(format), C.GLenum(type_), pixels)
-}
-
-//void glTexImage2D (GLenum target, GLint level, GLint internalformat, GLsizei width, GLsizei height, GLint border, GLenum format, GLenum type, const GLvoid *pixels)
-func TexImage2D(target GLenum, level GLint, internalformat GLint, width GLsizei, height GLsizei, border GLint, format GLenum, type_ GLenum, pixels unsafe.Pointer) {
-	C.glTexImage2D(C.GLenum(target), C.GLint(level), C.GLint(internalformat), C.GLsizei(width), C.GLsizei(height), C.GLint(border), C.GLenum(format), C.GLenum(type_), pixels)
 }
 
 //void glTexParameterf (GLenum target, GLenum pname, GLfloat param)

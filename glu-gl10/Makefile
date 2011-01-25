@@ -8,14 +8,11 @@ TARG=glu
 
 CGOFILES:=glu.go
 
-PLATFORM:=$(shell uname -s)
-
-ifeq ($(PLATFORM),Darwin)
+ifeq ($(GOOS),darwin)
 CGO_LDFLAGS:=-framework OpenGL
 else
 CGO_LDFLAGS:=-lGLU
 endif
-CGO_CFLAGS:=-D__$(PLATFORM)
 
 GC="${O}g" -I ../gl10/_obj
 
