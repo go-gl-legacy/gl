@@ -76,10 +76,6 @@ func main() {
 		panic("sdl error")
 	}
 
-	if gl.Init() != 0 {
-		panic("glew error")
-	}
-
 	pen := Pen{}
 
 	gl.MatrixMode(gl.PROJECTION)
