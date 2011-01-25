@@ -540,8 +540,8 @@ func GetError() GLenum {
 }
 
 func GetErrorString(error GLenum) string {
-  raw := (*C.char)(unsafe.Pointer(C.glGetString(C.GLenum(error))))
-  return C.GoString(raw)
+	raw := (*C.char)(unsafe.Pointer(C.glGetString(C.GLenum(error))))
+	return C.GoString(raw)
 }
 
 //void glGetFloatv (GLenum pname, GLfloat *params)
@@ -1688,4 +1688,3 @@ func Viewport(x GLint, y GLint, width GLsizei, height GLsizei) {
 func Init() GLenum {
 	return GLenum(0)
 }
-
