@@ -220,12 +220,12 @@ func reshape(width int, height int) {
 }
 
 func init_() {
-	var pos = [4]float32{5.0, 5.0, 10.0, 0.0}
-	var red = [4]float32{0.8, 0.1, 0.0, 1.0}
-	var green = [4]float32{0.0, 0.8, 0.2, 1.0}
-	var blue = [4]float32{0.2, 0.2, 1.0, 1.0}
+	pos := []float32{5.0, 5.0, 10.0, 0.0}
+	red := []float32{0.8, 0.1, 0.0, 1.0}
+	green := []float32{0.0, 0.8, 0.2, 1.0}
+	blue := []float32{0.2, 0.2, 1.0, 1.0}
 
-	gl.Lightfv(gl.LIGHT0, gl.POSITION, &pos[0])
+	gl.Lightfv(gl.LIGHT0, gl.POSITION, pos)
 	gl.Enable(gl.CULL_FACE)
 	gl.Enable(gl.LIGHTING)
 	gl.Enable(gl.LIGHT0)
@@ -234,19 +234,19 @@ func init_() {
 	/* make the gears */
 	gear1 = gl.GenLists(1)
 	gl.NewList(gear1, gl.COMPILE)
-	gl.Materialfv(gl.FRONT, gl.AMBIENT_AND_DIFFUSE, &red[0])
+	gl.Materialfv(gl.FRONT, gl.AMBIENT_AND_DIFFUSE, red)
 	gear(1.0, 4.0, 1.0, 20, 0.7)
 	gl.EndList()
 
 	gear2 = gl.GenLists(1)
 	gl.NewList(gear2, gl.COMPILE)
-	gl.Materialfv(gl.FRONT, gl.AMBIENT_AND_DIFFUSE, &green[0])
+	gl.Materialfv(gl.FRONT, gl.AMBIENT_AND_DIFFUSE, green)
 	gear(0.5, 2.0, 2.0, 10, 0.7)
 	gl.EndList()
 
 	gear3 = gl.GenLists(1)
 	gl.NewList(gear3, gl.COMPILE)
-	gl.Materialfv(gl.FRONT, gl.AMBIENT_AND_DIFFUSE, &blue[0])
+	gl.Materialfv(gl.FRONT, gl.AMBIENT_AND_DIFFUSE, blue)
 	gear(1.3, 2.0, 0.5, 10, 0.7)
 	gl.EndList()
 
