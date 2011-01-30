@@ -3,16 +3,17 @@ package gl
 // #include <OpenGL/gl.h>
 // #include <OpenGL/glext.h>
 import "C"
-import "unsafe"
 
 //void glTexImage1D (GLenum target, int level, int internalformat, int width, int border, GLenum format, GLenum type, const GLvoid *pixels)
-func TexImage1D(target GLenum, level int, internalformat int, width int, border int, format GLenum, type_ GLenum, pixels unsafe.Pointer) {
-	C.glTexImage1D(C.GLenum(target), C.GLint(level), C.GLenum(internalformat), C.GLsizei(width), C.GLint(border), C.GLenum(format), C.GLenum(type_), pixels)
+func TexImage1D(target GLenum, level int, internalformat int, width int, border int, format GLenum, pixels interface{}) {
+	t, p := GetGLenumType(pixels)
+	C.glTexImage1D(C.GLenum(target), C.GLint(level), C.GLenum(internalformat), C.GLsizei(width), C.GLint(border), C.GLenum(format), C.GLenum(t), p)
 }
 
 //void glTexImage2D (GLenum target, int level, int internalformat, int width, int height, int border, GLenum format, GLenum type, const GLvoid *pixels)
-func TexImage2D(target GLenum, level int, internalformat int, width int, height int, border int, format GLenum, type_ GLenum, pixels unsafe.Pointer) {
-	C.glTexImage2D(C.GLenum(target), C.GLint(level), C.GLenum(internalformat), C.GLsizei(width), C.GLsizei(height), C.GLint(border), C.GLenum(format), C.GLenum(type_), pixels)
+func TexImage2D(target GLenum, level int, internalformat int, width int, height int, border int, format GLenum, pixels interface{}) {
+	t, p := GetGLenumType(pixels)
+	C.glTexImage2D(C.GLenum(target), C.GLint(level), C.GLenum(internalformat), C.GLsizei(width), C.GLsizei(height), C.GLint(border), C.GLenum(format), C.GLenum(t), p)
 }
 
 //void glPixelMapfv (GLenum map, int mapsize, const float *values)

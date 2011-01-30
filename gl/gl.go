@@ -14,6 +14,7 @@ package gl
 // #endif
 import "C"
 import "unsafe"
+import "reflect"
 
 type GLenum C.GLenum
 type GLbitfield C.GLbitfield
@@ -52,6 +53,39 @@ func goBool(v C.GLboolean) bool {
 func glString(s string) *C.GLchar { return (*C.GLchar)(C.CString(s)) }
 
 func freeString(ptr *C.GLchar) { C.free(unsafe.Pointer(ptr)) }
+
+func GetGLenumType(v interface{}) (t GLenum, p unsafe.Pointer) {
+	switch v.(type) {
+		case *uint8:
+			t = UNSIGNED_BYTE
+			p = unsafe.Pointer(v.(*uint8))
+		case []uint8:
+			t = UNSIGNED_BYTE
+			p = unsafe.Pointer(&(v.([]uint8)[0]))
+		case *int8:
+			t = BYTE
+			p = unsafe.Pointer(v.(*int8))
+		case []int8:
+			t = BYTE
+			p = unsafe.Pointer(&(v.([]int8)[0]))
+		case *uint16:
+			t = UNSIGNED_SHORT
+			p = unsafe.Pointer(v.(*uint16))
+		case []uint16:
+			t = UNSIGNED_SHORT
+			p = unsafe.Pointer(&(v.([]uint16)[0]))
+		case *int16:
+			t = SHORT
+			p = unsafe.Pointer(v.(*int16))
+		case []int16:
+			t = SHORT
+			p = unsafe.Pointer(&(v.([]int16)[0]))
+		default:
+			panic("unknown type: " + reflect.Typeof(v).String())
+	}
+
+	return t, p
+}
 
 // Object
 
@@ -243,13 +277,15 @@ func (texture Texture) Bind(target GLenum) {
 }
 
 //void glTexSubImage1D (GLenum target, int level, int xoffset, int width, GLenum format, GLenum type, const GLvoid *pixels)
-func TexSubImage1D(target GLenum, level int, xoffset int, width int, format GLenum, type_ GLenum, pixels unsafe.Pointer) {
-	C.glTexSubImage1D(C.GLenum(target), C.GLint(level), C.GLint(xoffset), C.GLsizei(width), C.GLenum(format), C.GLenum(type_), pixels)
+func TexSubImage1D(target GLenum, level int, xoffset int, width int, format GLenum, pixels interface{}) {
+	t, p := GetGLenumType(pixels)
+	C.glTexSubImage1D(C.GLenum(target), C.GLint(level), C.GLint(xoffset), C.GLsizei(width), C.GLenum(format), C.GLenum(t), p)
 }
 
 //void glTexSubImage2D (GLenum target, int level, int xoffset, int yoffset, int width, int height, GLenum format, GLenum type, const GLvoid *pixels)
-func TexSubImage2D(target GLenum, level int, xoffset int, yoffset int, width int, height int, format GLenum, type_ GLenum, pixels unsafe.Pointer) {
-	C.glTexSubImage2D(C.GLenum(target), C.GLint(level), C.GLint(xoffset), C.GLint(yoffset), C.GLsizei(width), C.GLsizei(height), C.GLenum(format), C.GLenum(type_), pixels)
+func TexSubImage2D(target GLenum, level int, xoffset int, yoffset int, width int, height int, format GLenum, pixels interface{}) {
+	t, p := GetGLenumType(pixels)
+	C.glTexSubImage2D(C.GLenum(target), C.GLint(level), C.GLint(xoffset), C.GLint(yoffset), C.GLsizei(width), C.GLsizei(height), C.GLenum(format), C.GLenum(t), p)
 }
 
 //void glCopyTexImage1D (GLenum target, int level, GLenum internalFormat, int x, int y, int width, int border)
@@ -375,8 +411,9 @@ func GetTexGeniv(coord GLenum, pname GLenum, params []int32) {
 }
 
 //void glGetTexImage (GLenum target, int level, GLenum format, GLenum type, GLvoid *pixels)
-func GetTexImage(target GLenum, level int, format GLenum, type_ GLenum, pixels unsafe.Pointer) {
-	C.glGetTexImage(C.GLenum(target), C.GLint(level), C.GLenum(format), C.GLenum(type_), pixels)
+func GetTexImage(target GLenum, level int, format GLenum, pixels interface{}) {
+	t, p := GetGLenumType(pixels)
+	C.glGetTexImage(C.GLenum(target), C.GLint(level), C.GLenum(format), C.GLenum(t), p)
 }
 
 //void glGetTexLevelParameterfv (GLenum target, int level, GLenum pname, float *params)
@@ -439,8 +476,9 @@ func VertexAttrib4fv(indx uint, values []float32) {
 	C.glVertexAttrib4fv(C.GLuint(indx), (*C.GLfloat)(unsafe.Pointer(&values[0])))
 }
 
-func VertexAttribPointer(indx VertexAttrib, size uint, type_ GLenum, normalized bool, stride int, pointer unsafe.Pointer) {
-	C.glVertexAttribPointer(C.GLuint(indx), C.GLint(size), C.GLenum(type_), glBool(normalized), C.GLsizei(stride), pointer)
+func VertexAttribPointer(indx VertexAttrib, size uint, normalized bool, stride int, pointer interface{}) {
+	t, p := GetGLenumType(pointer)
+	C.glVertexAttribPointer(C.GLuint(indx), C.GLint(size), C.GLenum(t), glBool(normalized), C.GLsizei(stride), p)
 }
 
 
@@ -630,8 +668,9 @@ func CallList(list uint) {
 }
 
 //void glCallLists (GLsizei n, GLenum type, const GLvoid *lists)
-func CallLists(n int, type_ GLenum, lists unsafe.Pointer) {
-	C.glCallLists(C.GLsizei(n), C.GLenum(type_), lists)
+func CallLists(n int, lists interface{}) {
+	t, p := GetGLenumType(lists)
+	C.glCallLists(C.GLsizei(n), C.GLenum(t), p)
 }
 
 //void glClear (GLbitfield mask)
@@ -840,8 +879,9 @@ func ColorMaterial(face GLenum, mode GLenum) {
 }
 
 //void glColorPointer (int size, GLenum type, int stride, const GLvoid *pointer)
-func ColorPointer(size int, type_ GLenum, stride int, pointer unsafe.Pointer) {
-	C.glColorPointer(C.GLint(size), C.GLenum(type_), C.GLsizei(stride), pointer)
+func ColorPointer(size int, stride int, pointer interface{}) {
+	t, p := GetGLenumType(pointer)
+	C.glColorPointer(C.GLint(size), C.GLenum(t), C.GLsizei(stride), p)
 }
 
 //void glCopyPixels (int x, int y, int width, int height, GLenum type)
@@ -895,13 +935,15 @@ func DrawBuffer(mode GLenum) {
 }
 
 //void glDrawElements (GLenum mode, int count, GLenum type, const GLvoid *indices)
-func DrawElements(mode GLenum, count int, type_ GLenum, indices unsafe.Pointer) {
-	C.glDrawElements(C.GLenum(mode), C.GLsizei(count), C.GLenum(type_), indices)
+func DrawElements(mode GLenum, count int, indices interface{}) {
+	t, p := GetGLenumType(indices)
+	C.glDrawElements(C.GLenum(mode), C.GLsizei(count), C.GLenum(t), p)
 }
 
 //void glDrawPixels (GLsizei width, int height, GLenum format, GLenum type, const GLvoid *pixels)
-func DrawPixels(width int, height int, format GLenum, type_ GLenum, pixels unsafe.Pointer) {
-	C.glDrawPixels(C.GLsizei(width), C.GLsizei(height), C.GLenum(format), C.GLenum(type_), pixels)
+func DrawPixels(width int, height int, format GLenum, pixels interface{}) {
+	t, p := GetGLenumType(pixels)
+	C.glDrawPixels(C.GLsizei(width), C.GLsizei(height), C.GLenum(format), C.GLenum(t), p)
 }
 
 //void glEdgeFlag (bool flag)
@@ -1160,8 +1202,9 @@ func IndexMask(mask uint) {
 }
 
 //void glIndexPointer (GLenum type, int stride, const GLvoid *pointer)
-func IndexPointer(type_ GLenum, stride int, pointer unsafe.Pointer) {
-	C.glIndexPointer(C.GLenum(type_), C.GLsizei(stride), pointer)
+func IndexPointer(stride int, pointer interface{}) {
+	t, p := GetGLenumType(pointer)
+	C.glIndexPointer(C.GLenum(t), C.GLsizei(stride), p)
 }
 
 //void glIndexd (float64 c)
@@ -1445,8 +1488,9 @@ func Normal3sv(v []int16) {
 }
 
 //void glNormalPointer (GLenum type, int stride, const GLvoid *pointer)
-func NormalPointer(type_ GLenum, stride int, pointer unsafe.Pointer) {
-	C.glNormalPointer(C.GLenum(type_), C.GLsizei(stride), pointer)
+func NormalPointer(stride int, pointer interface{}) {
+	t, p := GetGLenumType(pointer)
+	C.glNormalPointer(C.GLenum(t), C.GLsizei(stride), p)
 }
 
 //void glOrtho (float64 left, float64 right, float64 bottom, float64 top, float64 zNear, float64 zFar)
@@ -1670,8 +1714,9 @@ func ReadBuffer(mode GLenum) {
 }
 
 //void glReadPixels (int x, int y, int width, int height, GLenum format, GLenum type, GLvoid *pixels)
-func ReadPixels(x int, y int, width int, height int, format GLenum, type_ GLenum, pixels unsafe.Pointer) {
-	C.glReadPixels(C.GLint(x), C.GLint(y), C.GLsizei(width), C.GLsizei(height), C.GLenum(format), C.GLenum(type_), pixels)
+func ReadPixels(x int, y int, width int, height int, format GLenum, pixels interface{}) {
+	t, p := GetGLenumType(pixels)
+	C.glReadPixels(C.GLint(x), C.GLint(y), C.GLsizei(width), C.GLsizei(height), C.GLenum(format), C.GLenum(t), p)
 }
 
 //void glRectd (float64 x1, float64 y1, float64 x2, float64 y2)
@@ -1930,8 +1975,9 @@ func TexCoord4sv(v []int16) {
 }
 
 //void glTexCoordPointer (int size, GLenum type, int stride, const GLvoid *pointer)
-func TexCoordPointer(size int, type_ GLenum, stride int, pointer unsafe.Pointer) {
-	C.glTexCoordPointer(C.GLint(size), C.GLenum(type_), C.GLsizei(stride), pointer)
+func TexCoordPointer(size int, stride int, pointer interface{}) {
+	t, p := GetGLenumType(pointer)
+	C.glTexCoordPointer(C.GLint(size), C.GLenum(t), C.GLsizei(stride), p)
 }
 
 //void glTranslated (float64 x, float64 y, float64 z)
@@ -2065,8 +2111,9 @@ func Vertex4sv(v []int16) {
 }
 
 //void glVertexPointer (int size, GLenum type, int stride, const GLvoid *pointer)
-func VertexPointer(size int, type_ GLenum, stride int, pointer unsafe.Pointer) {
-	C.glVertexPointer(C.GLint(size), C.GLenum(type_), C.GLsizei(stride), pointer)
+func VertexPointer(size int, stride int, pointer interface{}) {
+	t, p := GetGLenumType(pointer)
+	C.glVertexPointer(C.GLint(size), C.GLenum(t), C.GLsizei(stride), p)
 }
 
 //void glViewport (int x, int y, int width, int height)

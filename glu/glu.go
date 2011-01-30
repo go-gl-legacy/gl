@@ -8,18 +8,18 @@ package glu
 //
 //
 import "C"
-import "unsafe"
 import "gl"
 
-func Build2DMipmaps(target gl.GLenum, internalFormat int, width, height int, format, kind gl.GLenum, data unsafe.Pointer) int {
+func Build2DMipmaps(target gl.GLenum, internalFormat int, width, height int, format gl.GLenum, data interface{}) int {
+	t, p := gl.GetGLenumType(data)
 	return int(C.gluBuild2DMipmaps(
 		C.GLenum(target),
 		C.GLint(internalFormat),
 		C.GLsizei(width),
 		C.GLsizei(height),
 		C.GLenum(format),
-		C.GLenum(kind),
-		data,
+		C.GLenum(t),
+		p,
 	))
 }
 
