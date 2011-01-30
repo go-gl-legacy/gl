@@ -8,16 +8,12 @@ TARG=gl/glu
 
 CGOFILES:=glu.go
 
-PLATFORM:=$(shell uname -s)
-
-ifeq ($(PLATFORM),Darwin)
-CGO_LDFLAGS:=-framework OpenGL -lGLU
-CGO_CFLAGS:=-D__Darwin -framework OpenGL
+ifeq ($(GOOS),darwin)
+CGO_LDFLAGS:=-framework OpenGL
 else
 CGO_LDFLAGS:=-lGLU
-CGO_CFLAGS:=-D__$(PLATFORM)
 endif
 
-GC="${O}g" -I ../gl20/_obj
+GC="${O}g" -I ../gl/_obj
 
 include $(GOROOT)/src/Make.pkg

@@ -46,8 +46,8 @@ func (pen *Pen) lineTo(p Point) {
 
 		if p.distanceTo(s) < 20.0 {
 
-			gl.Vertex2i(gl.GLint(p.x), gl.GLint(p.y))
-			gl.Vertex2i(gl.GLint(s.x), gl.GLint(s.y))
+			gl.Vertex2i(int(p.x), int(p.y))
+			gl.Vertex2i(int(s.x), int(s.y))
 
 		}
 
@@ -76,17 +76,13 @@ func main() {
 		panic("sdl error")
 	}
 
-	if gl.Init() != 0 {
-		panic("glew error")
-	}
-
 	pen := Pen{}
 
 	gl.MatrixMode(gl.PROJECTION)
 
-	gl.Viewport(0, 0, gl.GLsizei(screen.W), gl.GLsizei(screen.H))
+	gl.Viewport(0, 0, int(screen.W), int(screen.H))
 	gl.LoadIdentity()
-	gl.Ortho(0, gl.GLdouble(screen.W), gl.GLdouble(screen.H), 0, -1.0, 1.0)
+	gl.Ortho(0, float64(screen.W), float64(screen.H), 0, -1.0, 1.0)
 
 	gl.ClearColor(1, 1, 1, 0)
 	gl.Clear(gl.COLOR_BUFFER_BIT)

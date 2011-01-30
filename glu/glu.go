@@ -1,6 +1,6 @@
 package glu
 
-// #ifdef __Darwin
+// #ifdef __APPLE__
 // # include <OpenGL/glu.h>
 // #else
 // # include <GL/glu.h>
@@ -9,7 +9,7 @@ package glu
 //
 import "C"
 import "unsafe"
-import "gl/gl20"
+import "gl"
 
 func Build2DMipmaps(target gl.GLenum, internalFormat int, width, height int, format, kind gl.GLenum, data unsafe.Pointer) int {
 	return int(C.gluBuild2DMipmaps(
@@ -23,7 +23,7 @@ func Build2DMipmaps(target gl.GLenum, internalFormat int, width, height int, for
 	))
 }
 
-func Perspective(fovy, aspect, zNear, zFar float) {
+func Perspective(fovy, aspect, zNear, zFar float64) {
 	C.gluPerspective(
 		C.GLdouble(fovy),
 		C.GLdouble(aspect),
@@ -32,7 +32,7 @@ func Perspective(fovy, aspect, zNear, zFar float) {
 	)
 }
 
-func LookAt(eyeX, eyeY, eyeZ, centerX, centerY, centerZ, upX, upY, upZ float) {
+func LookAt(eyeX, eyeY, eyeZ, centerX, centerY, centerZ, upX, upY, upZ float64) {
 	C.gluLookAt(
 		C.GLdouble(eyeX),
 		C.GLdouble(eyeY),

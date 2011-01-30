@@ -3,22 +3,5 @@ GL headers should be in /usr/include/GL/
 To compile example you will also need sdl bindings from: http://github.com/banthar/Go-SDL
 
 To install type:
-	make install
+	make
 
-If you want advenced functionality like shaders & buffers, type:
-	make install-gl20
-
-To install both, type:
-	make install-all
-
-To import, use the following:
-	import "gl"
-
-To import advenced functionality like shaders & buffers, use the following instead:
-	import "gl/gl20"
-
-For the backwards-compatible GLU bindings, use the following:
-	import "glu"
-
-For the newer, better bindings, use the following:
-	import "gl/glu"
