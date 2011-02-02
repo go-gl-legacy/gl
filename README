@@ -4,4 +4,3 @@ To compile example you will also need sdl bindings from: http://github.com/banth
 
 To install type:
 	make
-

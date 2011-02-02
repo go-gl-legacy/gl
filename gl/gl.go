@@ -1504,7 +1504,7 @@ func PassThrough(token float32) {
 }
 
 //void glPixelStoref (GLenum pname, float param)
-func PixelStoref(pname GLenum, param float) {
+func PixelStoref(pname GLenum, param float32) {
 	C.glPixelStoref(C.GLenum(pname), C.GLfloat(param))
 }
 
