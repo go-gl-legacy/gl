@@ -13,7 +13,7 @@ package main
 /* this is go version based on SDL version */
 
 import "sdl"
-import "gl/gl20"
+import "gl"
 import "math"
 import "flag"
 
