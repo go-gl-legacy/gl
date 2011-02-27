@@ -101,7 +101,7 @@ func buildPalette() {
 }
 
 func mandelbrotAt(c complex128) Color {
-	var z complex128 = cmplx(0, 0)
+	var z complex128 = complex(0, 0)
 	for i := 0; i < *iterations; i++ {
 		z = z*z + c
 		if real(z)*real(z)+imag(z)*imag(z) > 4 {
@@ -128,7 +128,7 @@ func mandelbrot(w, h int, what Rect, discard <-chan bool, progress chan int) <-c
 
 			for x := 0; x < w; x++ {
 				r := float64(x)*stepx + what.X
-				c := cmplx(r, i)
+				c := complex(r, i)
 
 				offset := y*w*4 + x*4
 				color := mandelbrotAt(c)
