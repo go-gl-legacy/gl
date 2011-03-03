@@ -140,11 +140,13 @@ func mandelbrot(w, h int, what Rect, discard <-chan bool, progress chan int) <-c
 			select {
 			case _ = <-discard:
 				return
+			default:
 			}
 
 			// discard value if we have something
 			select {
 			case _ = <-discard:
+			default:
 			}
 
 			if len(progress) == 0 {
@@ -351,6 +353,7 @@ func (self *MandelbrotRequest) Update(tex *gl.Texture, tc *TexCoords) int {
 		select {
 		case p := <-self.Progress:
 			progress = p
+		default:
 		}
 
 		// if something is finished
@@ -369,6 +372,7 @@ func (self *MandelbrotRequest) Update(tex *gl.Texture, tc *TexCoords) int {
 			}
 			*tc = TexCoords{0, 0, 1, 1}
 			progress = 0
+		default:
 		}
 	}
 	return progress
