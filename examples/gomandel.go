@@ -137,13 +137,16 @@ func mandelbrot(w, h int, what Rect, discard <-chan bool, progress chan int) <-c
 				data[offset+2] = color.B
 				data[offset+3] = color.A
 			}
-			_, ok := <-discard
-			if ok {
+			select {
+			case _ = <-discard:
 				return
 			}
 
 			// discard value if we have something
-			_, ok = <-progress
+			select {
+			case _ = <-discard:
+			}
+
 			if len(progress) == 0 {
 				percents := int(float32(y) / float32(h-1) * 100)
 				if percents < 0 {
@@ -345,12 +348,14 @@ func (self *MandelbrotRequest) Update(tex *gl.Texture, tc *TexCoords) int {
 	// if request is pending check status
 	progress := -1
 	if self.Pending > 0 {
-		if p, ok := <-self.Progress; ok {
+		select {
+		case p := <-self.Progress:
 			progress = p
 		}
 
 		// if something is finished
-		if data, ok := <-self.Result; ok {
+		select {
+		case data := <-self.Result:
 			switch self.Pending {
 			case Small:
 				// this was a small image
