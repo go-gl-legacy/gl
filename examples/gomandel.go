@@ -99,7 +99,7 @@ func buildPalette() {
 }
 
 func mandelbrotAt(c complex128) Color {
-	var z complex128 = cmplx(0, 0)
+	var z complex128 = complex(0, 0)
 	for i := 0; i < *iterations; i++ {
 		z = z*z + c
 		if real(z)*real(z)+imag(z)*imag(z) > 4 {
@@ -126,7 +126,7 @@ func mandelbrot(w, h int, what Rect, discard <-chan bool, progress chan int) <-c
 
 			for x := 0; x < w; x++ {
 				r := float64(x)*stepx + what.X
-				c := cmplx(r, i)
+				c := complex(r, i)
 
 				offset := y*w*4 + x*4
 				color := mandelbrotAt(c)
@@ -135,13 +135,18 @@ func mandelbrot(w, h int, what Rect, discard <-chan bool, progress chan int) <-c
 				data[offset+2] = color.B
 				data[offset+3] = color.A
 			}
-			_, ok := <-discard
-			if ok {
+			select {
+			case _ = <-discard:
 				return
+			default:
 			}
 
 			// discard value if we have something
-			_, ok = <-progress
+			select {
+			case _ = <-discard:
+			default:
+			}
+
 			if len(progress) == 0 {
 				percents := int(float32(y) / float32(h-1) * 100)
 				if percents < 0 {
@@ -343,12 +348,15 @@ func (self *MandelbrotRequest) Update(tex *gl.Texture, tc *TexCoords) int {
 	// if request is pending check status
 	progress := -1
 	if self.Pending > 0 {
-		if p, ok := <-self.Progress; ok {
+		select {
+		case p := <-self.Progress:
 			progress = p
+		default:
 		}
 
 		// if something is finished
-		if data, ok := <-self.Result; ok {
+		select {
+		case data := <-self.Result:
 			switch self.Pending {
 			case Small:
 				// this was a small image
@@ -362,6 +370,7 @@ func (self *MandelbrotRequest) Update(tex *gl.Texture, tc *TexCoords) int {
 			}
 			*tc = TexCoords{0, 0, 1, 1}
 			progress = 0
+		default:
 		}
 	}
 	return progress
