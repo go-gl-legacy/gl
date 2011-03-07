@@ -55,36 +55,26 @@ func glString(s string) *C.GLchar { return (*C.GLchar)(C.CString(s)) }
 func freeString(ptr *C.GLchar) { C.free(unsafe.Pointer(ptr)) }
 
 func GetGLenumType(v interface{}) (t GLenum, p unsafe.Pointer) {
+	rv := reflect.NewValue(v)
+	if rv.Type().Kind() != reflect.Ptr {
+		panic("not a pointer")
+	}
+	p = unsafe.Pointer(rv.(*reflect.PtrValue).Elem().Addr())
+
 	switch v.(type) {
-		case *uint8:
+		case *uint8, []uint8:
 			t = UNSIGNED_BYTE
-			p = unsafe.Pointer(v.(*uint8))
-		case []uint8:
-			t = UNSIGNED_BYTE
-			p = unsafe.Pointer(&(v.([]uint8)[0]))
-		case *int8:
+		case *int8, []int8:
 			t = BYTE
-			p = unsafe.Pointer(v.(*int8))
-		case []int8:
-			t = BYTE
-			p = unsafe.Pointer(&(v.([]int8)[0]))
-		case *uint16:
+		case *uint16, []uint16:
 			t = UNSIGNED_SHORT
-			p = unsafe.Pointer(v.(*uint16))
-		case []uint16:
-			t = UNSIGNED_SHORT
-			p = unsafe.Pointer(&(v.([]uint16)[0]))
-		case *int16:
+		case *int16, []int16:
 			t = SHORT
-			p = unsafe.Pointer(v.(*int16))
-		case []int16:
-			t = SHORT
-			p = unsafe.Pointer(&(v.([]int16)[0]))
 		default:
 			panic("unknown type: " + reflect.Typeof(v).String())
 	}
 
-	return t, p
+	return
 }
 
 // Object
