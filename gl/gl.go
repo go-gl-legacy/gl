@@ -59,7 +59,7 @@ func GetGLenumType(v interface{}) (t GLenum, p unsafe.Pointer) {
 	if rv.Type().Kind() != reflect.Ptr {
 		panic("not a pointer")
 	}
-	p = unsafe.Pointer(rv.(*reflect.PtrValue).Elem().Addr())
+	p = unsafe.Pointer(rv.(*reflect.PtrValue).Elem().UnsafeAddr())
 
 	switch v.(type) {
 		case *uint8, []uint8:
