@@ -4,19 +4,15 @@
 
 include $(GOROOT)/src/Make.inc
 
-all: draw gomandel gogears
+TARGETS=draw gomandel gogears
 
-draw: draw.go
-	$(GC) draw.go
-	$(LD) -o $@ draw.$(O)
+.PHONY: all clean
 
-gomandel: gomandel.go
-	$(GC) gomandel.go
-	$(LD) -o $@ gomandel.$(O)
+all: $(TARGETS)
 
-gogears: gogears.go
-	$(GC) gogears.go
-	$(LD) -o $@ gogears.$(O)
+$(TARGETS):
+	$(GC) $@.go
+	$(LD) -o $@ $@.$(O)
 
 clean:
-	rm -f -r *.8 *.6 *.o */*.8 */*.6 */*.o */_obj test-gl
+	rm -f -r *.8 *.6 *.o */*.8 */*.6 */*.o */_obj test-gl $(TARGETS)
