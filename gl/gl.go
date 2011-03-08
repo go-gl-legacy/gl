@@ -55,23 +55,34 @@ func freeString(ptr *C.GLchar) { C.free(unsafe.Pointer(ptr)) }
 
 func GetGLenumType(v interface{}) (t GLenum, p unsafe.Pointer) {
 	rv := reflect.NewValue(v)
+	var et reflect.Value
 	switch rv.Type().Kind() {
 		case reflect.Ptr:
-			p = unsafe.Pointer(rv.(*reflect.PtrValue).Elem().UnsafeAddr())
+			if rv.(*reflect.PtrValue).IsNil() {
+				panic("nil pointer")
+			}
+			et = rv.(*reflect.PtrValue).Elem()
 		case reflect.Slice:
-			p = unsafe.Pointer(rv.(*reflect.SliceValue).Elem(0).UnsafeAddr())
+			if rv.(*reflect.SliceValue).IsNil() {
+				panic("nil slice")
+			}
+			et = rv.(*reflect.SliceValue).Elem(0)
+		case reflect.Array:
+			et = rv.(*reflect.ArrayValue).Elem(0)
 		default:
 			panic("not a pointer or a slice")
 	}
 
-	switch v.(type) {
-		case *uint8, []uint8:
+	p = unsafe.Pointer(et.UnsafeAddr())
+
+	switch et.Type().Kind() {
+		case reflect.Uint8:
 			t = UNSIGNED_BYTE
-		case *int8, []int8:
+		case reflect.Int8:
 			t = BYTE
-		case *uint16, []uint16:
+		case reflect.Uint16:
 			t = UNSIGNED_SHORT
-		case *int16, []int16:
+		case reflect.Int16:
 			t = SHORT
 		default:
 			panic("unknown type: " + reflect.Typeof(v).String())
