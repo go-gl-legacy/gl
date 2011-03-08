@@ -43,7 +43,6 @@ func glBool(v bool) C.GLboolean {
 	}
 
 	return 0
-
 }
 
 func goBool(v C.GLboolean) bool {
@@ -56,10 +55,14 @@ func freeString(ptr *C.GLchar) { C.free(unsafe.Pointer(ptr)) }
 
 func GetGLenumType(v interface{}) (t GLenum, p unsafe.Pointer) {
 	rv := reflect.NewValue(v)
-	if rv.Type().Kind() != reflect.Ptr {
-		panic("not a pointer")
+	switch rv.Type().Kind() {
+		case reflect.Ptr:
+			p = unsafe.Pointer(rv.(*reflect.PtrValue).Elem().UnsafeAddr())
+		case reflect.Slice:
+			p = unsafe.Pointer(rv.(*reflect.SliceValue).Elem(0).UnsafeAddr())
+		default:
+			panic("not a pointer or a slice")
 	}
-	p = unsafe.Pointer(rv.(*reflect.PtrValue).Elem().UnsafeAddr())
 
 	switch v.(type) {
 		case *uint8, []uint8:
