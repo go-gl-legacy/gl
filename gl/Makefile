@@ -18,6 +18,10 @@ CGOFILES+=gl_notdarwin.go
 CGO_LDFLAGS:=-lGL
 endif
 
+ifneq ($(NVLEGACY),1)
+CGOFILES+=gl_notnvlegacy.go
+endif
+
 CLEANFILES+=gl
 
 include $(GOROOT)/src/Make.pkg

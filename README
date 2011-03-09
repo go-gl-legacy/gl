@@ -4,3 +4,6 @@ To compile example you will also need sdl bindings from: http://github.com/banth
 
 To install type:
 	make
+
+If using legacy Nvidia drivers (173xx,96xx) type:
+	make NVLEGACY=1
