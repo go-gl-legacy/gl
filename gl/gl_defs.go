@@ -1,4 +1,4 @@
-// godefs -f -D__Linux -g gl gl_defs.c
+// godefs -g gl gl_defs.c
 
 // MACHINE GENERATED - DO NOT EDIT.
 
@@ -33,7 +33,6 @@ const (
 	ALIASED_LINE_WIDTH_RANGE                      = 0x846e
 	ALIASED_POINT_SIZE_RANGE                      = 0x846d
 	ALL_ATTRIB_BITS                               = 0xfffff
-	ALL_CLIENT_ATTRIB_BITS                        = 0xffffffff
 	ALPHA12                                       = 0x803d
 	ALPHA16_SNORM                                 = 0x9018
 	ALPHA16                                       = 0x803e
@@ -127,8 +126,6 @@ const (
 	CLIP_DISTANCE3                                = 0x3003
 	CLIP_DISTANCE4                                = 0x3004
 	CLIP_DISTANCE5                                = 0x3005
-	CLIP_DISTANCE6                                = 0x3006
-	CLIP_DISTANCE7                                = 0x3007
 	CLIP_PLANE0                                   = 0x3000
 	CLIP_PLANE1                                   = 0x3001
 	CLIP_PLANE2                                   = 0x3002
@@ -328,7 +325,7 @@ const (
 	EVAL_BIT                                      = 0x10000
 	EXP2                                          = 0x801
 	EXP                                           = 0x800
-	EXTENSIONS                                    = 0x1F03
+	EXTENSIONS                                    = 0x1f03
 	EYE_LINEAR                                    = 0x2400
 	EYE_PLANE                                     = 0x2502
 	FALSE                                         = 0
@@ -423,7 +420,6 @@ const (
 	GEOMETRY_SHADER                               = 0x8dd9
 	GEOMETRY_VERTICES_OUT                         = 0x8916
 	GEQUAL                                        = 0x206
-	GLEXT_VERSION                                 = 0x38
 	GREATER                                       = 0x204
 	GREEN_BIAS                                    = 0xd19
 	GREEN_BITS                                    = 0xd53
@@ -1296,11 +1292,8 @@ const (
 	VALIDATE_STATUS                               = 0x8b83
 	VENDOR                                        = 0x1f00
 	VERSION_1_1                                   = 0x1
-	VERSION_1_2_DEPRECATED                        = 0x1
 	VERSION_1_2                                   = 0x1
-	VERSION_1_3_DEPRECATED                        = 0x1
 	VERSION_1_3                                   = 0x1
-	VERSION_1_4_DEPRECATED                        = 0x1
 	VERSION_1_4                                   = 0x1
 	VERSION_1_5                                   = 0x1
 	VERSION_2_0                                   = 0x1
