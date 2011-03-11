@@ -12,6 +12,7 @@ package gl
 // #define GLEW_GET_FUN(x) (*x)
 //
 import "C"
+import "fmt"
 import "unsafe"
 import "reflect"
 
@@ -52,46 +53,173 @@ func glString(s string) *C.GLchar { return (*C.GLchar)(C.CString(s)) }
 
 func freeString(ptr *C.GLchar) { C.free(unsafe.Pointer(ptr)) }
 
+type UnsignedByte_3_3_2 struct {
+	Value interface{} "b332"
+}
+
+type UnsignedByte_2_2_3_Rev struct {
+	Value interface{} "b223r"
+}
+
+type UnsignedShort_5_6_5 struct {
+	Value interface{} "s565"
+}
+
+type UnsignedShort_5_6_5_Rev struct {
+	Value interface{} "s565r"
+}
+
+type UnsignedShort_4_4_4_4 struct {
+	Value interface{} "s4444"
+}
+
+type UnsignedShort_4_4_4_4_Rev struct {
+	Value interface{} "s4444r"
+}
+
+type UnsignedShort_5_5_5_1 struct {
+	Value interface{} "s5551"
+}
+
+type UnsignedShort_1_5_5_5_Rev struct {
+	Value interface{} "s1555r"
+}
+
+type UnsignedInt_8_8_8_8 struct {
+	Value interface{} "i8888"
+}
+
+type UnsignedInt_8_8_8_8_Rev struct {
+	Value interface{} "i8888r"
+}
+
+type UnsignedInt_10_10_10_2 struct {
+	Value interface{} "i1010102"
+}
+
+type UnsignedInt_2_10_10_10_Rev struct {
+	Value interface{} "i2101010r"
+}
+
 func GetGLenumType(v interface{}) (t GLenum, p unsafe.Pointer) {
+	var ft GLenum
+
+	getGLenum := func(v reflect.Value) (gle GLenum) {
+		ftassert := func(a GLenum) {
+			if ft != a {
+				panic(fmt.Sprintf("unexpected type found in struct (%v)", v.Type().Name()))
+			}
+		}
+
+		switch v.Type().Kind() {
+			case reflect.Uint8:
+				gle = UNSIGNED_BYTE
+			case reflect.Int8:
+				gle = BYTE
+			case reflect.Uint16:
+				gle = UNSIGNED_SHORT
+			case reflect.Int16:
+				gle = SHORT
+			case reflect.Uint32:
+				gle = UNSIGNED_INT
+			case reflect.Int32:
+				gle = INT
+			case reflect.Float32:
+				gle = FLOAT
+			case reflect.Struct:
+				fv, _ := v.Type().(*reflect.StructType).FieldByName("Value")
+				switch fv.Tag {
+					case "b332":
+						ftassert(UNSIGNED_BYTE)
+						gle = UNSIGNED_BYTE_3_3_2
+					case "b233r":
+						ftassert(UNSIGNED_BYTE)
+						gle = UNSIGNED_BYTE_2_3_3_REV
+					case "s565":
+						ftassert(UNSIGNED_SHORT)
+						gle = UNSIGNED_SHORT_5_6_5
+					case "s565r":
+						ftassert(UNSIGNED_SHORT)
+						gle = UNSIGNED_SHORT_5_6_5_REV
+					case "s4444":
+						ftassert(UNSIGNED_SHORT)
+						gle = UNSIGNED_SHORT_4_4_4_4
+					case "s4444r":
+						ftassert(UNSIGNED_SHORT)
+						gle = UNSIGNED_SHORT_4_4_4_4_REV
+					case "s5551":
+						ftassert(UNSIGNED_SHORT)
+						gle = UNSIGNED_SHORT_5_5_5_1
+					case "s1555r":
+						ftassert(UNSIGNED_SHORT)
+						gle = UNSIGNED_SHORT_1_5_5_5_REV
+					case "i8888":
+						ftassert(UNSIGNED_INT)
+						gle = UNSIGNED_INT_8_8_8_8
+					case "i8888r":
+						ftassert(UNSIGNED_INT)
+						gle = UNSIGNED_INT_8_8_8_8_REV
+					case "i1010102":
+						ftassert(UNSIGNED_INT)
+						gle = UNSIGNED_INT_10_10_10_2
+					case "i2101010r":
+						ftassert(UNSIGNED_INT)
+						gle = UNSIGNED_INT_2_10_10_10_REV
+					default:
+						panic(fmt.Sprintf("unrecognized struct type (%v)", fv.Tag))
+				}
+			default:
+				panic(fmt.Sprintf("unknown type (%v)", reflect.Typeof(v).String()))
+		}
+
+		if gle == 0 {
+			panic("couldn't detect GLenum type")
+		}
+
+		return
+	}
+
+	var underlying func(v reflect.Value) (ev reflect.Value)
+	underlying = func(v reflect.Value) (ev reflect.Value) {
+		switch v.Type().Kind() {
+			case reflect.Ptr:
+				if v.(*reflect.PtrValue).IsNil() {
+					panic("nil pointer")
+				}
+				ev = v.(*reflect.PtrValue).Elem()
+			case reflect.Slice:
+				if v.(*reflect.SliceValue).IsNil() {
+					panic("nil slice")
+				}
+				ev = v.(*reflect.SliceValue).Elem(0)
+			case reflect.Array:
+				ev = v.(*reflect.ArrayValue).Elem(0)
+			case reflect.Struct:
+				st := v.Type().(*reflect.StructType)
+				if _, ok := st.FieldByName("Value"); (st.NumField() == 1) && ok {
+					ev = v
+					fv := underlying(ev.(*reflect.StructValue).FieldByName("Value"))
+					ft = getGLenum(fv)
+					p = unsafe.Pointer(fv.UnsafeAddr())
+				} else {
+					panic(fmt.Sprintf("unrecognized struct type (%v)", st.NumField()))
+				}
+			default:
+				panic("not a pointer, slice, array, or struct")
+		}
+
+		return
+	}
+
 	rv := reflect.NewValue(v)
-	var et reflect.Value
-	switch rv.Type().Kind() {
-		case reflect.Ptr:
-			if rv.(*reflect.PtrValue).IsNil() {
-				panic("nil pointer")
-			}
-			et = rv.(*reflect.PtrValue).Elem()
-		case reflect.Slice:
-			if rv.(*reflect.SliceValue).IsNil() {
-				panic("nil slice")
-			}
-			et = rv.(*reflect.SliceValue).Elem(0)
-		case reflect.Array:
-			et = rv.(*reflect.ArrayValue).Elem(0)
-		default:
-			panic("not a pointer or a slice")
+
+	ev := underlying(rv)
+
+	if p == nil {
+		p = unsafe.Pointer(ev.UnsafeAddr())
 	}
 
-	p = unsafe.Pointer(et.UnsafeAddr())
-
-	switch et.Type().Kind() {
-		case reflect.Uint8:
-			t = UNSIGNED_BYTE
-		case reflect.Int8:
-			t = BYTE
-		case reflect.Uint16:
-			t = UNSIGNED_SHORT
-		case reflect.Int16:
-			t = SHORT
-		case reflect.Uint32:
-			t = UNSIGNED_INT
-		case reflect.Int32:
-			t = INT
-		case reflect.Float32:
-			t = FLOAT
-		default:
-			panic("unknown type: " + reflect.Typeof(v).String())
-	}
+	t = getGLenum(ev)
 
 	return
 }
