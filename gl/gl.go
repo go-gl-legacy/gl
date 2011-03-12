@@ -446,6 +446,76 @@ func GetTexParameteriv(target GLenum, pname GLenum, params []int32) {
 	C.glGetTexParameteriv(C.GLenum(target), C.GLenum(pname), (*C.GLint)(&params[0]))
 }
 
+// Buffer Objects
+
+type Buffer Object
+
+// Create single buffer object
+func GenBuffer() Buffer {
+	var b C.GLuint
+	C.glGenBuffers(1, &b)
+	return Buffer(b)
+}
+
+// Fill slice with new buffers
+func GenBuffers(buffers []Buffer) {
+	C.glGenBuffers(C.GLsizei(len(buffers)), (*C.GLuint)(&buffers[0]))
+}
+
+// Delete buffer object
+func (buffer Buffer) Delete() {
+	b := C.GLuint(buffer)
+	C.glDeleteBuffers(1, &b)
+}
+
+// Delete all textures in slice
+func DeleteBuffers(buffers []Buffer) {
+	C.glDeleteBuffers(C.GLsizei(len(buffers)), (*C.GLuint)(&buffers[0]))
+}
+
+// Bind this buffer as target
+func (buffer Buffer) Bind(target GLenum) {
+	C.glBindBuffer(C.GLenum(target), C.GLuint(buffer))
+}
+
+// Creates and initializes a buffer object's data store
+func BufferData(target GLenum, size int, data interface{}, usage GLenum) {
+	_, p := GetGLenumType(data)
+	C.glBufferData(C.GLenum(target), C.GLsizeiptr(size), p, C.GLenum(usage))
+}
+
+//  Update a subset of a buffer object's data store
+func BufferSubData(target GLenum, offset int, size int, data interface{}) {
+	_, p := GetGLenumType(data)
+	C.glBufferSubData(C.GLenum(target), C.GLintptr(offset), C.GLsizeiptr(size), p)
+}
+
+// Returns a subset of a buffer object's data store
+func GetBufferSubData(target GLenum, offset int, size int, data interface{}) {
+	_, p := GetGLenumType(data)
+	C.glGetBufferSubData (C.GLenum(target), C.GLintptr(offset), C.GLsizeiptr(size), p)
+}
+
+//  Map a buffer object's data store
+func MapBuffer(target GLenum, access GLenum) {
+	C.glMapBuffer(C.GLenum(target), C.GLenum(access))
+}
+
+//  Unmap a buffer object's data store
+func UnmapBuffer(target GLenum) bool {
+	return goBool(C.glUnmapBuffer(C.GLenum(target)))
+}
+
+// Return buffer pointer
+func glGetBufferPointerv(target GLenum, pname GLenum, params []unsafe.Pointer) {
+	C.glGetBufferPointerv(C.GLenum(target), C.GLenum(pname), &params[0])
+}
+
+// Return parameters of a buffer object
+func GetBufferParameteriv(target GLenum, pname GLenum, params []int32) {
+	C.glGetBufferParameteriv(C.GLenum(target), C.GLenum(pname), (*C.GLint)(&params[0]))
+}
+
 // VertexAttrib
 
 type VertexAttrib int
@@ -596,14 +666,6 @@ func BlendEquationSeparate(modeRGB GLenum, modeAlpha GLenum) {
 
 func BlendFuncSeparate(srcRGB GLenum, dstRGB GLenum, srcAlpha GLenum, dstAlpha GLenum) {
 	C.glBlendFuncSeparate(C.GLenum(srcRGB), C.GLenum(dstRGB), C.GLenum(srcAlpha), C.GLenum(dstAlpha))
-}
-
-func BufferData(target GLenum, size int, data unsafe.Pointer, usage GLenum) {
-	C.glBufferData(C.GLenum(target), C.GLsizeiptr(size), data, C.GLenum(usage))
-}
-
-func BufferSubData(target GLenum, offset uintptr, size int, data unsafe.Pointer) {
-	C.glBufferSubData(C.GLenum(target), C.GLintptr(offset), C.GLsizeiptr(size), data)
 }
 
 func DisableVertexAttribArray(index VertexAttrib) {
