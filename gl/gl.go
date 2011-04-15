@@ -127,7 +127,10 @@ func GetGLenumType(v interface{}) (t GLenum, p unsafe.Pointer) {
 			case reflect.Float32:
 				gle = FLOAT
 			case reflect.Struct:
-				fv, _ := v.Type().(*reflect.StructType).FieldByName("Value")
+				fv, ok := v.Type().FieldByName("Value")
+				if !ok || (v.Type().NumField() != 1) {
+					panic("struct doesn't have Value field or has the wrong number of fields")
+				}
 				switch fv.Tag {
 					case "b332":
 						ftassert(UNSIGNED_BYTE)
@@ -183,22 +186,22 @@ func GetGLenumType(v interface{}) (t GLenum, p unsafe.Pointer) {
 	underlying = func(v reflect.Value) (ev reflect.Value) {
 		switch v.Type().Kind() {
 			case reflect.Ptr:
-				if v.(*reflect.PtrValue).IsNil() {
+				if v.IsNil() {
 					panic("nil pointer")
 				}
-				ev = v.(*reflect.PtrValue).Elem()
+				ev = v.Elem()
 			case reflect.Slice:
-				if v.(*reflect.SliceValue).IsNil() {
+				if v.IsNil() {
 					panic("nil slice")
 				}
-				ev = v.(*reflect.SliceValue).Elem(0)
+				ev = v.Index(0)
 			case reflect.Array:
-				ev = v.(*reflect.ArrayValue).Elem(0)
+				ev = v.Index(0)
 			case reflect.Struct:
-				st := v.Type().(*reflect.StructType)
+				st := v.Type()
 				if _, ok := st.FieldByName("Value"); (st.NumField() == 1) && ok {
 					ev = v
-					fv := underlying(ev.(*reflect.StructValue).FieldByName("Value"))
+					fv := underlying(ev.FieldByName("Value"))
 					ft = getGLenum(fv)
 					p = unsafe.Pointer(fv.UnsafeAddr())
 				} else {
