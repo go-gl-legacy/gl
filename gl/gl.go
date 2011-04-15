@@ -57,8 +57,8 @@ type UnsignedByte_3_3_2 struct {
 	Value interface{} "b332"
 }
 
-type UnsignedByte_2_2_3_Rev struct {
-	Value interface{} "b223r"
+type UnsignedByte_2_3_3_Rev struct {
+	Value interface{} "b233r"
 }
 
 type UnsignedShort_5_6_5 struct {
