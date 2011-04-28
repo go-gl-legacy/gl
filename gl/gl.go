@@ -104,22 +104,22 @@ type UnsignedInt_2_10_10_10_Rev struct {
 func GetGLenumType(v interface{}) (t GLenum, p unsafe.Pointer) {
 	getGLenum := func(k reflect.Kind) (gle GLenum) {
 		switch k {
-			case reflect.Uint8:
-				gle = UNSIGNED_BYTE
-			case reflect.Int8:
-				gle = BYTE
-			case reflect.Uint16:
-				gle = UNSIGNED_SHORT
-			case reflect.Int16:
-				gle = SHORT
-			case reflect.Uint32:
-				gle = UNSIGNED_INT
-			case reflect.Int32:
-				gle = INT
-			case reflect.Float32:
-				gle = FLOAT
-			default:
-				panic(fmt.Sprintf("unknown type (%v)", reflect.Typeof(v).String()))
+		case reflect.Uint8:
+			gle = UNSIGNED_BYTE
+		case reflect.Int8:
+			gle = BYTE
+		case reflect.Uint16:
+			gle = UNSIGNED_SHORT
+		case reflect.Int16:
+			gle = SHORT
+		case reflect.Uint32:
+			gle = UNSIGNED_INT
+		case reflect.Int32:
+			gle = INT
+		case reflect.Float32:
+			gle = FLOAT
+		default:
+			panic(fmt.Sprintf("unknown type (%v)", reflect.TypeOf(v).String()))
 		}
 
 		if gle == 0 {
@@ -142,44 +142,44 @@ func GetGLenumType(v interface{}) (t GLenum, p unsafe.Pointer) {
 
 		fv, _ := v.Type().FieldByName("Value")
 		switch fv.Tag {
-			case "b332":
-				tassert(reflect.Uint8)
-				gle = UNSIGNED_BYTE_3_3_2
-			case "b233r":
-				tassert(reflect.Uint8)
-				gle = UNSIGNED_BYTE_2_3_3_REV
-			case "s565":
-				tassert(reflect.Uint16)
-				gle = UNSIGNED_SHORT_5_6_5
-			case "s565r":
-				tassert(reflect.Uint16)
-				gle = UNSIGNED_SHORT_5_6_5_REV
-			case "s4444":
-				tassert(reflect.Uint16)
-				gle = UNSIGNED_SHORT_4_4_4_4
-			case "s4444r":
-				tassert(reflect.Uint16)
-				gle = UNSIGNED_SHORT_4_4_4_4_REV
-			case "s5551":
-				tassert(reflect.Uint16)
-				gle = UNSIGNED_SHORT_5_5_5_1
-			case "s1555r":
-				tassert(reflect.Uint16)
-				gle = UNSIGNED_SHORT_1_5_5_5_REV
-			case "i8888":
-				tassert(reflect.Uint32)
-				gle = UNSIGNED_INT_8_8_8_8
-			case "i8888r":
-				tassert(reflect.Uint32)
-				gle = UNSIGNED_INT_8_8_8_8_REV
-			case "i1010102":
-				tassert(reflect.Uint32)
-				gle = UNSIGNED_INT_10_10_10_2
-			case "i2101010r":
-				tassert(reflect.Uint32)
-				gle = UNSIGNED_INT_2_10_10_10_REV
-			default:
-				panic(fmt.Sprintf("unrecognized struct type (%v)", fv.Tag))
+		case "b332":
+			tassert(reflect.Uint8)
+			gle = UNSIGNED_BYTE_3_3_2
+		case "b233r":
+			tassert(reflect.Uint8)
+			gle = UNSIGNED_BYTE_2_3_3_REV
+		case "s565":
+			tassert(reflect.Uint16)
+			gle = UNSIGNED_SHORT_5_6_5
+		case "s565r":
+			tassert(reflect.Uint16)
+			gle = UNSIGNED_SHORT_5_6_5_REV
+		case "s4444":
+			tassert(reflect.Uint16)
+			gle = UNSIGNED_SHORT_4_4_4_4
+		case "s4444r":
+			tassert(reflect.Uint16)
+			gle = UNSIGNED_SHORT_4_4_4_4_REV
+		case "s5551":
+			tassert(reflect.Uint16)
+			gle = UNSIGNED_SHORT_5_5_5_1
+		case "s1555r":
+			tassert(reflect.Uint16)
+			gle = UNSIGNED_SHORT_1_5_5_5_REV
+		case "i8888":
+			tassert(reflect.Uint32)
+			gle = UNSIGNED_INT_8_8_8_8
+		case "i8888r":
+			tassert(reflect.Uint32)
+			gle = UNSIGNED_INT_8_8_8_8_REV
+		case "i1010102":
+			tassert(reflect.Uint32)
+			gle = UNSIGNED_INT_10_10_10_2
+		case "i2101010r":
+			tassert(reflect.Uint32)
+			gle = UNSIGNED_INT_2_10_10_10_REV
+		default:
+			panic(fmt.Sprintf("unrecognized struct type (%v)", fv.Tag))
 		}
 
 		if gle == 0 {
@@ -192,34 +192,34 @@ func GetGLenumType(v interface{}) (t GLenum, p unsafe.Pointer) {
 	var dostuff func(v reflect.Value) (ev reflect.Value, t reflect.Kind)
 	dostuff = func(v reflect.Value) (ev reflect.Value, t reflect.Kind) {
 		switch v.Type().Kind() {
-			case reflect.Ptr:
-				if v.IsNil() {
-					panic("nil pointer")
-				}
-				ev = v.Elem()
-				t = ev.Type().Kind()
-			case reflect.Slice:
-				if v.IsNil() {
-					panic("nil slice")
-				}
-				ev = v.Index(0)
-				t = ev.Type().Kind()
-			case reflect.Array:
-				ev = v.Index(0)
-				t = ev.Type().Kind()
-			case reflect.Interface:
-				if v.IsNil() {
-					panic("nil interface")
-				}
-				ev, t = dostuff(v.Elem())
-			default:
-				panic(fmt.Sprintf("not a pointer, slice, array, or struct (%v)", v.Type().Kind()))
+		case reflect.Ptr:
+			if v.IsNil() {
+				panic("nil pointer")
+			}
+			ev = v.Elem()
+			t = ev.Type().Kind()
+		case reflect.Slice:
+			if v.IsNil() {
+				panic("nil slice")
+			}
+			ev = v.Index(0)
+			t = ev.Type().Kind()
+		case reflect.Array:
+			ev = v.Index(0)
+			t = ev.Type().Kind()
+		case reflect.Interface:
+			if v.IsNil() {
+				panic("nil interface")
+			}
+			ev, t = dostuff(v.Elem())
+		default:
+			panic(fmt.Sprintf("not a pointer, slice, array, or struct (%v)", v.Type().Kind()))
 		}
 
 		return
 	}
 
-	rv := reflect.NewValue(v)
+	rv := reflect.ValueOf(v)
 
 	var ev reflect.Value
 	{
@@ -672,7 +672,7 @@ func BufferSubData(target GLenum, offset int, size int, data interface{}) {
 // Returns a subset of a buffer object's data store
 func GetBufferSubData(target GLenum, offset int, size int, data interface{}) {
 	_, p := GetGLenumType(data)
-	C.glGetBufferSubData (C.GLenum(target), C.GLintptr(offset), C.GLsizeiptr(size), p)
+	C.glGetBufferSubData(C.GLenum(target), C.GLintptr(offset), C.GLsizeiptr(size), p)
 }
 
 //  Map a buffer object's data store
@@ -2489,6 +2489,5 @@ func GenFramebuffers(bufs []Framebuffer) {
 //}
 
 func Init() GLenum {
-	return GLenum(C.glewInit());
+	return GLenum(C.glewInit())
 }
-
