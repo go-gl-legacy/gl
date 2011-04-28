@@ -101,123 +101,130 @@ type UnsignedInt_2_10_10_10_Rev struct {
 	Value interface{} "i2101010r"
 }
 
+func enumFromKind(k reflect.Kind) (gle GLenum) {
+	switch k {
+	case reflect.Uint8:
+		gle = UNSIGNED_BYTE
+	case reflect.Int8:
+		gle = BYTE
+	case reflect.Uint16:
+		gle = UNSIGNED_SHORT
+	case reflect.Int16:
+		gle = SHORT
+	case reflect.Uint32:
+		gle = UNSIGNED_INT
+	case reflect.Int32:
+		gle = INT
+	case reflect.Float32:
+		gle = FLOAT
+	default:
+		panic(fmt.Sprintf("unknown type (%v)", k))
+	}
+
+	if gle == 0 {
+		panic("couldn't detect GLenum type")
+	}
+
+	return
+}
+
+func enumFromStruct(v reflect.Value, fk reflect.Kind) (gle GLenum) {
+	if v.Type().Kind() != reflect.Struct {
+		panic("not a struct")
+	}
+
+	tassert := func(ek reflect.Kind) {
+		if ek != fk {
+			panic(fmt.Sprintf("unexpected type found in struct (%v)", v.Type().Name()))
+		}
+	}
+
+	fv, _ := v.Type().FieldByName("Value")
+	switch fv.Tag {
+	case "b332":
+		tassert(reflect.Uint8)
+		gle = UNSIGNED_BYTE_3_3_2
+	case "b233r":
+		tassert(reflect.Uint8)
+		gle = UNSIGNED_BYTE_2_3_3_REV
+	case "s565":
+		tassert(reflect.Uint16)
+		gle = UNSIGNED_SHORT_5_6_5
+	case "s565r":
+		tassert(reflect.Uint16)
+		gle = UNSIGNED_SHORT_5_6_5_REV
+	case "s4444":
+		tassert(reflect.Uint16)
+		gle = UNSIGNED_SHORT_4_4_4_4
+	case "s4444r":
+		tassert(reflect.Uint16)
+		gle = UNSIGNED_SHORT_4_4_4_4_REV
+	case "s5551":
+		tassert(reflect.Uint16)
+		gle = UNSIGNED_SHORT_5_5_5_1
+	case "s1555r":
+		tassert(reflect.Uint16)
+		gle = UNSIGNED_SHORT_1_5_5_5_REV
+	case "i8888":
+		tassert(reflect.Uint32)
+		gle = UNSIGNED_INT_8_8_8_8
+	case "i8888r":
+		tassert(reflect.Uint32)
+		gle = UNSIGNED_INT_8_8_8_8_REV
+	case "i1010102":
+		tassert(reflect.Uint32)
+		gle = UNSIGNED_INT_10_10_10_2
+	case "i2101010r":
+		tassert(reflect.Uint32)
+		gle = UNSIGNED_INT_2_10_10_10_REV
+	default:
+		panic(fmt.Sprintf("unrecognized struct type (%v)", fv.Tag))
+	}
+
+	if gle == 0 {
+		panic("couldn't detect GLenum type")
+	}
+
+	return
+}
+
+func enumExtractValue(v reflect.Value) (ev reflect.Value, t reflect.Kind) {
+	switch v.Type().Kind() {
+	case reflect.Ptr:
+		if v.IsNil() {
+			panic("nil pointer")
+		}
+		ev = v.Elem()
+		t = ev.Type().Kind()
+	case reflect.Slice:
+		if v.IsNil() {
+			panic("nil slice")
+		}
+		ev = v.Index(0)
+		t = ev.Type().Kind()
+	case reflect.Array:
+		ev = v.Index(0)
+		t = ev.Type().Kind()
+	case reflect.Interface:
+		if v.IsNil() {
+			panic("nil interface")
+		}
+		ev, t = enumExtractValue(v.Elem())
+	default:
+		panic(fmt.Sprintf("not a pointer, slice, array, or struct (%v)", v.Type().Kind()))
+	}
+
+	return
+}
+
 func GetGLenumType(v interface{}) (t GLenum, p unsafe.Pointer) {
-	getGLenum := func(k reflect.Kind) (gle GLenum) {
-		switch k {
-		case reflect.Uint8:
-			gle = UNSIGNED_BYTE
-		case reflect.Int8:
-			gle = BYTE
-		case reflect.Uint16:
-			gle = UNSIGNED_SHORT
-		case reflect.Int16:
-			gle = SHORT
-		case reflect.Uint32:
-			gle = UNSIGNED_INT
-		case reflect.Int32:
-			gle = INT
-		case reflect.Float32:
-			gle = FLOAT
-		default:
-			panic(fmt.Sprintf("unknown type (%v)", reflect.TypeOf(v).String()))
+	defer func() {
+		r := recover()
+		if r != nil {
+			t = 0
+			p = nil
 		}
-
-		if gle == 0 {
-			panic("couldn't detect GLenum type")
-		}
-
-		return
-	}
-
-	getGLenumStruct := func(v reflect.Value, fk reflect.Kind) (gle GLenum) {
-		if v.Type().Kind() != reflect.Struct {
-			panic("not a struct")
-		}
-
-		tassert := func(ek reflect.Kind) {
-			if ek != fk {
-				panic(fmt.Sprintf("unexpected type found in struct (%v)", v.Type().Name()))
-			}
-		}
-
-		fv, _ := v.Type().FieldByName("Value")
-		switch fv.Tag {
-		case "b332":
-			tassert(reflect.Uint8)
-			gle = UNSIGNED_BYTE_3_3_2
-		case "b233r":
-			tassert(reflect.Uint8)
-			gle = UNSIGNED_BYTE_2_3_3_REV
-		case "s565":
-			tassert(reflect.Uint16)
-			gle = UNSIGNED_SHORT_5_6_5
-		case "s565r":
-			tassert(reflect.Uint16)
-			gle = UNSIGNED_SHORT_5_6_5_REV
-		case "s4444":
-			tassert(reflect.Uint16)
-			gle = UNSIGNED_SHORT_4_4_4_4
-		case "s4444r":
-			tassert(reflect.Uint16)
-			gle = UNSIGNED_SHORT_4_4_4_4_REV
-		case "s5551":
-			tassert(reflect.Uint16)
-			gle = UNSIGNED_SHORT_5_5_5_1
-		case "s1555r":
-			tassert(reflect.Uint16)
-			gle = UNSIGNED_SHORT_1_5_5_5_REV
-		case "i8888":
-			tassert(reflect.Uint32)
-			gle = UNSIGNED_INT_8_8_8_8
-		case "i8888r":
-			tassert(reflect.Uint32)
-			gle = UNSIGNED_INT_8_8_8_8_REV
-		case "i1010102":
-			tassert(reflect.Uint32)
-			gle = UNSIGNED_INT_10_10_10_2
-		case "i2101010r":
-			tassert(reflect.Uint32)
-			gle = UNSIGNED_INT_2_10_10_10_REV
-		default:
-			panic(fmt.Sprintf("unrecognized struct type (%v)", fv.Tag))
-		}
-
-		if gle == 0 {
-			panic("couldn't detect GLenum type")
-		}
-
-		return
-	}
-
-	var dostuff func(v reflect.Value) (ev reflect.Value, t reflect.Kind)
-	dostuff = func(v reflect.Value) (ev reflect.Value, t reflect.Kind) {
-		switch v.Type().Kind() {
-		case reflect.Ptr:
-			if v.IsNil() {
-				panic("nil pointer")
-			}
-			ev = v.Elem()
-			t = ev.Type().Kind()
-		case reflect.Slice:
-			if v.IsNil() {
-				panic("nil slice")
-			}
-			ev = v.Index(0)
-			t = ev.Type().Kind()
-		case reflect.Array:
-			ev = v.Index(0)
-			t = ev.Type().Kind()
-		case reflect.Interface:
-			if v.IsNil() {
-				panic("nil interface")
-			}
-			ev, t = dostuff(v.Elem())
-		default:
-			panic(fmt.Sprintf("not a pointer, slice, array, or struct (%v)", v.Type().Kind()))
-		}
-
-		return
-	}
+	}()
 
 	rv := reflect.ValueOf(v)
 
@@ -233,14 +240,14 @@ func GetGLenumType(v interface{}) (t GLenum, p unsafe.Pointer) {
 		if rv.Type().Kind() == reflect.Struct {
 			st := rv.Type()
 			if _, ok := st.FieldByName("Value"); (st.NumField() == 1) && ok {
-				ev, k = dostuff(rv.FieldByName("Value"))
-				t = getGLenumStruct(rv, k)
+				ev, k = enumExtractValue(rv.FieldByName("Value"))
+				t = enumFromStruct(rv, k)
 			} else {
 				panic(fmt.Sprintf("unrecognized struct type: may not contain Value field (NumField: %v)", st.NumField()))
 			}
 		} else {
-			ev, k = dostuff(rv)
-			t = getGLenum(k)
+			ev, k = enumExtractValue(rv)
+			t = enumFromKind(k)
 		}
 	}
 
