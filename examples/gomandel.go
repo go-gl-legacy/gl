@@ -409,6 +409,10 @@ func main() {
 		panic("sdl error")
 	}
 
+	if gl.Init() != 0 {
+		panic("gl error")	
+	}
+
 	sdl.WM_SetCaption("Gomandel", "Gomandel")
 
 	gl.Enable(gl.TEXTURE_2D)

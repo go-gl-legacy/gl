@@ -53,44 +53,44 @@ func glString(s string) *C.GLchar { return (*C.GLchar)(C.CString(s)) }
 func freeString(ptr *C.GLchar) { C.free(unsafe.Pointer(ptr)) }
 
 func GetGLenumType(v interface{}) (t GLenum, p unsafe.Pointer) {
-	rv := reflect.NewValue(v)
+	rv := reflect.ValueOf(v)
 	var et reflect.Value
 	switch rv.Type().Kind() {
-		case reflect.Ptr:
-			if rv.(*reflect.PtrValue).IsNil() {
-				panic("nil pointer")
-			}
-			et = rv.(*reflect.PtrValue).Elem()
-		case reflect.Slice:
-			if rv.(*reflect.SliceValue).IsNil() {
-				panic("nil slice")
-			}
-			et = rv.(*reflect.SliceValue).Elem(0)
-		case reflect.Array:
-			et = rv.(*reflect.ArrayValue).Elem(0)
-		default:
-			panic("not a pointer or a slice")
+	case reflect.Ptr:
+		if rv.IsNil() {
+			panic("nil pointer")
+		}
+		et = rv.Elem()
+	case reflect.Slice:
+		if rv.IsNil() {
+			panic("nil slice")
+		}
+		et = rv.Index(0)
+	case reflect.Array:
+		et = rv.Index(0)
+	default:
+		panic("not a pointer or a slice")
 	}
 
 	p = unsafe.Pointer(et.UnsafeAddr())
 
 	switch et.Type().Kind() {
-		case reflect.Uint8:
-			t = UNSIGNED_BYTE
-		case reflect.Int8:
-			t = BYTE
-		case reflect.Uint16:
-			t = UNSIGNED_SHORT
-		case reflect.Int16:
-			t = SHORT
-		case reflect.Uint32:
-			t = UNSIGNED_INT
-		case reflect.Int32:
-			t = INT
-		case reflect.Float32:
-			t = FLOAT
-		default:
-			panic("unknown type: " + reflect.Typeof(v).String())
+	case reflect.Uint8:
+		t = UNSIGNED_BYTE
+	case reflect.Int8:
+		t = BYTE
+	case reflect.Uint16:
+		t = UNSIGNED_SHORT
+	case reflect.Int16:
+		t = SHORT
+	case reflect.Uint32:
+		t = UNSIGNED_INT
+	case reflect.Int32:
+		t = INT
+	case reflect.Float32:
+		t = FLOAT
+	default:
+		panic("unknown type: " + reflect.TypeOf(v).String())
 	}
 
 	return
@@ -519,7 +519,7 @@ func BufferSubData(target GLenum, offset int, size int, data interface{}) {
 // Returns a subset of a buffer object's data store
 func GetBufferSubData(target GLenum, offset int, size int, data interface{}) {
 	_, p := GetGLenumType(data)
-	C.glGetBufferSubData (C.GLenum(target), C.GLintptr(offset), C.GLsizeiptr(size), p)
+	C.glGetBufferSubData(C.GLenum(target), C.GLintptr(offset), C.GLsizeiptr(size), p)
 }
 
 //  Map a buffer object's data store
@@ -2336,6 +2336,5 @@ func GenFramebuffers(bufs []Framebuffer) {
 //}
 
 func Init() GLenum {
-	return GLenum(C.glewInit());
+	return GLenum(C.glewInit())
 }
-
