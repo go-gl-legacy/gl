@@ -1,17 +1,16 @@
 package gl
 
 // #include <stdlib.h>
-// #define GL_GLEXT_PROTOTYPES
-//
-// void* cmalloc(int s){return malloc(s);};
 //
 // #ifdef __APPLE__
-// # include <OpenGL/gl.h>
-// # include <OpenGL/glext.h>
+// # include <OpenGL/glew.h>
 // #else
-// # include <GL/gl.h>
-// # include <GL/glext.h>
+// # include <GL/glew.h>
 // #endif
+//
+// #undef GLEW_GET_FUN
+// #define GLEW_GET_FUN(x) (*x)
+//
 import "C"
 import "unsafe"
 import "reflect"
@@ -122,7 +121,7 @@ func (shader Shader) GetInfoLog() string {
 	var len C.GLint
 	C.glGetShaderiv(C.GLuint(shader), C.GLenum(INFO_LOG_LENGTH), &len)
 
-	log := C.cmalloc(C.int(len + 1))
+	log := C.malloc(C.size_t(len + 1))
 	C.glGetShaderInfoLog(C.GLuint(shader), C.GLsizei(len), nil, (*C.GLchar)(log))
 
 	defer C.free(log)
@@ -134,7 +133,7 @@ func (shader Shader) GetSource() string {
 	var len C.GLint
 	C.glGetShaderiv(C.GLuint(shader), C.GLenum(SHADER_SOURCE_LENGTH), &len)
 
-	log := C.cmalloc(C.int(len + 1))
+	log := C.malloc(C.size_t(len + 1))
 	C.glGetShaderSource(C.GLuint(shader), C.GLsizei(len), nil, (*C.GLchar)(log))
 
 	defer C.free(log)
@@ -201,7 +200,7 @@ func (program Program) GetInfoLog() string {
 	var len C.GLint
 	C.glGetProgramiv(C.GLuint(program), C.GLenum(INFO_LOG_LENGTH), &len)
 
-	log := C.cmalloc(C.int(len + 1))
+	log := C.malloc(C.size_t(len + 1))
 	C.glGetProgramInfoLog(C.GLuint(program), C.GLsizei(len), nil, (*C.GLchar)(log))
 
 	defer C.free(log)
@@ -284,6 +283,33 @@ func DeleteTextures(textures []Texture) {
 // Bind this texture as target
 func (texture Texture) Bind(target GLenum) {
 	C.glBindTexture(C.GLenum(target), C.GLuint(texture))
+}
+
+//void glTexImage1D (GLenum target, int level, int internalformat, int width, int border, GLenum format, GLenum type, const GLvoid *pixels)
+func TexImage1D(target GLenum, level int, internalformat int, width int, border int, format GLenum, pixels interface{}) {
+	t, p := GetGLenumType(pixels)
+	C.glTexImage1D(C.GLenum(target), C.GLint(level), C.GLint(internalformat), C.GLsizei(width), C.GLint(border), C.GLenum(format), C.GLenum(t), p)
+}
+
+//void glTexImage2D (GLenum target, int level, int internalformat, int width, int height, int border, GLenum format, GLenum type, const GLvoid *pixels)
+func TexImage2D(target GLenum, level int, internalformat int, width int, height int, border int, format GLenum, pixels interface{}) {
+	t, p := GetGLenumType(pixels)
+	C.glTexImage2D(C.GLenum(target), C.GLint(level), C.GLint(internalformat), C.GLsizei(width), C.GLsizei(height), C.GLint(border), C.GLenum(format), C.GLenum(t), p)
+}
+
+//void glPixelMapfv (GLenum map, int mapsize, const float *values)
+func PixelMapfv(map_ GLenum, mapsize int, values *float32) {
+	C.glPixelMapfv(C.GLenum(map_), C.GLsizei(mapsize), (*C.GLfloat)(values))
+}
+
+//void glPixelMapuiv (GLenum map, int mapsize, const uint *values)
+func PixelMapuiv(map_ GLenum, mapsize int, values *uint32) {
+	C.glPixelMapuiv(C.GLenum(map_), C.GLsizei(mapsize), (*C.GLuint)(values))
+}
+
+//void glPixelMapusv (GLenum map, int mapsize, const uint16 *values)
+func PixelMapusv(map_ GLenum, mapsize int, values *uint16) {
+	C.glPixelMapusv(C.GLenum(map_), C.GLsizei(mapsize), (*C.GLushort)(values))
 }
 
 //void glTexSubImage1D (GLenum target, int level, int xoffset, int width, GLenum format, GLenum type, const GLvoid *pixels)
@@ -2308,3 +2334,8 @@ func GenFramebuffers(bufs []Framebuffer) {
 //func GetFramebufferAttachmentParameter (target, attachment, pname GLenum, params []int) {
 //  C.glGetFramebufferAttachmentParameter (C.GLenum(target), C.GLenum(attachment), C.GLenum(pname), (*C.GLint)(&params[0]))
 //}
+
+func Init() GLenum {
+	return GLenum(C.glewInit());
+}
+
