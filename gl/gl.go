@@ -218,14 +218,6 @@ func enumExtractValue(v reflect.Value) (ev reflect.Value, t reflect.Kind) {
 }
 
 func GetGLenumType(v interface{}) (t GLenum, p unsafe.Pointer) {
-	defer func() {
-		r := recover()
-		if r != nil {
-			t = 0
-			p = nil
-		}
-	}()
-
 	rv := reflect.ValueOf(v)
 
 	var ev reflect.Value
