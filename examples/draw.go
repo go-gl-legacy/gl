@@ -78,6 +78,10 @@ func main() {
 		panic("sdl error")
 	}
 
+	if gl.Init() != 0 {
+		panic("gl error")	
+	}
+
 	pen := Pen{}
 
 	gl.MatrixMode(gl.PROJECTION)

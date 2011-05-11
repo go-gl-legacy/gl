@@ -277,6 +277,10 @@ func main() {
 		panic("Couldn't set 300x300 GL video mode: " + sdl.GetError() + "\n")
 	}
 
+	if gl.Init() != 0 {
+		panic("gl error")	
+	}
+
 	sdl.WM_SetCaption("Gears", "gears")
 
 	init_()
