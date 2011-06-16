@@ -1,6 +1,9 @@
-Make sure you have OpenGL (in -dev version).
-GL headers should be in /usr/include/GL/
-To compile example you will also need sdl bindings from: http://github.com/banthar/Go-SDL
+
+You will need GLEW(http://glew.sourceforge.net/) at least version 1.5.8. Older versions require minor changes in gl.go.
+
+All GL headers are expected to be in /usr/include/GL/
+
+To compile examples you will also need sdl bindings from: http://github.com/banthar/Go-SDL
 
 To install type:
-	make
+	gomake
