@@ -1,5 +1,5 @@
 
-You will need GLEW(http://glew.sourceforge.net/) at least version 1.5.8. Older versions require minor changes in gl.go.
+You will need GLEW(http://glew.sourceforge.net/) at least version 1.5.8.
 
 All GL headers are expected to be in /usr/include/GL/
 
