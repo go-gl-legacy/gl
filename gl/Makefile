@@ -11,7 +11,7 @@ GOFILES:=gl_defs.go
 CGOFILES:=gl.go
 
 ifeq ($(GOOS),darwin)
-CGO_LDFLAGS:=-framework OpenGL -lGLEW -lGL
+CGO_LDFLAGS:=-framework OpenGL -lGLEW
 else
 CGO_LDFLAGS:=-lGLEW -lGL
 endif
