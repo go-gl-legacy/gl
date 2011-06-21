@@ -3,7 +3,7 @@ package gl
 // #include <stdlib.h>
 //
 // #ifdef __APPLE__
-// # include <OpenGL/glew.h>
+// # include <GL/glew.h>
 // #else
 // # include <GL/glew.h>
 // #endif
