@@ -45,3 +45,35 @@ func LookAt(eyeX, eyeY, eyeZ, centerX, centerY, centerZ, upX, upY, upZ float64) 
 		C.GLdouble(upZ),
 	)
 }
+
+// Project object coordinates to screen coordinates.
+func Project(objx, objy, objz float64, model, proj []float64, view []int32) (x, y, z float64) {
+	var wx, wy, wz C.GLdouble
+	C.gluProject(
+		C.GLdouble(objx), C.GLdouble(objy), C.GLdouble(objz), (*C.GLdouble)(&model[0]),
+		(*C.GLdouble)(&proj[0]), (*C.GLint)(&view[0]), &wx, &wy, &wz,
+	)
+	return float64(wx), float64(wy), float64(wz)
+}
+
+// Project screen coordinates to bject coordinates.
+func Unproject(wx, wy, wz float64, model, proj []float64, view []int32) (objx, objy, objz float64) {
+	var ox, oy, oz C.GLdouble
+	C.gluUnProject(
+		C.GLdouble(wx), C.GLdouble(wy), C.GLdouble(wz), (*C.GLdouble)(&model[0]),
+		(*C.GLdouble)(&proj[0]), (*C.GLint)(&view[0]), &ox, &oy, &oz,
+	)
+	return float64(ox), float64(oy), float64(oz)
+}
+
+// Project screen coordinates to bject coordinates.
+func Unproject4(wx, wy, wz, clipw float64, model, proj []float64, view []int32, near, far float64) (objx, objy, objz, objw float64) {
+	var ox, oy, oz, ow C.GLdouble
+	C.gluUnProject4(
+		C.GLdouble(wx), C.GLdouble(wy), C.GLdouble(wz), C.GLdouble(clipw),
+		(*C.GLdouble)(&model[0]), (*C.GLdouble)(&proj[0]), (*C.GLint)(&view[0]),
+		C.GLdouble(near), C.GLdouble(far), &ox, &oy, &oz, &ow,
+	)
+	return float64(ox), float64(oy), float64(oz), float64(ow)
+}
+
