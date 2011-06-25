@@ -6,7 +6,7 @@ include $(GOROOT)/src/Make.inc
 
 .PHONY: all gl install examples clean
 
-all: install examples
+all: install
 
 gl:
 	gomake -C gl
