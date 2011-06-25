@@ -89,6 +89,8 @@ func GetGLenumType(v interface{}) (t GLenum, p unsafe.Pointer) {
 		t = INT
 	case reflect.Float32:
 		t = FLOAT
+	case reflect.Float64:
+		t = DOUBLE
 	default:
 		panic("unknown type: " + reflect.TypeOf(v).String())
 	}
