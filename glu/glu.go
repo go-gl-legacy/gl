@@ -77,3 +77,8 @@ func Unproject4(wx, wy, wz, clipw float64, model, proj []float64, view []int32, 
 	return float64(ox), float64(oy), float64(oz), float64(ow)
 }
 
+func PickMatrix(x, y, delx, dely float64, viewport []int32) {
+	C.gluPickMatrix(C.GLdouble(x), C.GLdouble(y), C.GLdouble(delx),
+		C.GLdouble(dely), (*C.GLint)(&viewport[0]))
+}
+
