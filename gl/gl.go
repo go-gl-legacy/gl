@@ -1891,8 +1891,8 @@ func Scissor(x int, y int, width int, height int) {
 }
 
 //void glSelectBuffer (GLsizei size, uint *buffer)
-func SelectBuffer(size int, buffer *uint32) {
-	C.glSelectBuffer(C.GLsizei(size), (*C.GLuint)(buffer))
+func SelectBuffer(buffer []uint32) {
+	C.glSelectBuffer(C.GLsizei(len(buffer)), (*C.GLuint)(&buffer[0]))
 }
 
 //void glShadeModel (GLenum mode)
