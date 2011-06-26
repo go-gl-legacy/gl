@@ -89,6 +89,8 @@ func GetGLenumType(v interface{}) (t GLenum, p unsafe.Pointer) {
 		t = INT
 	case reflect.Float32:
 		t = FLOAT
+	case reflect.Float64:
+		t = DOUBLE
 	default:
 		panic("unknown type: " + reflect.TypeOf(v).String())
 	}
@@ -1889,8 +1891,8 @@ func Scissor(x int, y int, width int, height int) {
 }
 
 //void glSelectBuffer (GLsizei size, uint *buffer)
-func SelectBuffer(size int, buffer *uint32) {
-	C.glSelectBuffer(C.GLsizei(size), (*C.GLuint)(buffer))
+func SelectBuffer(buffer []uint32) {
+	C.glSelectBuffer(C.GLsizei(len(buffer)), (*C.GLuint)(&buffer[0]))
 }
 
 //void glShadeModel (GLenum mode)
