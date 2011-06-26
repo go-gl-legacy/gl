@@ -56,7 +56,7 @@ func Project(objx, objy, objz float64, model, proj []float64, view []int32) (x, 
 	return float64(wx), float64(wy), float64(wz)
 }
 
-// Project screen coordinates to bject coordinates.
+// Project screen coordinates to object coordinates.
 func Unproject(wx, wy, wz float64, model, proj []float64, view []int32) (objx, objy, objz float64) {
 	var ox, oy, oz C.GLdouble
 	C.gluUnProject(
@@ -66,7 +66,7 @@ func Unproject(wx, wy, wz float64, model, proj []float64, view []int32) (objx, o
 	return float64(ox), float64(oy), float64(oz)
 }
 
-// Project screen coordinates to bject coordinates.
+// Project screen coordinates to object coordinates.
 func Unproject4(wx, wy, wz, clipw float64, model, proj []float64, view []int32, near, far float64) (objx, objy, objz, objw float64) {
 	var ox, oy, oz, ow C.GLdouble
 	C.gluUnProject4(
@@ -82,3 +82,6 @@ func PickMatrix(x, y, delx, dely float64, viewport []int32) {
 		C.GLdouble(dely), (*C.GLint)(&viewport[0]))
 }
 
+func Ortho2D(left, right, bottom, top float64) {
+	C.gluOrtho2D(C.GLdouble(left), C.GLdouble(right), C.GLdouble(bottom), C.GLdouble(top))
+}
