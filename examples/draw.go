@@ -97,23 +97,19 @@ func main() {
 
 	for running {
 
-		e := &sdl.Event{}
-
-		for e.Poll() {
-			switch e.Type {
-			case sdl.QUIT:
+		for e := sdl.PollEvent(); e != nil; e = sdl.PollEvent() {
+			switch ev := e.(type) {
+			case *sdl.QuitEvent:
 				running = false
-			case sdl.KEYDOWN:
-               ke := e.Keyboard()
-               if ke.Keysym.Sym == sdl.K_ESCAPE {
-                   running = false
-               }
-			case sdl.MOUSEMOTION:
-				me := e.MouseMotion()
-				if me.State != 0 {
-					pen.lineTo(Point{int(me.X), int(me.Y)})
+			case *sdl.KeyboardEvent:
+				if ev.Keysym.Sym == sdl.K_ESCAPE {
+					running = false
+				}
+			case *sdl.MouseMotionEvent:
+				if ev.State != 0 {
+					pen.lineTo(Point{int(ev.X), int(ev.Y)})
 				} else {
-					pen.moveTo(Point{int(me.X), int(me.Y)})
+					pen.moveTo(Point{int(ev.X), int(ev.Y)})
 				}
 			}
 		}
