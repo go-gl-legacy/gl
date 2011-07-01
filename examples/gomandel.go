@@ -439,29 +439,31 @@ func main() {
 	rc.WaitFor(Small, &tex, &tc)
 
 	running := true
-	e := new(sdl.Event)
 	for running {
-		for e.Poll() {
-			switch e.Type {
-			case sdl.QUIT:
+		for e := sdl.PollEvent(); e != nil; e = sdl.PollEvent() {
+			switch e.(type) {
+			case *sdl.QuitEvent:
 				running = false
-			case sdl.MOUSEBUTTONDOWN:
-				dndDragging = true
-				sdl.GetMouseState(&dndStart.X, &dndStart.Y)
-				dndEnd = dndStart
-			case sdl.MOUSEBUTTONUP:
-				dndDragging = false
-				sdl.GetMouseState(&dndEnd.X, &dndEnd.Y)
-				if e.MouseButton().Button == 3 {
-					rect = initialRect
+			case *sdl.MouseButtonEvent:
+				mbe := e.(*sdl.MouseButtonEvent)
+				if(mbe.Type == sdl.MOUSEBUTTONDOWN) {
+					dndDragging = true
+					sdl.GetMouseState(&dndStart.X, &dndStart.Y)
+					dndEnd = dndStart
 				} else {
-					rect = rectFromSelection(dndStart, dndEnd, 512, 512, rect)
-					tc = texCoordsFromSelection(dndStart, dndEnd, 512, 512, tc)
-				}
+					dndDragging = false
+					sdl.GetMouseState(&dndEnd.X, &dndEnd.Y)
+					if mbe.Which == 3 {
+						rect = initialRect
+					} else {
+						rect = rectFromSelection(dndStart, dndEnd, 512, 512, rect)
+						tc = texCoordsFromSelection(dndStart, dndEnd, 512, 512, tc)
+					}
 
-				// make request
-				rc.MakeRequest(512, 512, rect)
-			case sdl.MOUSEMOTION:
+					// make request
+					rc.MakeRequest(512, 512, rect)
+				}
+			case *sdl.MouseMotionEvent:
 				if dndDragging {
 					sdl.GetMouseState(&dndEnd.X, &dndEnd.Y)
 				}
