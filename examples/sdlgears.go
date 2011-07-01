@@ -293,13 +293,13 @@ func main() {
 	reshape(int(screen.W), int(screen.H))
 	done = false
 	for !done {
-		var event sdl.Event
 
 		idle()
-		for event.Poll() {
-			switch event.Type {
-			case sdl.VIDEORESIZE:
-				screen = sdl.SetVideoMode(int(event.Resize().W), int(event.Resize().H), 16,
+		for e := sdl.PollEvent(); e != nil; e = sdl.PollEvent() {
+			switch e.(type) {
+			case *sdl.ResizeEvent:
+				re := e.(*sdl.ResizeEvent)
+				screen = sdl.SetVideoMode(int(re.W), int(re.H), 16,
 					sdl.OPENGL|sdl.RESIZABLE)
 				if screen != nil {
 					reshape(int(screen.W), int(screen.H))
@@ -308,7 +308,7 @@ func main() {
 				}
 				break
 
-			case sdl.QUIT:
+			case *sdl.QuitEvent:
 				done = true
 				break
 			}
