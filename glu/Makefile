@@ -10,6 +10,8 @@ CGOFILES:=glu.go
 
 ifeq ($(GOOS),darwin)
 CGO_LDFLAGS:=-framework OpenGL
+else ifeq ($(GOOS),windows)
+CGO_LDFLAGS:=-lglu32
 else
 CGO_LDFLAGS:=-lGLU
 endif
