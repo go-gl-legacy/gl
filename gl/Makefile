@@ -10,14 +10,6 @@ GOFILES:=gl_defs.go
 
 CGOFILES:=gl.go
 
-ifeq ($(GOOS),darwin)
-CGO_LDFLAGS:=-framework OpenGL -lGLEW -lGL
-else ifeq ($(GOOS),windows)
-CGO_LDFLAGS:=-lglew32 -lopengl32
-else
-CGO_LDFLAGS:=-lGLEW -lGL
-endif
-
 CLEANFILES+=gl
 
 include $(GOROOT)/src/Make.pkg

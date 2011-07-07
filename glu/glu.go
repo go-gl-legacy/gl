@@ -1,12 +1,14 @@
 package glu
 
+// #cgo darwin LDFLAGS: -framework OpenGL
+// #cgo windows LDFLAGS: -lglu32
+// #cgo linux LDFLAGS: -lGLU
+//
 // #ifdef __APPLE__
 // # include <OpenGL/glu.h>
 // #else
 // # include <GL/glu.h>
 // #endif
-//
-//
 import "C"
 import "gl"
 
