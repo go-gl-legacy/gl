@@ -1,5 +1,9 @@
 package gl
 
+// #cgo darwin LDFLAGS: -framework OpenGL -lGLEW -lGL
+// #cgo windows LDFLAGS: -lglew32 -lopengl32
+// #cgo linux LDFLAGS: -lGLEW -lGL
+//
 // #include <stdlib.h>
 //
 // #ifdef __APPLE__
@@ -10,7 +14,6 @@ package gl
 //
 // #undef GLEW_GET_FUN
 // #define GLEW_GET_FUN(x) (*x)
-//
 import "C"
 import "unsafe"
 import "reflect"
