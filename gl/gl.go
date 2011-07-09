@@ -114,6 +114,8 @@ func (shader Object) IsShader() bool { return C.glIsShader(C.GLuint(shader)) != 
 
 func (texture Object) IsTexture() bool { return C.glIsTexture(C.GLuint(texture)) != 0 }
 
+func (feedback Object) IsTransformFeedback() bool { return C.glIsTransformFeedback(C.GLuint(feedback)) != 0 }
+
 // Shader
 
 type Shader Object
@@ -192,6 +194,23 @@ func (program Program) DetachShader(shader Shader) {
 	C.glDetachShader(C.GLuint(program), C.GLuint(shader))
 }
 
+func (program Program) TransformFeedbackVaryings (names []string, buffer_mode GLenum) {
+	if len(names) == 0 {
+		C.glTransformFeedbackVaryings(C.GLuint(program), 0, (**C.GLchar)(nil), C.GLenum(buffer_mode))
+	} else {
+		gl_names := make([]*C.GLchar, len(names))
+
+		for i := range(names) {
+			gl_names[i] = glString(names[i])
+		}
+
+		C.glTransformFeedbackVaryings(C.GLuint(program), C.GLsizei(len(gl_names)), &gl_names[0], C.GLenum(buffer_mode))
+
+		for _, s := range(gl_names) {
+			freeString(s)
+		}
+	}
+}
 
 func (program Program) Link() { C.glLinkProgram(C.GLuint(program)) }
 
@@ -545,6 +564,57 @@ func glGetBufferPointerv(target GLenum, pname GLenum, params []unsafe.Pointer) {
 // Return parameters of a buffer object
 func GetBufferParameteriv(target GLenum, pname GLenum, params []int32) {
 	C.glGetBufferParameteriv(C.GLenum(target), C.GLenum(pname), (*C.GLint)(&params[0]))
+}
+
+// Transform Feedback Objects
+
+type TransformFeedback Object
+
+// Create a single transform feedback object
+func GenTransformFeedback() TransformFeedback {
+	var t C.GLuint
+	C.glGenTransformFeedbacks(1, &t)
+	return TransformFeedback(t)
+}
+
+// Fill slice with new transform feedbacks
+func GenTransformFeedbacks(feedbacks []TransformFeedback) {
+	C.glGenBuffers(C.GLsizei(len(feedbacks)), (*C.GLuint)(&feedbacks[0]))
+}
+
+// Delete a transform feedback object
+func (feedback TransformFeedback) Delete() {
+	C.glDeleteTransformFeedbacks(1, (*C.GLuint)(&feedback))
+}
+
+// Draw the results of the last Begin/End cycle from this transform feedback using primitive type 'mode'
+func (feedback TransformFeedback) Draw(mode GLenum) {
+	C.glDrawTransformFeedback(C.GLenum(mode), C.GLuint(feedback))
+}
+
+// Delete all transform feedbacks in a slice
+func DeleteTransformFeedbacks(feedbacks []TransformFeedback) {
+	C.glDeleteTransformFeedbacks(C.GLsizei(len(feedbacks)), (*C.GLuint)(&feedbacks[0]))
+}
+
+// Bind this transform feedback as target
+func (feedback TransformFeedback) Bind(target GLenum) {
+	C.glBindTransformFeedback(C.GLenum(target), C.GLuint(feedback))
+}
+
+// Begin transform feedback with primitive type 'mode'
+func BeginTransformFeedback(mode GLenum) {
+	C.glBeginTransformFeedback(C.GLenum(mode))
+}
+
+// Pause transform feedback
+func PauseTransformFeedback() {
+	C.glPauseTransformFeedback()
+}
+
+// End transform feedback
+func EndTransformFeedback() {
+	C.glEndTransformFeedback()
 }
 
 // VertexAttrib
