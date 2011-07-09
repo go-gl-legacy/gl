@@ -105,14 +105,17 @@ func GetGLenumType(v interface{}) (t GLenum, p unsafe.Pointer) {
 
 type Object C.GLuint
 
-func (buffer Object) IsBuffer() bool { return C.glIsBuffer(C.GLuint(buffer)) != 0 }
+func (object Object) IsBuffer() bool { return C.glIsBuffer(C.GLuint(object)) != 0 }
 
+func (object Object) IsProgram() bool { return C.glIsProgram(C.GLuint(object)) != 0 }
 
-func (program Object) IsProgram() bool { return C.glIsProgram(C.GLuint(program)) != 0 }
+func (object Object) IsShader() bool { return C.glIsShader(C.GLuint(object)) != 0 }
 
-func (shader Object) IsShader() bool { return C.glIsShader(C.GLuint(shader)) != 0 }
+func (object Object) IsTexture() bool { return C.glIsTexture(C.GLuint(object)) != 0 }
 
-func (texture Object) IsTexture() bool { return C.glIsTexture(C.GLuint(texture)) != 0 }
+func (object Object) IsTransformFeedback() bool { return C.glIsTransformFeedback(C.GLuint(object)) != 0 }
+
+func (object Object) IsVertexArray() bool { return C.glIsVertexArray(C.GLuint(object)) != 0 }
 
 // Shader
 
@@ -192,6 +195,23 @@ func (program Program) DetachShader(shader Shader) {
 	C.glDetachShader(C.GLuint(program), C.GLuint(shader))
 }
 
+func (program Program) TransformFeedbackVaryings (names []string, buffer_mode GLenum) {
+	if len(names) == 0 {
+		C.glTransformFeedbackVaryings(C.GLuint(program), 0, (**C.GLchar)(nil), C.GLenum(buffer_mode))
+	} else {
+		gl_names := make([]*C.GLchar, len(names))
+
+		for i := range(names) {
+			gl_names[i] = glString(names[i])
+		}
+
+		C.glTransformFeedbackVaryings(C.GLuint(program), C.GLsizei(len(gl_names)), &gl_names[0], C.GLenum(buffer_mode))
+
+		for _, s := range(gl_names) {
+			freeString(s)
+		}
+	}
+}
 
 func (program Program) Link() { C.glLinkProgram(C.GLuint(program)) }
 
@@ -240,16 +260,16 @@ func (program Program) GetUniformLocation(name string) UniformLocation {
 	return UniformLocation(C.glGetUniformLocation(C.GLuint(program), cname))
 }
 
-func (program Program) GetAttribLocation(name string) VertexAttrib {
+func (program Program) GetAttribLocation(name string) AttribLocation {
 
 	cname := glString(name)
 	defer freeString(cname)
 
-	return VertexAttrib(C.glGetAttribLocation(C.GLuint(program), cname))
+	return AttribLocation(C.glGetAttribLocation(C.GLuint(program), cname))
 }
 
 
-func (program Program) BindAttribLocation(index uint, name string) {
+func (program Program) BindAttribLocation(index AttribLocation, name string) {
 
 	cname := glString(name)
 	defer freeString(cname)
@@ -509,6 +529,16 @@ func (buffer Buffer) Bind(target GLenum) {
 	C.glBindBuffer(C.GLenum(target), C.GLuint(buffer))
 }
 
+// Bind this buffer as index of target
+func (buffer Buffer) BindBufferBase(target GLenum, index uint) {
+	C.glBindBufferBase(C.GLenum(target), C.GLuint(index), C.GLuint(buffer))
+}
+
+// Bind this buffer range as index of target
+func (buffer Buffer) BindBufferRange(target GLenum, index uint, offset int, size uint) {
+	C.glBindBufferRange(C.GLenum(target), C.GLuint(index), C.GLuint(buffer), C.GLintptr(offset), C.GLsizeiptr(size))
+}
+
 // Creates and initializes a buffer object's data store
 func BufferData(target GLenum, size int, data interface{}, usage GLenum) {
 	_, p := GetGLenumType(data)
@@ -547,51 +577,135 @@ func GetBufferParameteriv(target GLenum, pname GLenum, params []int32) {
 	C.glGetBufferParameteriv(C.GLenum(target), C.GLenum(pname), (*C.GLint)(&params[0]))
 }
 
-// VertexAttrib
+// Transform Feedback Objects
 
-type VertexAttrib int
+type TransformFeedback Object
 
-func VertexAttrib1f(indx uint, x float32) {
+// Create a single transform feedback object
+func GenTransformFeedback() TransformFeedback {
+	var t C.GLuint
+	C.glGenTransformFeedbacks(1, &t)
+	return TransformFeedback(t)
+}
+
+// Fill slice with new transform feedbacks
+func GenTransformFeedbacks(feedbacks []TransformFeedback) {
+	C.glGenBuffers(C.GLsizei(len(feedbacks)), (*C.GLuint)(&feedbacks[0]))
+}
+
+// Delete a transform feedback object
+func (feedback TransformFeedback) Delete() {
+	C.glDeleteTransformFeedbacks(1, (*C.GLuint)(&feedback))
+}
+
+// Draw the results of the last Begin/End cycle from this transform feedback using primitive type 'mode'
+func (feedback TransformFeedback) Draw(mode GLenum) {
+	C.glDrawTransformFeedback(C.GLenum(mode), C.GLuint(feedback))
+}
+
+// Delete all transform feedbacks in a slice
+func DeleteTransformFeedbacks(feedbacks []TransformFeedback) {
+	C.glDeleteTransformFeedbacks(C.GLsizei(len(feedbacks)), (*C.GLuint)(&feedbacks[0]))
+}
+
+// Bind this transform feedback as target
+func (feedback TransformFeedback) Bind(target GLenum) {
+	C.glBindTransformFeedback(C.GLenum(target), C.GLuint(feedback))
+}
+
+// Begin transform feedback with primitive type 'mode'
+func BeginTransformFeedback(mode GLenum) {
+	C.glBeginTransformFeedback(C.GLenum(mode))
+}
+
+// Pause transform feedback
+func PauseTransformFeedback() {
+	C.glPauseTransformFeedback()
+}
+
+// End transform feedback
+func EndTransformFeedback() {
+	C.glEndTransformFeedback()
+}
+
+// AttribLocation
+
+type AttribLocation int
+
+func (indx AttribLocation) Attrib1f(x float32) {
 	C.glVertexAttrib1f(C.GLuint(indx), C.GLfloat(x))
 }
 
-func VertexAttrib1fv(indx uint, values []float32) {
+func (indx AttribLocation) Attrib1fv(values []float32) {
 	//no range check
 	C.glVertexAttrib1fv(C.GLuint(indx), (*C.GLfloat)(unsafe.Pointer(&values[0])))
 }
 
-func VertexAttrib2f(indx uint, x float32, y float32) {
+func (indx AttribLocation) Attrib2f(x float32, y float32) {
 	C.glVertexAttrib2f(C.GLuint(indx), C.GLfloat(x), C.GLfloat(y))
 }
 
-func VertexAttrib2fv(indx uint, values []float32) {
+func (indx AttribLocation) Attrib2fv(values []float32) {
 	//no range check
 	C.glVertexAttrib2fv(C.GLuint(indx), (*C.GLfloat)(unsafe.Pointer(&values[0])))
 }
 
-func VertexAttrib3f(indx uint, x float32, y float32, z float32) {
+func (indx AttribLocation) Attrib3f(x float32, y float32, z float32) {
 	C.glVertexAttrib3f(C.GLuint(indx), C.GLfloat(x), C.GLfloat(y), C.GLfloat(z))
 }
 
-func VertexAttrib3fv(indx uint, values []float32) {
+func (indx AttribLocation) Attrib3fv(values []float32) {
 	//no range check
 	C.glVertexAttrib3fv(C.GLuint(indx), (*C.GLfloat)(unsafe.Pointer(&values[0])))
 }
 
-func VertexAttrib4f(indx uint, x float32, y float32, z float32, w float32) {
+func (indx AttribLocation) Attrib4f(x float32, y float32, z float32, w float32) {
 	C.glVertexAttrib4f(C.GLuint(indx), C.GLfloat(x), C.GLfloat(y), C.GLfloat(z), C.GLfloat(w))
 }
 
-func VertexAttrib4fv(indx uint, values []float32) {
+func (indx AttribLocation) Attrib4fv(values []float32) {
 	//no range check
 	C.glVertexAttrib4fv(C.GLuint(indx), (*C.GLfloat)(unsafe.Pointer(&values[0])))
 }
 
-func VertexAttribPointer(indx VertexAttrib, size uint, normalized bool, stride int, pointer interface{}) {
+func (indx AttribLocation) AttribPointer(size uint, normalized bool, stride int, pointer interface{}) {
 	t, p := GetGLenumType(pointer)
 	C.glVertexAttribPointer(C.GLuint(indx), C.GLint(size), C.GLenum(t), glBool(normalized), C.GLsizei(stride), p)
 }
 
+func (indx AttribLocation) EnableArray() {
+	C.glEnableVertexAttribArray(C.GLuint(indx))
+}
+
+func (indx AttribLocation) DisableArray() {
+	C.glDisableVertexAttribArray(C.GLuint(indx))
+}
+
+
+// Vertex Arrays
+type VertexArray Object
+
+func GenVertexArray () VertexArray {
+	var a C.GLuint
+	C.glGenVertexArrays(1, &a)
+	return VertexArray(a)
+}
+
+func GenVertexArrays (arrays []VertexArray) {
+	C.glGenVertexArrays(C.GLsizei(len(arrays)), (*C.GLuint)(&arrays[0]))
+}
+
+func (array VertexArray) Delete () {
+	C.glDeleteVertexArrays(1, (*C.GLuint)(&array))
+}
+
+func DeleteVertexArrays (arrays []VertexArray) {
+	C.glDeleteVertexArrays(C.GLsizei(len(arrays)), (*C.GLuint)(&arrays[0]))
+}
+
+func (array VertexArray) Bind () {
+	C.glBindVertexArray(C.GLuint(array))
+}
 
 // UniformLocation
 //TODO
@@ -697,14 +811,6 @@ func BlendEquationSeparate(modeRGB GLenum, modeAlpha GLenum) {
 
 func BlendFuncSeparate(srcRGB GLenum, dstRGB GLenum, srcAlpha GLenum, dstAlpha GLenum) {
 	C.glBlendFuncSeparate(C.GLenum(srcRGB), C.GLenum(dstRGB), C.GLenum(srcAlpha), C.GLenum(dstAlpha))
-}
-
-func DisableVertexAttribArray(index VertexAttrib) {
-	C.glDisableVertexAttribArray(C.GLuint(index))
-}
-
-func EnableVertexAttribArray(index VertexAttrib) {
-	C.glEnableVertexAttribArray(C.GLuint(index))
 }
 
 func SampleCoverage(value GLclampf, invert bool) {

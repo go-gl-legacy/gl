@@ -1,4 +1,4 @@
-// godefs -g gl gl_defs.c
+// c:\Users\Joshwa\Documents\MinGW\go\bin\godefs.exe -g gl gl_defs.c
 
 // MACHINE GENERATED - DO NOT EDIT.
 
@@ -116,7 +116,7 @@ const (
 	CLAMP                                         = 0x2900
 	CLEAR                                         = 0x1500
 	CLIENT_ACTIVE_TEXTURE                         = 0x84e1
-	CLIENT_ALL_ATTRIB_BITS                        = 0xffffffff
+	CLIENT_ALL_ATTRIB_BITS                        = -0x1
 	CLIENT_ATTRIB_STACK_DEPTH                     = 0xbb1
 	CLIENT_PIXEL_STORE_BIT                        = 0x1
 	CLIENT_VERTEX_ARRAY_BIT                       = 0x2
@@ -480,7 +480,7 @@ const (
 	INT                                           = 0x1404
 	INVALID_ENUM                                  = 0x500
 	INVALID_FRAMEBUFFER_OPERATION                 = 0x506
-	INVALID_INDEX                                 = 0xffffffff
+	INVALID_INDEX                                 = -0x1
 	INVALID_OPERATION                             = 0x502
 	INVALID_VALUE                                 = 0x501
 	INVERTED_SCREEN_W_REND                        = 0x8491
@@ -1203,6 +1203,7 @@ const (
 	TEXTURE                                       = 0x1702
 	TIMEOUT_EXPIRED                               = 0x911b
 	TIMEOUT_IGNORED                               = -0x1
+	TRANSFORM_FEEDBACK                            = 0x8e22
 	TRANSFORM_BIT                                 = 0x1000
 	TRANSFORM_FEEDBACK_BUFFER_BINDING             = 0x8c8f
 	TRANSFORM_FEEDBACK_BUFFER_MODE                = 0x8c7f
