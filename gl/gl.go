@@ -530,6 +530,16 @@ func (buffer Buffer) Bind(target GLenum) {
 	C.glBindBuffer(C.GLenum(target), C.GLuint(buffer))
 }
 
+// Bind this buffer as index of target
+func (buffer Buffer) BindBufferBase(target GLenum, index uint) {
+	C.glBindBufferBase(C.GLenum(target), C.GLuint(index), C.GLuint(buffer))
+}
+
+// Bind this buffer range as index of target
+func (buffer Buffer) BindBufferRange(target GLenum, index uint, offset int, size uint) {
+	C.glBindBufferRange(C.GLenum(target), C.GLuint(index), C.GLuint(buffer), C.GLintptr(offset), C.GLsizeiptr(size))
+}
+
 // Creates and initializes a buffer object's data store
 func BufferData(target GLenum, size int, data interface{}, usage GLenum) {
 	_, p := GetGLenumType(data)
