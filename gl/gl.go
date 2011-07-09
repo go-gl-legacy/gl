@@ -105,18 +105,17 @@ func GetGLenumType(v interface{}) (t GLenum, p unsafe.Pointer) {
 
 type Object C.GLuint
 
-func (buffer Object) IsBuffer() bool { return C.glIsBuffer(C.GLuint(buffer)) != 0 }
+func (object Object) IsBuffer() bool { return C.glIsBuffer(C.GLuint(object)) != 0 }
 
+func (object Object) IsProgram() bool { return C.glIsProgram(C.GLuint(object)) != 0 }
 
-func (program Object) IsProgram() bool { return C.glIsProgram(C.GLuint(program)) != 0 }
+func (object Object) IsShader() bool { return C.glIsShader(C.GLuint(object)) != 0 }
 
-func (shader Object) IsShader() bool { return C.glIsShader(C.GLuint(shader)) != 0 }
+func (object Object) IsTexture() bool { return C.glIsTexture(C.GLuint(object)) != 0 }
 
-func (texture Object) IsTexture() bool { return C.glIsTexture(C.GLuint(texture)) != 0 }
+func (object Object) IsTransformFeedback() bool { return C.glIsTransformFeedback(C.GLuint(object)) != 0 }
 
-func (feedback Object) IsTransformFeedback() bool { return C.glIsTransformFeedback(C.GLuint(feedback)) != 0 }
-
-func (array Object) IsVertexArray() bool { return C.glIsVertexArray(C.GLuint(array)) != 0 }
+func (object Object) IsVertexArray() bool { return C.glIsVertexArray(C.GLuint(object)) != 0 }
 
 // Shader
 
