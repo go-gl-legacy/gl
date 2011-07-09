@@ -260,16 +260,16 @@ func (program Program) GetUniformLocation(name string) UniformLocation {
 	return UniformLocation(C.glGetUniformLocation(C.GLuint(program), cname))
 }
 
-func (program Program) GetAttribLocation(name string) VertexAttrib {
+func (program Program) GetAttribLocation(name string) AttribLocation {
 
 	cname := glString(name)
 	defer freeString(cname)
 
-	return VertexAttrib(C.glGetAttribLocation(C.GLuint(program), cname))
+	return AttribLocation(C.glGetAttribLocation(C.GLuint(program), cname))
 }
 
 
-func (program Program) BindAttribLocation(index uint, name string) {
+func (program Program) BindAttribLocation(index AttribLocation, name string) {
 
 	cname := glString(name)
 	defer freeString(cname)
@@ -628,50 +628,59 @@ func EndTransformFeedback() {
 	C.glEndTransformFeedback()
 }
 
-// VertexAttrib
+// AttribLocation
 
-type VertexAttrib int
+type AttribLocation int
 
-func VertexAttrib1f(indx uint, x float32) {
+func (indx AttribLocation) Attrib1f(x float32) {
 	C.glVertexAttrib1f(C.GLuint(indx), C.GLfloat(x))
 }
 
-func VertexAttrib1fv(indx uint, values []float32) {
+func (indx AttribLocation) Attrib1fv(values []float32) {
 	//no range check
 	C.glVertexAttrib1fv(C.GLuint(indx), (*C.GLfloat)(unsafe.Pointer(&values[0])))
 }
 
-func VertexAttrib2f(indx uint, x float32, y float32) {
+func (indx AttribLocation) Attrib2f(x float32, y float32) {
 	C.glVertexAttrib2f(C.GLuint(indx), C.GLfloat(x), C.GLfloat(y))
 }
 
-func VertexAttrib2fv(indx uint, values []float32) {
+func (indx AttribLocation) Attrib2fv(values []float32) {
 	//no range check
 	C.glVertexAttrib2fv(C.GLuint(indx), (*C.GLfloat)(unsafe.Pointer(&values[0])))
 }
 
-func VertexAttrib3f(indx uint, x float32, y float32, z float32) {
+func (indx AttribLocation) Attrib3f(x float32, y float32, z float32) {
 	C.glVertexAttrib3f(C.GLuint(indx), C.GLfloat(x), C.GLfloat(y), C.GLfloat(z))
 }
 
-func VertexAttrib3fv(indx uint, values []float32) {
+func (indx AttribLocation) Attrib3fv(values []float32) {
 	//no range check
 	C.glVertexAttrib3fv(C.GLuint(indx), (*C.GLfloat)(unsafe.Pointer(&values[0])))
 }
 
-func VertexAttrib4f(indx uint, x float32, y float32, z float32, w float32) {
+func (indx AttribLocation) Attrib4f(x float32, y float32, z float32, w float32) {
 	C.glVertexAttrib4f(C.GLuint(indx), C.GLfloat(x), C.GLfloat(y), C.GLfloat(z), C.GLfloat(w))
 }
 
-func VertexAttrib4fv(indx uint, values []float32) {
+func (indx AttribLocation) Attrib4fv(values []float32) {
 	//no range check
 	C.glVertexAttrib4fv(C.GLuint(indx), (*C.GLfloat)(unsafe.Pointer(&values[0])))
 }
 
-func VertexAttribPointer(indx VertexAttrib, size uint, normalized bool, stride int, pointer interface{}) {
+func (indx AttribLocation) AttribPointer(size uint, normalized bool, stride int, pointer interface{}) {
 	t, p := GetGLenumType(pointer)
 	C.glVertexAttribPointer(C.GLuint(indx), C.GLint(size), C.GLenum(t), glBool(normalized), C.GLsizei(stride), p)
 }
+
+func (indx AttribLocation) EnableArray() {
+	C.glEnableVertexAttribArray(C.GLuint(indx))
+}
+
+func (indx AttribLocation) DisableArray() {
+	C.glDisableVertexAttribArray(C.GLuint(indx))
+}
+
 
 // Vertex Arrays
 type VertexArray Object
@@ -802,14 +811,6 @@ func BlendEquationSeparate(modeRGB GLenum, modeAlpha GLenum) {
 
 func BlendFuncSeparate(srcRGB GLenum, dstRGB GLenum, srcAlpha GLenum, dstAlpha GLenum) {
 	C.glBlendFuncSeparate(C.GLenum(srcRGB), C.GLenum(dstRGB), C.GLenum(srcAlpha), C.GLenum(dstAlpha))
-}
-
-func DisableVertexAttribArray(index VertexAttrib) {
-	C.glDisableVertexAttribArray(C.GLuint(index))
-}
-
-func EnableVertexAttribArray(index VertexAttrib) {
-	C.glEnableVertexAttribArray(C.GLuint(index))
 }
 
 func SampleCoverage(value GLclampf, invert bool) {
