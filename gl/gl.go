@@ -116,6 +116,8 @@ func (texture Object) IsTexture() bool { return C.glIsTexture(C.GLuint(texture))
 
 func (feedback Object) IsTransformFeedback() bool { return C.glIsTransformFeedback(C.GLuint(feedback)) != 0 }
 
+func (array Object) IsVertexArray() bool { return C.glIsVertexArray(C.GLuint(array)) != 0 }
+
 // Shader
 
 type Shader Object
@@ -662,6 +664,30 @@ func VertexAttribPointer(indx VertexAttrib, size uint, normalized bool, stride i
 	C.glVertexAttribPointer(C.GLuint(indx), C.GLint(size), C.GLenum(t), glBool(normalized), C.GLsizei(stride), p)
 }
 
+// Vertex Arrays
+type VertexArray Object
+
+func GenVertexArray () VertexArray {
+	var a C.GLuint
+	C.glGenVertexArrays(1, &a)
+	return VertexArray(a)
+}
+
+func GenVertexArrays (arrays []VertexArray) {
+	C.glGenVertexArrays(C.GLsizei(len(arrays)), (*C.GLuint)(&arrays[0]))
+}
+
+func (array VertexArray) Delete () {
+	C.glDeleteVertexArrays(1, (*C.GLuint)(&array))
+}
+
+func DeleteVertexArrays (arrays []VertexArray) {
+	C.glDeleteVertexArrays(C.GLsizei(len(arrays)), (*C.GLuint)(&arrays[0]))
+}
+
+func (array VertexArray) Bind () {
+	C.glBindVertexArray(C.GLuint(array))
+}
 
 // UniformLocation
 //TODO
