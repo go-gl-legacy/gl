@@ -7,7 +7,7 @@ package main
 */
 
 import (
-   "sdl"
+   "github.com/luciotorre/Go-SDL/src/sdl"
    "gl"
    "math"
 )

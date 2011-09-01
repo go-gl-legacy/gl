@@ -12,22 +12,20 @@ package main
 
 /*
 
-	this is go version based on SDL version 
+	this is go version based on SDL version
 
-	this version uses glfw: https://github.com/jteeuwen/glfw
+	this version uses Go-SDL: https://github.com/banthar/Go-SDL
 
 */
 
-import "github.com/jteeuwen/glfw"
+import "github.com/luciotorre/Go-SDL/src/sdl"
 import "gl"
 import "math"
-import "os"
-import "fmt"
 import "flag"
 
 var printInfo = flag.Bool("info", false, "print GL implementation information")
 
-var T0 float64 = 0
+var T0 uint32 = 0
 var Frames uint32 = 0
 
 /**
@@ -193,15 +191,15 @@ func draw() {
 
 	gl.PopMatrix()
 
-	glfw.SwapBuffers()
+	sdl.GL_SwapBuffers()
 
 	Frames++
 	{
-		t := glfw.Time()
-		if t-T0 >= 5 {
-			seconds := (t - T0)
-			fps := float64(Frames) / seconds
-			print(Frames, " frames in ", int(seconds), " seconds = ", int(fps), " FPS\n")
+		t := sdl.GetTicks()
+		if t-T0 >= 5000 {
+			seconds := (t - T0) / 1000.0
+			fps := Frames / seconds
+			print(Frames, " frames in ", seconds, " seconds = ", fps, " FPS\n")
 			T0 = t
 			Frames = 0
 		}
@@ -274,37 +272,75 @@ func main() {
 	flag.Parse()
 
 	var done bool
+	var keys []uint8
 
-	var err os.Error
-	if err = glfw.Init(); err != nil {
-		fmt.Fprintf(os.Stderr, "[e] %v\n", err)
-		return
-	}
+	sdl.Init(sdl.INIT_VIDEO)
 
-	defer glfw.Terminate()
+	var screen = sdl.SetVideoMode(300, 300, 16, sdl.OPENGL|sdl.RESIZABLE)
 
-	if err = glfw.OpenWindow(300, 300, 0, 0, 0, 0, 0, 0, glfw.Windowed); err != nil {
-		fmt.Fprintf(os.Stderr, "[e] %v\n", err)
-		return
+	if screen == nil {
+		sdl.Quit()
+		panic("Couldn't set 300x300 GL video mode: " + sdl.GetError() + "\n")
 	}
 
 	if gl.Init() != 0 {
 		panic("gl error")	
 	}
 
-	defer glfw.CloseWindow()
-
-	glfw.SetWindowTitle("gears")
-
-	glfw.SetWindowSizeCallback(reshape)
+	sdl.WM_SetCaption("Gears", "gears")
 
 	init_()
-	reshape(300,300)
+	reshape(int(screen.W), int(screen.H))
 	done = false
 	for !done {
-		idle();
+
+		idle()
+		for e := sdl.PollEvent(); e != nil; e = sdl.PollEvent() {
+			switch e.(type) {
+			case *sdl.ResizeEvent:
+				re := e.(*sdl.ResizeEvent)
+				screen = sdl.SetVideoMode(int(re.W), int(re.H), 16,
+					sdl.OPENGL|sdl.RESIZABLE)
+				if screen != nil {
+					reshape(int(screen.W), int(screen.H))
+				} else {
+					panic("we couldn't set the new video mode??")
+				}
+				break
+
+			case *sdl.QuitEvent:
+				done = true
+				break
+			}
+		}
+		keys = sdl.GetKeyState()
+
+		if keys[sdl.K_ESCAPE] != 0 {
+			done = true
+		}
+		if keys[sdl.K_UP] != 0 {
+			view_rotx += 5.0
+		}
+		if keys[sdl.K_DOWN] != 0 {
+			view_rotx -= 5.0
+		}
+		if keys[sdl.K_LEFT] != 0 {
+			view_roty += 5.0
+		}
+		if keys[sdl.K_RIGHT] != 0 {
+			view_roty -= 5.0
+		}
+		if keys[sdl.K_z] != 0 {
+			if (sdl.GetModState() & sdl.KMOD_RSHIFT) != 0 {
+				view_rotz -= 5.0
+			} else {
+				view_rotz += 5.0
+			}
+		}
+
 		draw()
-		done = glfw.Key(glfw.KeyEsc) != 0 || glfw.WindowParam(glfw.Opened) == 0
 	}
-	
+	sdl.Quit()
+	return
+
 }
