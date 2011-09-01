@@ -18,7 +18,7 @@ package main
 
 */
 
-import "sdl"
+import "github.com/luciotorre/Go-SDL/src/sdl"
 import "gl"
 import "math"
 import "flag"
