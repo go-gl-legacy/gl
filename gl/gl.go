@@ -1151,9 +1151,9 @@ func DrawElements(mode GLenum, count int, indices interface{}) {
 }
 
 //void glDrawPixels (GLsizei width, int height, GLenum format, GLenum type, const GLvoid *pixels)
-func DrawPixels(width int, height int, format GLenum, pixels interface{}) {
-	t, p := GetGLenumType(pixels)
-	C.glDrawPixels(C.GLsizei(width), C.GLsizei(height), C.GLenum(format), C.GLenum(t), p)
+func DrawPixels(width int, height int, format, typ GLenum, pixels interface{}) {
+	_, p := GetGLenumType(pixels)
+	C.glDrawPixels(C.GLsizei(width), C.GLsizei(height), C.GLenum(format), C.GLenum(typ), p)
 }
 
 //void glEdgeFlag (bool flag)
