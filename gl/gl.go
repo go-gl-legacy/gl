@@ -317,9 +317,16 @@ func TexImage1D(target GLenum, level int, internalformat int, width int, border 
 }
 
 //void glTexImage2D (GLenum target, int level, int internalformat, int width, int height, int border, GLenum format, GLenum type, const GLvoid *pixels)
-func TexImage2D(target GLenum, level int, internalformat int, width int, height int, border int, format GLenum, pixels interface{}) {
-	t, p := GetGLenumType(pixels)
-	C.glTexImage2D(C.GLenum(target), C.GLint(level), C.GLint(internalformat), C.GLsizei(width), C.GLsizei(height), C.GLint(border), C.GLenum(format), C.GLenum(t), p)
+func TexImage2D(target GLenum, level int, internalformat int, width int, height int, border int, format, typ GLenum, pixels interface{}) {
+	if pixels == nil {
+		C.glTexImage2D(C.GLenum(target), C.GLint(level), C.GLint(internalformat),
+			C.GLsizei(width), C.GLsizei(height), C.GLint(border), C.GLenum(format), C.GLenum(typ), nil)
+		return
+	}
+
+	_, p := GetGLenumType(pixels)
+	C.glTexImage2D(C.GLenum(target), C.GLint(level), C.GLint(internalformat),
+		C.GLsizei(width), C.GLsizei(height), C.GLint(border), C.GLenum(format), C.GLenum(typ), p)
 }
 
 //void glPixelMapfv (GLenum map, int mapsize, const float *values)
