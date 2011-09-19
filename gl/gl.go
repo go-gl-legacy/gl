@@ -2417,7 +2417,7 @@ func CheckFramebufferStatus(target GLenum) GLenum {
 }
 
 // void glDeleteFramebuffers(GLsizei n, GLuint* framebuffers);
-func (fb Framebuffer) DeleteFramebuffer() {
+func (fb Framebuffer) Delete() {
 	C.glDeleteFramebuffers(1, (*C.GLuint)(&fb))
 }
 
