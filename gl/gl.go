@@ -310,6 +310,11 @@ func (texture Texture) Bind(target GLenum) {
 	C.glBindTexture(C.GLenum(target), C.GLuint(texture))
 }
 
+// Unbind this texture
+func (texture Texture) Unbind(target GLenum) {
+	C.glBindTexture(C.GLenum(target), 0)
+}
+
 //void glTexImage1D (GLenum target, int level, int internalformat, int width, int border, GLenum format, GLenum type, const GLvoid *pixels)
 func TexImage1D(target GLenum, level int, internalformat int, width int, border int, format GLenum, pixels interface{}) {
 	t, p := GetGLenumType(pixels)
@@ -317,9 +322,16 @@ func TexImage1D(target GLenum, level int, internalformat int, width int, border 
 }
 
 //void glTexImage2D (GLenum target, int level, int internalformat, int width, int height, int border, GLenum format, GLenum type, const GLvoid *pixels)
-func TexImage2D(target GLenum, level int, internalformat int, width int, height int, border int, format GLenum, pixels interface{}) {
-	t, p := GetGLenumType(pixels)
-	C.glTexImage2D(C.GLenum(target), C.GLint(level), C.GLint(internalformat), C.GLsizei(width), C.GLsizei(height), C.GLint(border), C.GLenum(format), C.GLenum(t), p)
+func TexImage2D(target GLenum, level int, internalformat int, width int, height int, border int, format, typ GLenum, pixels interface{}) {
+	if pixels == nil {
+		C.glTexImage2D(C.GLenum(target), C.GLint(level), C.GLint(internalformat),
+			C.GLsizei(width), C.GLsizei(height), C.GLint(border), C.GLenum(format), C.GLenum(typ), nil)
+		return
+	}
+
+	_, p := GetGLenumType(pixels)
+	C.glTexImage2D(C.GLenum(target), C.GLint(level), C.GLint(internalformat),
+		C.GLsizei(width), C.GLsizei(height), C.GLint(border), C.GLenum(format), C.GLenum(typ), p)
 }
 
 //void glPixelMapfv (GLenum map, int mapsize, const float *values)
@@ -1151,9 +1163,9 @@ func DrawElements(mode GLenum, count int, indices interface{}) {
 }
 
 //void glDrawPixels (GLsizei width, int height, GLenum format, GLenum type, const GLvoid *pixels)
-func DrawPixels(width int, height int, format GLenum, pixels interface{}) {
-	t, p := GetGLenumType(pixels)
-	C.glDrawPixels(C.GLsizei(width), C.GLsizei(height), C.GLenum(format), C.GLenum(t), p)
+func DrawPixels(width int, height int, format, typ GLenum, pixels interface{}) {
+	_, p := GetGLenumType(pixels)
+	C.glDrawPixels(C.GLsizei(width), C.GLsizei(height), C.GLenum(format), C.GLenum(typ), p)
 }
 
 //void glEdgeFlag (bool flag)
@@ -2348,8 +2360,13 @@ func GenRenderbuffers(bufs []Renderbuffer) {
 }
 
 // void glBindRenderbuffer(GLenum target, GLuint renderbuffer);
-func (rb Renderbuffer) Bind(target GLenum) {
-	C.glBindRenderbuffer(C.GLenum(target), C.GLuint(rb))
+func (rb Renderbuffer) Bind() {
+	C.glBindRenderbuffer(C.GLenum(RENDERBUFFER), C.GLuint(rb))
+}
+
+// Unbind this texture
+func (rb Renderbuffer) Unbind() {
+	C.glBindRenderbuffer(C.GLenum(RENDERBUFFER), 0)
 }
 
 // void glDeleteRenderbuffers(GLsizei n, GLuint* renderbuffers);
@@ -2381,8 +2398,12 @@ func RenderbufferStorageMultisample(target GLenum, samples int, internalformat G
 type Framebuffer Object
 
 // void glBindFramebuffer(GLenum target, GLuint framebuffer);
-func (fb Framebuffer) Bind(target GLenum) {
-	C.glBindFramebuffer(C.GLenum(target), C.GLuint(fb))
+func (fb Framebuffer) Bind() {
+	C.glBindFramebuffer(C.GLenum(FRAMEBUFFER), C.GLuint(fb))
+}
+
+func (fb Framebuffer) Unbind() {
+	C.glBindFramebuffer(C.GLenum(FRAMEBUFFER), 0)
 }
 
 // void glBlitFramebuffer(GLint srcX0, GLint srcY0, GLint srcX1, GLint srcY1, GLint dstX0, GLint dstY0, GLint dstX1, GLint dstY1, GLbitfield mask, GLenum filter);
@@ -2396,7 +2417,7 @@ func CheckFramebufferStatus(target GLenum) GLenum {
 }
 
 // void glDeleteFramebuffers(GLsizei n, GLuint* framebuffers);
-func (fb Framebuffer) DeleteFramebuffer() {
+func (fb Framebuffer) Delete() {
 	C.glDeleteFramebuffers(1, (*C.GLuint)(&fb))
 }
 
