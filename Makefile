@@ -9,17 +9,17 @@ include $(GOROOT)/src/Make.inc
 all: install
 
 gl:
-	gomake -C gl
-	gomake -C glu
+	gomake -C src/gl
+	gomake -C src/glu
 
 install: gl
-	gomake -C gl install
-	gomake -C glu install
+	gomake -C src/gl install
+	gomake -C src/glu install
 
 examples:
-	gomake -C examples
+	gomake -C src/examples
 
 clean:
-	gomake -C gl clean
-	gomake -C glu clean
-	gomake -C examples clean
+	gomake -C src/gl clean
+	gomake -C src/glu clean
+	gomake -C src/examples clean
