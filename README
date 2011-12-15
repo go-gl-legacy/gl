@@ -1,8 +1,8 @@
 # Requirements
 
-You will need GLEW(http://glew.sourceforge.net/) at least version **1.5.8**.
+You will need [GLEW][] at least version **1.5.8**.
 
-All GL headers are expected to be in /usr/include/GL/
+All GL headers are expected to be in: **/usr/include/GL/**
 
 # Installation
 
@@ -15,3 +15,6 @@ To install type:
 # Examples
 
 To compile examples you will also need sdl bindings from: <http://github.com/banthar/Go-SDL>
+
+
+[GLEW]: http://glew.sourceforge.net/
