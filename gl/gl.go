@@ -2454,7 +2454,7 @@ func FramebufferTextureLayer(target, attachment GLenum, texture Texture, level, 
 // void glGenFramebuffers(GLsizei n, GLuint* ids);
 func GenFramebuffer() Framebuffer {
 	var b C.GLuint
-	C.glGenRenderbuffers(1, &b)
+	C.glGenFramebuffers(1, &b)
 	return Framebuffer(b)
 }
 
