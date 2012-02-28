@@ -19,7 +19,7 @@ package main
 */
 
 import "github.com/jteeuwen/glfw"
-import "gl"
+import "github.com/banthar/gl"
 import "math"
 import "os"
 import "fmt"

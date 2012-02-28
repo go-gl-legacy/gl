@@ -8,7 +8,7 @@ package main
 
 import (
    "sdl"
-   "gl"
+   "github.com/banthar/gl"
    "math"
 )
 

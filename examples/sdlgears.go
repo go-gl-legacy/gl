@@ -19,7 +19,7 @@ package main
 */
 
 import "sdl"
-import "gl"
+import "github.com/banthar/gl"
 import "math"
 import "flag"
 

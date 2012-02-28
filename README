@@ -1,9 +1,15 @@
 
-You will need GLEW(http://glew.sourceforge.net/) at least version 1.5.8.
+You will need [GLEW](http://glew.sourceforge.net/) version 1.5.8 or 1.6.0. Other versions will most likelly not work.
 
-All GL headers are expected to be in /usr/include/GL/
-
-To compile examples you will also need sdl bindings from: http://github.com/banthar/Go-SDL
+Some examples require [Go-SDL](github.com/banthar/Go-SDL) and some require [GLFW](github.com/jteeuwen/glfw).
 
 To install type:
+
+	git clone github.com/banthar/gl
+	cd gl
 	gomake
+	sudo -E gomake install
+
+Or, with goinstall:
+
+    sudo -E  goinstall github.com/banthar/gl
