@@ -4,22 +4,18 @@
 
 include $(GOROOT)/src/Make.inc
 
-.PHONY: all gl install examples clean
+TARG=gl
 
-all: install
+GOFILES:=gl_defs.go
 
-gl:
-	gomake -C gl
-	gomake -C glu
+CGOFILES:=gl.go
 
-install: gl
-	gomake -C gl install
-	gomake -C glu install
+CLEANFILES+=gl
 
-examples:
-	gomake -C examples
+include $(GOROOT)/src/Make.pkg
 
-clean:
-	gomake -C gl clean
-	gomake -C glu clean
-	gomake -C examples clean
+DOLLAR:="$"
+
+gl_defs.go: gl_defs.c
+	godefs `echo -n $(CGO_CFLAGS) | sed 's/\([^ ^$(DOLLAR)]*\)/-f \1/g'` -g gl gl_defs.c > gl_defs.go
+	gofmt -w gl_defs.go
