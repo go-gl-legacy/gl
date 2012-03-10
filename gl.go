@@ -126,15 +126,17 @@ func CreateShader(type_ GLenum) Shader { return Shader(C.glCreateShader(C.GLenum
 func (shader Shader) Delete() { C.glDeleteShader(C.GLuint(shader)) }
 
 func (shader Shader) GetInfoLog() string {
-	var len C.GLint
-	C.glGetShaderiv(C.GLuint(shader), C.GLenum(INFO_LOG_LENGTH), &len)
-
-	log := C.malloc(C.size_t(len + 1))
-	C.glGetShaderInfoLog(C.GLuint(shader), C.GLsizei(len), nil, (*C.GLchar)(log))
-
-	defer C.free(log)
-
-	return C.GoString((*C.char)(log))
+	var length C.GLint
+	C.glGetShaderiv(C.GLuint(shader), C.GLenum(INFO_LOG_LENGTH), &length)
+	// length is buffer size including null character
+	
+	if length > 1 {
+		log := C.malloc(C.size_t(length))
+		defer C.free(log)
+		C.glGetShaderInfoLog(C.GLuint(shader), C.GLsizei(length), nil, (*C.GLchar)(log))
+		return C.GoString((*C.char)(log))
+	} 
+	return ""
 }
 
 func (shader Shader) GetSource() string {
@@ -221,16 +223,17 @@ func (program Program) Use() { C.glUseProgram(C.GLuint(program)) }
 
 
 func (program Program) GetInfoLog() string {
-
-	var len C.GLint
-	C.glGetProgramiv(C.GLuint(program), C.GLenum(INFO_LOG_LENGTH), &len)
-
-	log := C.malloc(C.size_t(len + 1))
-	C.glGetProgramInfoLog(C.GLuint(program), C.GLsizei(len), nil, (*C.GLchar)(log))
-
-	defer C.free(log)
-
-	return C.GoString((*C.char)(log))
+	var length C.GLint
+	C.glGetProgramiv(C.GLuint(program), C.GLenum(INFO_LOG_LENGTH), &length)
+	// length is buffer size including null character
+	
+	if length > 1 {
+		log := C.malloc(C.size_t(length))
+		defer C.free(log)
+		C.glGetProgramInfoLog(C.GLuint(program), C.GLsizei(length), nil, (*C.GLchar)(log))
+		return C.GoString((*C.char)(log))
+	} 
+	return ""
 
 }
 
