@@ -135,7 +135,7 @@ func (shader Shader) GetInfoLog() string {
 		defer C.free(log)
 		C.glGetShaderInfoLog(C.GLuint(shader), C.GLsizei(length), nil, (*C.GLchar)(log))
 		return C.GoString((*C.char)(log))
-	} 
+	}
 	return ""
 }
 
@@ -221,6 +221,7 @@ func (program Program) Validate() { C.glValidateProgram(C.GLuint(program)) }
 
 func (program Program) Use() { C.glUseProgram(C.GLuint(program)) }
 
+func ProgramUnuse() { C.glUseProgram(C.GLuint(0)) }
 
 func (program Program) GetInfoLog() string {
 	var length C.GLint
@@ -539,6 +540,11 @@ func DeleteBuffers(buffers []Buffer) {
 	C.glDeleteBuffers(C.GLsizei(len(buffers)), (*C.GLuint)(&buffers[0]))
 }
 
+// Remove buffer binding
+func BufferUnbind(target GLenum) {
+	C.glBindBuffer(C.GLenum(target), C.GLuint(0))
+}
+
 // Bind this buffer as target
 func (buffer Buffer) Bind(target GLenum) {
 	C.glBindBuffer(C.GLenum(target), C.GLuint(buffer))
@@ -741,8 +747,8 @@ func (location UniformLocation) Uniform3f(x float32, y float32, z float32) {
 }
 
 func (location UniformLocation) Uniform1fv(v []float32) {
-	panic("unimplemented")
-	//	C.glUniform1fv(C.GLint(location), (*C.float)(&v[0]));
+	_, p := GetGLenumType(v)
+	C.glUniform1fv(C.GLint(location), C.GLsizei(len(v)), (*C.GLfloat)(p));
 }
 
 func (location UniformLocation) Uniform1i(x int) {
@@ -1108,6 +1114,18 @@ func ColorPointer(size int, stride int, pointer interface{}) {
 	t, p := GetGLenumType(pointer)
 	C.glColorPointer(C.GLint(size), C.GLenum(t), C.GLsizei(stride), p)
 }
+// Version with explicit type
+func ColorPointerTyped(size int, ptype, stride int, pointer interface{}) {
+	_, p := GetGLenumType(pointer)
+	C.glColorPointer(C.GLint(size), C.GLenum(ptype), C.GLsizei(stride), p)
+}
+
+// Version for VBO
+func ColorPointerVBO(size int, ptype, stride int, offset int) {
+	C.glColorPointer(C.GLint(size), C.GLenum(ptype), C.GLsizei(stride),
+		unsafe.Pointer(uintptr(offset)))
+}
+
 
 //void glCopyPixels (int x, int y, int width, int height, GLenum type)
 func CopyPixels(x int, y int, width int, height int, type_ GLenum) {
@@ -1164,6 +1182,11 @@ func DrawElements(mode GLenum, count int, indices interface{}) {
 	t, p := GetGLenumType(indices)
 	C.glDrawElements(C.GLenum(mode), C.GLsizei(count), C.GLenum(t), p)
 }
+// VBO version
+func DrawElementsVBO(mode GLenum, etype, count int) {
+	C.glDrawElements(C.GLenum(mode), C.GLsizei(count), C.GLenum(etype), unsafe.Pointer(uintptr(0)))
+}
+
 
 //void glDrawPixels (GLsizei width, int height, GLenum format, GLenum type, const GLvoid *pixels)
 func DrawPixels(width int, height int, format, typ GLenum, pixels interface{}) {
@@ -1717,6 +1740,17 @@ func NormalPointer(stride int, pointer interface{}) {
 	t, p := GetGLenumType(pointer)
 	C.glNormalPointer(C.GLenum(t), C.GLsizei(stride), p)
 }
+// Version with explicit type
+func NormalPointerTyped(ptype, stride int, pointer interface{}) {
+	_, p := GetGLenumType(pointer)
+	C.glNormalPointer(C.GLenum(ptype), C.GLsizei(stride), p)
+}
+// Version for VBO
+func NormalPointerVBO(ptype, stride int, offset int) {
+	C.glNormalPointer(C.GLenum(ptype), C.GLsizei(stride),
+		unsafe.Pointer(uintptr(offset)))
+}
+
 
 //void glOrtho (float64 left, float64 right, float64 bottom, float64 top, float64 zNear, float64 zFar)
 func Ortho(left float64, right float64, bottom float64, top float64, zNear float64, zFar float64) {
@@ -2204,6 +2238,17 @@ func TexCoordPointer(size int, stride int, pointer interface{}) {
 	t, p := GetGLenumType(pointer)
 	C.glTexCoordPointer(C.GLint(size), C.GLenum(t), C.GLsizei(stride), p)
 }
+// Version with explicit type
+func TexCoordPointerTyped(size int, ptype, stride int, pointer interface{}) {
+	_, p := GetGLenumType(pointer)
+	C.glTexCoordPointer(C.GLint(size), C.GLenum(ptype), C.GLsizei(stride), p)
+}
+// Version for VBO
+func TexCoordPointerVBO(size int, ptype, stride int, offset int) {
+	C.glTexCoordPointer(C.GLint(size), C.GLenum(ptype), C.GLsizei(stride),
+		unsafe.Pointer(uintptr(offset)))
+}
+
 
 //void glTranslated (float64 x, float64 y, float64 z)
 func Translated(x float64, y float64, z float64) {
@@ -2340,6 +2385,17 @@ func VertexPointer(size int, stride int, pointer interface{}) {
 	t, p := GetGLenumType(pointer)
 	C.glVertexPointer(C.GLint(size), C.GLenum(t), C.GLsizei(stride), p)
 }
+// Version with explicit type
+func VertexPointerTyped(size int, ptype, stride int, pointer interface{}) {
+	_, p := GetGLenumType(pointer)
+	C.glVertexPointer(C.GLint(size), C.GLenum(ptype), C.GLsizei(stride), p)
+}
+// Version for VBO
+func VertexPointerVBO(size int, ptype, stride int, offset int) {
+	C.glVertexPointer(C.GLint(size), C.GLenum(ptype), C.GLsizei(stride), 
+		unsafe.Pointer(uintptr(offset)))
+}
+
 
 //void glViewport (int x, int y, int width, int height)
 func Viewport(x int, y int, width int, height int) {
