@@ -310,6 +310,11 @@ func TexImage2D(target GLenum, level int, internalformat int, width int, height 
 		C.GLenum(typ), ptr(pixels))
 }
 
+//void glTexBuffer (GLenum target, GLenum internalformat, GLuint buffer)
+func TexBuffer(target, internalformat GLenum, buffer Buffer) {
+	C.glTexBuffer(C.GLenum(target), C.GLenum(internalformat), C.GLuint(buffer))
+}
+
 //void glPixelMapfv (GLenum map, int mapsize, const float *values)
 func PixelMapfv(map_ GLenum, mapsize int, values *float32) {
 	C.glPixelMapfv(C.GLenum(map_), C.GLsizei(mapsize), (*C.GLfloat)(values))
