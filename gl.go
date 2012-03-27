@@ -1187,8 +1187,13 @@ func DrawElements(mode GLenum, count int, indices interface{}) {
 	t, p := GetGLenumType(indices)
 	C.glDrawElements(C.GLenum(mode), C.GLsizei(count), C.GLenum(t), p)
 }
+// Version with explicit type
+func DrawElementsTyped(mode GLenum, count int, typ GLenum, indices interface{}) {
+	_, p := GetGLenumType(indices)
+	C.glDrawElements(C.GLenum(mode), C.GLsizei(count), C.GLenum(typ), p)
+}
 // VBO version
-func DrawElementsVBO(mode GLenum, etype, count int) {
+func DrawElementsVBO(mode, etype GLenum, count int) {
 	C.glDrawElements(C.GLenum(mode), C.GLsizei(count), C.GLenum(etype), unsafe.Pointer(uintptr(0)))
 }
 
