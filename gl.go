@@ -64,6 +64,10 @@ func GetGLenumType(v interface{}) (t GLenum, p unsafe.Pointer) {
 			panic("nil pointer")
 		}
 		et = rv.Elem()
+		// Ptr to Array?
+		if et.Type().Kind() == reflect.Array {
+			et = et.Index(0)
+		}
 	case reflect.Slice:
 		if rv.IsNil() {
 			panic("nil slice")
@@ -1596,13 +1600,15 @@ func LoadIdentity() {
 }
 
 //void glLoadMatrixd (const float64 *m)
-func LoadMatrixd(m *float64) {
-	C.glLoadMatrixd((*C.GLdouble)(m))
+func LoadMatrixd(m *[16]float64) {
+	_, p := GetGLenumType(m)
+	C.glLoadMatrixd((*C.GLdouble)(p))
 }
 
 //void glLoadMatrixf (const float32 *m)
-func LoadMatrixf(m *float32) {
-	C.glLoadMatrixf((*C.GLfloat)(m))
+func LoadMatrixf(m *[16]float32) {
+	_, p := GetGLenumType(m)
+	C.glLoadMatrixf((*C.GLfloat)(p))
 }
 
 //void glLoadName (uint name)
