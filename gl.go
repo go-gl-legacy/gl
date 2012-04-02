@@ -1,16 +1,12 @@
 package gl
 
-// #cgo darwin LDFLAGS: -framework OpenGL -lGLEW -lGL
+// #cgo darwin LDFLAGS: -framework OpenGL -lGLEW
 // #cgo windows LDFLAGS: -lglew32 -lopengl32
 // #cgo linux LDFLAGS: -lGLEW -lGL
 //
 // #include <stdlib.h>
 //
-// #ifdef __APPLE__
-// # include <OpenGL/glew.h>
-// #else
-// # include <GL/glew.h>
-// #endif
+// #include <GL/glew.h>
 //
 // #undef GLEW_GET_FUN
 // #define GLEW_GET_FUN(x) (*x)
