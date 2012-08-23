@@ -12,6 +12,7 @@ package gl
 // #define GLEW_GET_FUN(x) (*x)
 //
 import "C"
+import "fmt"
 import "unsafe"
 import "reflect"
 
@@ -52,46 +53,197 @@ func glString(s string) *C.GLchar { return (*C.GLchar)(C.CString(s)) }
 
 func freeString(ptr *C.GLchar) { C.free(unsafe.Pointer(ptr)) }
 
+type UnsignedByte_3_3_2 struct {
+	Value interface{} "b332"
+}
+
+type UnsignedByte_2_3_3_Rev struct {
+	Value interface{} "b233r"
+}
+
+type UnsignedShort_5_6_5 struct {
+	Value interface{} "s565"
+}
+
+type UnsignedShort_5_6_5_Rev struct {
+	Value interface{} "s565r"
+}
+
+type UnsignedShort_4_4_4_4 struct {
+	Value interface{} "s4444"
+}
+
+type UnsignedShort_4_4_4_4_Rev struct {
+	Value interface{} "s4444r"
+}
+
+type UnsignedShort_5_5_5_1 struct {
+	Value interface{} "s5551"
+}
+
+type UnsignedShort_1_5_5_5_Rev struct {
+	Value interface{} "s1555r"
+}
+
+type UnsignedInt_8_8_8_8 struct {
+	Value interface{} "i8888"
+}
+
+type UnsignedInt_8_8_8_8_Rev struct {
+	Value interface{} "i8888r"
+}
+
+type UnsignedInt_10_10_10_2 struct {
+	Value interface{} "i1010102"
+}
+
+type UnsignedInt_2_10_10_10_Rev struct {
+	Value interface{} "i2101010r"
+}
+
+func enumFromKind(k reflect.Kind) (gle GLenum) {
+	switch k {
+	case reflect.Uint8:
+		gle = UNSIGNED_BYTE
+	case reflect.Int8:
+		gle = BYTE
+	case reflect.Uint16:
+		gle = UNSIGNED_SHORT
+	case reflect.Int16:
+		gle = SHORT
+	case reflect.Uint32:
+		gle = UNSIGNED_INT
+	case reflect.Int32:
+		gle = INT
+	case reflect.Float32:
+		gle = FLOAT
+	default:
+		panic(fmt.Sprintf("unknown type (%v)", k))
+	}
+
+	if gle == 0 {
+		panic("couldn't detect GLenum type")
+	}
+
+	return
+}
+
+func enumFromStruct(v reflect.Value, fk reflect.Kind) (gle GLenum) {
+	if v.Type().Kind() != reflect.Struct {
+		panic("not a struct")
+	}
+
+	tassert := func(ek reflect.Kind) {
+		if ek != fk {
+			panic(fmt.Sprintf("unexpected type found in struct (%v)", v.Type().Name()))
+		}
+	}
+
+	fv, _ := v.Type().FieldByName("Value")
+	switch fv.Tag {
+	case "b332":
+		tassert(reflect.Uint8)
+		gle = UNSIGNED_BYTE_3_3_2
+	case "b233r":
+		tassert(reflect.Uint8)
+		gle = UNSIGNED_BYTE_2_3_3_REV
+	case "s565":
+		tassert(reflect.Uint16)
+		gle = UNSIGNED_SHORT_5_6_5
+	case "s565r":
+		tassert(reflect.Uint16)
+		gle = UNSIGNED_SHORT_5_6_5_REV
+	case "s4444":
+		tassert(reflect.Uint16)
+		gle = UNSIGNED_SHORT_4_4_4_4
+	case "s4444r":
+		tassert(reflect.Uint16)
+		gle = UNSIGNED_SHORT_4_4_4_4_REV
+	case "s5551":
+		tassert(reflect.Uint16)
+		gle = UNSIGNED_SHORT_5_5_5_1
+	case "s1555r":
+		tassert(reflect.Uint16)
+		gle = UNSIGNED_SHORT_1_5_5_5_REV
+	case "i8888":
+		tassert(reflect.Uint32)
+		gle = UNSIGNED_INT_8_8_8_8
+	case "i8888r":
+		tassert(reflect.Uint32)
+		gle = UNSIGNED_INT_8_8_8_8_REV
+	case "i1010102":
+		tassert(reflect.Uint32)
+		gle = UNSIGNED_INT_10_10_10_2
+	case "i2101010r":
+		tassert(reflect.Uint32)
+		gle = UNSIGNED_INT_2_10_10_10_REV
+	default:
+		panic(fmt.Sprintf("unrecognized struct type (%v)", fv.Tag))
+	}
+
+	if gle == 0 {
+		panic("couldn't detect GLenum type")
+	}
+
+	return
+}
+
+func enumExtractValue(v reflect.Value) (ev reflect.Value, t reflect.Kind) {
+	switch v.Type().Kind() {
+	case reflect.Ptr:
+		if v.IsNil() {
+			panic("nil pointer")
+		}
+		ev = v.Elem()
+		t = ev.Type().Kind()
+	case reflect.Slice:
+		if v.IsNil() {
+			panic("nil slice")
+		}
+		ev = v.Index(0)
+		t = ev.Type().Kind()
+	case reflect.Array:
+		ev = v.Index(0)
+		t = ev.Type().Kind()
+	case reflect.Interface:
+		if v.IsNil() {
+			panic("nil interface")
+		}
+		ev, t = enumExtractValue(v.Elem())
+	default:
+		panic(fmt.Sprintf("not a pointer, slice, array, or struct (%v)", v.Type().Kind()))
+	}
+
+	return
+}
+
 func GetGLenumType(v interface{}) (t GLenum, p unsafe.Pointer) {
-	rv := reflect.NewValue(v)
-	var et reflect.Value
-	switch rv.Type().Kind() {
-		case reflect.Ptr:
-			if rv.(*reflect.PtrValue).IsNil() {
-				panic("nil pointer")
+	rv := reflect.ValueOf(v)
+
+	var ev reflect.Value
+	{
+		if rv.Type().Kind() == reflect.Ptr {
+			if rv.Elem().Type().Kind() == reflect.Struct {
+				rv = reflect.Indirect(rv)
 			}
-			et = rv.(*reflect.PtrValue).Elem()
-		case reflect.Slice:
-			if rv.(*reflect.SliceValue).IsNil() {
-				panic("nil slice")
+		}
+
+		var k reflect.Kind
+		if rv.Type().Kind() == reflect.Struct {
+			st := rv.Type()
+			if _, ok := st.FieldByName("Value"); (st.NumField() == 1) && ok {
+				ev, k = enumExtractValue(rv.FieldByName("Value"))
+				t = enumFromStruct(rv, k)
+			} else {
+				panic(fmt.Sprintf("unrecognized struct type: may not contain Value field (NumField: %v)", st.NumField()))
 			}
-			et = rv.(*reflect.SliceValue).Elem(0)
-		case reflect.Array:
-			et = rv.(*reflect.ArrayValue).Elem(0)
-		default:
-			panic("not a pointer or a slice")
+		} else {
+			ev, k = enumExtractValue(rv)
+			t = enumFromKind(k)
+		}
 	}
 
-	p = unsafe.Pointer(et.UnsafeAddr())
-
-	switch et.Type().Kind() {
-		case reflect.Uint8:
-			t = UNSIGNED_BYTE
-		case reflect.Int8:
-			t = BYTE
-		case reflect.Uint16:
-			t = UNSIGNED_SHORT
-		case reflect.Int16:
-			t = SHORT
-		case reflect.Uint32:
-			t = UNSIGNED_INT
-		case reflect.Int32:
-			t = INT
-		case reflect.Float32:
-			t = FLOAT
-		default:
-			panic("unknown type: " + reflect.Typeof(v).String())
-	}
+	p = unsafe.Pointer(ev.UnsafeAddr())
 
 	return
 }
@@ -472,6 +624,76 @@ func GetTexParameteriv(target GLenum, pname GLenum, params []int32) {
 	C.glGetTexParameteriv(C.GLenum(target), C.GLenum(pname), (*C.GLint)(&params[0]))
 }
 
+// Buffer Objects
+
+type Buffer Object
+
+// Create single buffer object
+func GenBuffer() Buffer {
+	var b C.GLuint
+	C.glGenBuffers(1, &b)
+	return Buffer(b)
+}
+
+// Fill slice with new buffers
+func GenBuffers(buffers []Buffer) {
+	C.glGenBuffers(C.GLsizei(len(buffers)), (*C.GLuint)(&buffers[0]))
+}
+
+// Delete buffer object
+func (buffer Buffer) Delete() {
+	b := C.GLuint(buffer)
+	C.glDeleteBuffers(1, &b)
+}
+
+// Delete all textures in slice
+func DeleteBuffers(buffers []Buffer) {
+	C.glDeleteBuffers(C.GLsizei(len(buffers)), (*C.GLuint)(&buffers[0]))
+}
+
+// Bind this buffer as target
+func (buffer Buffer) Bind(target GLenum) {
+	C.glBindBuffer(C.GLenum(target), C.GLuint(buffer))
+}
+
+// Creates and initializes a buffer object's data store
+func BufferData(target GLenum, size int, data interface{}, usage GLenum) {
+	_, p := GetGLenumType(data)
+	C.glBufferData(C.GLenum(target), C.GLsizeiptr(size), p, C.GLenum(usage))
+}
+
+//  Update a subset of a buffer object's data store
+func BufferSubData(target GLenum, offset int, size int, data interface{}) {
+	_, p := GetGLenumType(data)
+	C.glBufferSubData(C.GLenum(target), C.GLintptr(offset), C.GLsizeiptr(size), p)
+}
+
+// Returns a subset of a buffer object's data store
+func GetBufferSubData(target GLenum, offset int, size int, data interface{}) {
+	_, p := GetGLenumType(data)
+	C.glGetBufferSubData(C.GLenum(target), C.GLintptr(offset), C.GLsizeiptr(size), p)
+}
+
+//  Map a buffer object's data store
+func MapBuffer(target GLenum, access GLenum) {
+	C.glMapBuffer(C.GLenum(target), C.GLenum(access))
+}
+
+//  Unmap a buffer object's data store
+func UnmapBuffer(target GLenum) bool {
+	return goBool(C.glUnmapBuffer(C.GLenum(target)))
+}
+
+// Return buffer pointer
+func glGetBufferPointerv(target GLenum, pname GLenum, params []unsafe.Pointer) {
+	C.glGetBufferPointerv(C.GLenum(target), C.GLenum(pname), &params[0])
+}
+
+// Return parameters of a buffer object
+func GetBufferParameteriv(target GLenum, pname GLenum, params []int32) {
+	C.glGetBufferParameteriv(C.GLenum(target), C.GLenum(pname), (*C.GLint)(&params[0]))
+}
+
 // VertexAttrib
 
 type VertexAttrib int
@@ -622,14 +844,6 @@ func BlendEquationSeparate(modeRGB GLenum, modeAlpha GLenum) {
 
 func BlendFuncSeparate(srcRGB GLenum, dstRGB GLenum, srcAlpha GLenum, dstAlpha GLenum) {
 	C.glBlendFuncSeparate(C.GLenum(srcRGB), C.GLenum(dstRGB), C.GLenum(srcAlpha), C.GLenum(dstAlpha))
-}
-
-func BufferData(target GLenum, size int, data unsafe.Pointer, usage GLenum) {
-	C.glBufferData(C.GLenum(target), C.GLsizeiptr(size), data, C.GLenum(usage))
-}
-
-func BufferSubData(target GLenum, offset uintptr, size int, data unsafe.Pointer) {
-	C.glBufferSubData(C.GLenum(target), C.GLintptr(offset), C.GLsizeiptr(size), data)
 }
 
 func DisableVertexAttribArray(index VertexAttrib) {
@@ -2274,6 +2488,5 @@ func GenFramebuffers(bufs []Framebuffer) {
 //}
 
 func Init() GLenum {
-	return GLenum(C.glewInit());
+	return GLenum(C.glewInit())
 }
-

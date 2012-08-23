@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"sdl"
 	"gl"
 	"flag"
@@ -38,9 +39,9 @@ func uploadTexture_RGBA32(w, h int, data []byte) gl.Texture {
 	gl.TexParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_R, gl.CLAMP_TO_EDGE)
 	gl.TexImage2D(gl.TEXTURE_2D, 0, gl.RGBA, int(w), int(h), 0, gl.RGBA, data)
 
-	if gl.GetError() != gl.NO_ERROR {
+	if err := gl.GetError(); err != gl.NO_ERROR {
 		id.Delete()
-		panic("Failed to load a texture")
+		panic(fmt.Sprintf("Failed to load a texture (%v)", err))
 		return 0
 	}
 	return id
@@ -407,6 +408,10 @@ func main() {
 
 	if sdl.SetVideoMode(512, 512, 32, sdl.OPENGL) == nil {
 		panic("sdl error")
+	}
+
+	if gl.Init() != 0 {
+		panic("gl error")	
 	}
 
 	sdl.WM_SetCaption("Gomandel", "Gomandel")

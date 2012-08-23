@@ -6,9 +6,11 @@ package main
 
 */
 
-import "sdl"
-import "gl"
-import "math"
+import (
+   "sdl"
+   "gl"
+   "math"
+)
 
 type Point struct {
 	x int
@@ -76,6 +78,10 @@ func main() {
 		panic("sdl error")
 	}
 
+	if gl.Init() != 0 {
+		panic("gl error")	
+	}
+
 	pen := Pen{}
 
 	gl.MatrixMode(gl.PROJECTION)
@@ -97,10 +103,11 @@ func main() {
 			switch e.Type {
 			case sdl.QUIT:
 				running = false
-				break
 			case sdl.KEYDOWN:
-				running = false
-				break
+               ke := e.Keyboard()
+               if ke.Keysym.Sym == sdl.K_ESCAPE {
+                   running = false
+               }
 			case sdl.MOUSEMOTION:
 				me := e.MouseMotion()
 				if me.State != 0 {
@@ -108,7 +115,6 @@ func main() {
 				} else {
 					pen.moveTo(Point{int(me.X), int(me.Y)})
 				}
-				break
 			}
 		}
 
