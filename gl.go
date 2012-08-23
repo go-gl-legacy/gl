@@ -686,8 +686,13 @@ func (indx AttribLocation) Attrib4fv(values []float32) {
 }
 
 func (indx AttribLocation) AttribPointer(size uint, normalized bool, stride int, pointer interface{}) {
-	t, p := GetGLenumType(pointer)
-	C.glVertexAttribPointer(C.GLuint(indx), C.GLint(size), C.GLenum(t), glBool(normalized), C.GLsizei(stride), p)
+	// if p is a GLenum, pass it as the type instead
+	if enum, ok := pointer.(GLenum); ok {
+		C.glVertexAttribPointer(C.GLuint(indx), C.GLint(size), C.GLenum(enum), glBool(normalized), C.GLsizei(stride), nil)
+	} else {
+		t, p := GetGLenumType(pointer)
+		C.glVertexAttribPointer(C.GLuint(indx), C.GLint(size), C.GLenum(t), glBool(normalized), C.GLsizei(stride), p)
+	}
 }
 
 func (indx AttribLocation) EnableArray() {
