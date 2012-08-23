@@ -690,6 +690,11 @@ func (indx AttribLocation) AttribPointer(size uint, normalized bool, stride int,
 	C.glVertexAttribPointer(C.GLuint(indx), C.GLint(size), C.GLenum(t), glBool(normalized), C.GLsizei(stride), p)
 }
 
+func (indx AttribLocation) AttribNullPointer(size uint, normalized bool, stride int, tdata GLenum) {
+	// Use this function when you need pass a NULL pointer to glVertexAttribPointer
+	C.glVertexAttribPointer(C.GLuint(indx), C.GLint(size), C.GLenum(tdata), glBool(normalized), C.GLsizei(stride), nil)
+}
+
 func (indx AttribLocation) EnableArray() {
 	C.glEnableVertexAttribArray(C.GLuint(indx))
 }
