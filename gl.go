@@ -60,6 +60,10 @@ func GetGLenumType(v interface{}) (t GLenum, p unsafe.Pointer) {
 			panic("nil pointer")
 		}
 		et = rv.Elem()
+		// Ptr to Array?
+		if et.Type().Kind() == reflect.Array {
+			et = et.Index(0)
+		}
 	case reflect.Slice:
 		if rv.IsNil() {
 			panic("nil slice")
@@ -507,6 +511,11 @@ func GetTexParameterfv(target GLenum, pname GLenum, params []float32) {
 //void glGetTexParameteriv (GLenum target, GLenum pname, int *params)
 func GetTexParameteriv(target GLenum, pname GLenum, params []int32) {
 	C.glGetTexParameteriv(C.GLenum(target), C.GLenum(pname), (*C.GLint)(&params[0]))
+}
+
+// Bind this texture as target
+func GenerateMipmap(target GLenum) {
+	C.glGenerateMipmap(C.GLenum(target))
 }
 
 // Buffer Objects
@@ -1178,8 +1187,13 @@ func DrawElements(mode GLenum, count int, indices interface{}) {
 	t, p := GetGLenumType(indices)
 	C.glDrawElements(C.GLenum(mode), C.GLsizei(count), C.GLenum(t), p)
 }
+// Version with explicit type
+func DrawElementsTyped(mode GLenum, count int, typ GLenum, indices interface{}) {
+	_, p := GetGLenumType(indices)
+	C.glDrawElements(C.GLenum(mode), C.GLsizei(count), C.GLenum(typ), p)
+}
 // VBO version
-func DrawElementsVBO(mode GLenum, etype, count int) {
+func DrawElementsVBO(mode, etype GLenum, count int) {
 	C.glDrawElements(C.GLenum(mode), C.GLsizei(count), C.GLenum(etype), unsafe.Pointer(uintptr(0)))
 }
 
@@ -1582,13 +1596,15 @@ func LoadIdentity() {
 }
 
 //void glLoadMatrixd (const float64 *m)
-func LoadMatrixd(m *float64) {
-	C.glLoadMatrixd((*C.GLdouble)(m))
+func LoadMatrixd(m *[16]float64) {
+	_, p := GetGLenumType(m)
+	C.glLoadMatrixd((*C.GLdouble)(p))
 }
 
 //void glLoadMatrixf (const float32 *m)
-func LoadMatrixf(m *float32) {
-	C.glLoadMatrixf((*C.GLfloat)(m))
+func LoadMatrixf(m *[16]float32) {
+	_, p := GetGLenumType(m)
+	C.glLoadMatrixf((*C.GLfloat)(p))
 }
 
 //void glLoadName (uint name)
