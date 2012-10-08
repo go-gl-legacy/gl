@@ -102,7 +102,7 @@ func (shader Shader) GetInfoLog() string {
 	var length C.GLint
 	C.glGetShaderiv(C.GLuint(shader), C.GLenum(INFO_LOG_LENGTH), &length)
 	// length is buffer size including null character
-	
+
 	if length > 1 {
 		log := C.malloc(C.size_t(length))
 		defer C.free(log)
@@ -134,7 +134,6 @@ func (shader Shader) Source(source string) {
 	C.glShaderSource(C.GLuint(shader), 1, &csource, &one)
 }
 
-
 func (shader Shader) Compile() { C.glCompileShader(C.GLuint(shader)) }
 
 func (shader Shader) Get(param GLenum) int {
@@ -156,7 +155,6 @@ func (program Program) AttachShader(shader Shader) {
 	C.glAttachShader(C.GLuint(program), C.GLuint(shader))
 }
 
-
 func (program Program) GetAttachedShaders() []Object {
 	var len C.GLint
 	C.glGetProgramiv(C.GLuint(program), C.GLenum(ACTIVE_UNIFORM_MAX_LENGTH), &len)
@@ -170,19 +168,19 @@ func (program Program) DetachShader(shader Shader) {
 	C.glDetachShader(C.GLuint(program), C.GLuint(shader))
 }
 
-func (program Program) TransformFeedbackVaryings (names []string, buffer_mode GLenum) {
+func (program Program) TransformFeedbackVaryings(names []string, buffer_mode GLenum) {
 	if len(names) == 0 {
 		C.glTransformFeedbackVaryings(C.GLuint(program), 0, (**C.GLchar)(nil), C.GLenum(buffer_mode))
 	} else {
 		gl_names := make([]*C.GLchar, len(names))
 
-		for i := range(names) {
+		for i := range names {
 			gl_names[i] = glString(names[i])
 		}
 
 		C.glTransformFeedbackVaryings(C.GLuint(program), C.GLsizei(len(gl_names)), &gl_names[0], C.GLenum(buffer_mode))
 
-		for _, s := range(gl_names) {
+		for _, s := range gl_names {
 			freeString(s)
 		}
 	}
@@ -200,13 +198,13 @@ func (program Program) GetInfoLog() string {
 	var length C.GLint
 	C.glGetProgramiv(C.GLuint(program), C.GLenum(INFO_LOG_LENGTH), &length)
 	// length is buffer size including null character
-	
+
 	if length > 1 {
 		log := C.malloc(C.size_t(length))
 		defer C.free(log)
 		C.glGetProgramInfoLog(C.GLuint(program), C.GLsizei(length), nil, (*C.GLchar)(log))
 		return C.GoString((*C.char)(log))
-	} 
+	}
 	return ""
 
 }
@@ -217,7 +215,6 @@ func (program Program) Get(param GLenum) int {
 	C.glGetProgramiv(C.GLuint(program), C.GLenum(param), &rv)
 	return int(rv)
 }
-
 
 func (program Program) GetUniformiv(location UniformLocation, values []int) {
 	// no range check
@@ -244,7 +241,6 @@ func (program Program) GetAttribLocation(name string) AttribLocation {
 
 	return AttribLocation(C.glGetAttribLocation(C.GLuint(program), cname))
 }
-
 
 func (program Program) BindAttribLocation(index AttribLocation, name string) {
 
@@ -293,7 +289,7 @@ func (texture Texture) Unbind(target GLenum) {
 }
 
 //void glTexImage1D (GLenum target, int level, int internalformat, int width, int border, GLenum format, GLenum type, const GLvoid *pixels)
-func TexImage1D(target GLenum, level int, internalformat int, width int, border int, format, typ  GLenum, pixels interface{}) {
+func TexImage1D(target GLenum, level int, internalformat int, width int, border int, format, typ GLenum, pixels interface{}) {
 	C.glTexImage1D(C.GLenum(target), C.GLint(level), C.GLint(internalformat),
 		C.GLsizei(width), C.GLint(border), C.GLenum(format), C.GLenum(typ),
 		ptr(pixels))
@@ -304,6 +300,13 @@ func TexImage2D(target GLenum, level int, internalformat int, width int, height 
 	C.glTexImage2D(C.GLenum(target), C.GLint(level), C.GLint(internalformat),
 		C.GLsizei(width), C.GLsizei(height), C.GLint(border), C.GLenum(format),
 		C.GLenum(typ), ptr(pixels))
+}
+
+//void glTexImage3D (GLenum target, int level, int internalformat, int width, int height, int depth, int border, GLenum format, GLenum type, const GLvoid *pixels)
+func TexImage3D(target GLenum, level int, internalformat int, width, height, depth int, border int, format, typ GLenum, pixels interface{}) {
+	C.glTexImage3D(C.GLenum(target), C.GLint(level), C.GLint(internalformat),
+		C.GLsizei(width), C.GLsizei(height), C.GLsizei(depth), C.GLint(border),
+		C.GLenum(format), C.GLenum(typ), ptr(pixels))
 }
 
 //void glTexBuffer (GLenum target, GLenum internalformat, GLuint buffer)
@@ -337,6 +340,14 @@ func TexSubImage2D(target GLenum, level int, xoffset int, yoffset int, width int
 	C.glTexSubImage2D(C.GLenum(target), C.GLint(level), C.GLint(xoffset),
 		C.GLint(yoffset), C.GLsizei(width), C.GLsizei(height), C.GLenum(format),
 		C.GLenum(typ), ptr(pixels))
+}
+
+//void glTexImage3D (GLenum target, int level, int xoffset, int yoffset, int zoffset, int width, int height, int depth, GLenum format, GLenum type, const GLvoid *pixels)
+func TexSubImage3D(target GLenum, level int, xoffset, yoffset, zoffset, width, height, depth int, format, typ GLenum, pixels interface{}) {
+	C.glTexSubImage3D(C.GLenum(target), C.GLint(level),
+		C.GLint(xoffset), C.GLint(yoffset), C.GLint(zoffset),
+		C.GLsizei(width), C.GLsizei(height), C.GLsizei(depth),
+		C.GLenum(format), C.GLenum(typ), ptr(pixels))
 }
 
 //void glCopyTexImage1D (GLenum target, int level, GLenum internalFormat, int x, int y, int width, int border)
@@ -675,35 +686,33 @@ func (indx AttribLocation) DisableArray() {
 	C.glDisableVertexAttribArray(C.GLuint(indx))
 }
 
-
 // Vertex Arrays
 type VertexArray Object
 
-func GenVertexArray () VertexArray {
+func GenVertexArray() VertexArray {
 	var a C.GLuint
 	C.glGenVertexArrays(1, &a)
 	return VertexArray(a)
 }
 
-func GenVertexArrays (arrays []VertexArray) {
+func GenVertexArrays(arrays []VertexArray) {
 	C.glGenVertexArrays(C.GLsizei(len(arrays)), (*C.GLuint)(&arrays[0]))
 }
 
-func (array VertexArray) Delete () {
+func (array VertexArray) Delete() {
 	C.glDeleteVertexArrays(1, (*C.GLuint)(&array))
 }
 
-func DeleteVertexArrays (arrays []VertexArray) {
+func DeleteVertexArrays(arrays []VertexArray) {
 	C.glDeleteVertexArrays(C.GLsizei(len(arrays)), (*C.GLuint)(&arrays[0]))
 }
 
-func (array VertexArray) Bind () {
+func (array VertexArray) Bind() {
 	C.glBindVertexArray(C.GLuint(array))
 }
 
 // UniformLocation
 //TODO
-
 
 type UniformLocation int
 
@@ -721,7 +730,7 @@ func (location UniformLocation) Uniform3f(x float32, y float32, z float32) {
 
 func (location UniformLocation) Uniform1fv(v []float32) {
 	C.glUniform1fv(C.GLint(location), C.GLsizei(len(v)),
-		(*C.GLfloat)(ptr(v)));
+		(*C.GLfloat)(ptr(v)))
 }
 
 func (location UniformLocation) Uniform1i(x int) {
@@ -746,7 +755,6 @@ func (location UniformLocation) Uniform2iv(v []int32) {
 	panic("unimplemented")
 	//	C.glUniform2iv(C.GLint(location), (*C.int)(&v[0]));
 }
-
 
 func (location UniformLocation) Uniform3fv(v []float32) {
 	panic("unimplemented")
