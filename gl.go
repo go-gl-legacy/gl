@@ -272,10 +272,9 @@ func GenTexture() Texture {
 
 // Fill slice with new textures
 func GenTextures(textures []Texture) {
-	if len(textures) == 0 {
-		panic("Invalid texture slice length")
+	if len(textures) > 0 {
+		C.glGenTextures(C.GLsizei(len(textures)), (*C.GLuint)(&textures[0]))
 	}
-	C.glGenTextures(C.GLsizei(len(textures)), (*C.GLuint)(&textures[0]))
 }
 
 // Delete texture object
@@ -286,10 +285,9 @@ func (texture Texture) Delete() {
 
 // Delete all textures in slice
 func DeleteTextures(textures []Texture) {
-	if len(textures) == 0 {
-		panic("Invalid texture slice length")
+	if len(textures) > 0 {
+		C.glDeleteTextures(C.GLsizei(len(textures)), (*C.GLuint)(&textures[0]))
 	}
-	C.glDeleteTextures(C.GLsizei(len(textures)), (*C.GLuint)(&textures[0]))
 }
 
 // Bind this texture as target
@@ -573,10 +571,9 @@ func GenBuffer() Buffer {
 
 // Fill slice with new buffers
 func GenBuffers(buffers []Buffer) {
-	if len(buffers) == 0 {
-		panic("Invalid buffer slice length")
+	if len(buffers) > 0 {
+		C.glGenBuffers(C.GLsizei(len(buffers)), (*C.GLuint)(&buffers[0]))
 	}
-	C.glGenBuffers(C.GLsizei(len(buffers)), (*C.GLuint)(&buffers[0]))
 }
 
 // Delete buffer object
@@ -587,10 +584,9 @@ func (buffer Buffer) Delete() {
 
 // Delete all textures in slice
 func DeleteBuffers(buffers []Buffer) {
-	if len(buffers) == 0 {
-		panic("Invalid buffer slice length")
+	if len(buffers) > 0 {
+		C.glDeleteBuffers(C.GLsizei(len(buffers)), (*C.GLuint)(&buffers[0]))
 	}
-	C.glDeleteBuffers(C.GLsizei(len(buffers)), (*C.GLuint)(&buffers[0]))
 }
 
 // Remove buffer binding
@@ -669,12 +665,11 @@ func GenTransformFeedback() TransformFeedback {
 
 // Fill slice with new transform feedbacks
 func GenTransformFeedbacks(feedbacks []TransformFeedback) {
-	if len(feedbacks) == 0 {
-		panic("Invalid feedback slice length")
-	}
 	// FIXME(jimt): glGenBuffers is correct?
 	// If so, this is a duplicate of GenBuffers().
-	C.glGenBuffers(C.GLsizei(len(feedbacks)), (*C.GLuint)(&feedbacks[0]))
+	if len(feedbacks) > 0 {
+		C.glGenBuffers(C.GLsizei(len(feedbacks)), (*C.GLuint)(&feedbacks[0]))
+	}
 }
 
 // Delete a transform feedback object
@@ -689,10 +684,9 @@ func (feedback TransformFeedback) Draw(mode GLenum) {
 
 // Delete all transform feedbacks in a slice
 func DeleteTransformFeedbacks(feedbacks []TransformFeedback) {
-	if len(feedbacks) == 0 {
-		panic("Invalid feedback slice length")
+	if len(feedbacks) > 0 {
+		C.glDeleteTransformFeedbacks(C.GLsizei(len(feedbacks)), (*C.GLuint)(&feedbacks[0]))
 	}
-	C.glDeleteTransformFeedbacks(C.GLsizei(len(feedbacks)), (*C.GLuint)(&feedbacks[0]))
 }
 
 // Bind this transform feedback as target
