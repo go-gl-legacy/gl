@@ -1633,13 +1633,17 @@ func MatrixMode(mode GLenum) {
 }
 
 //void glMultMatrixd (const float64 *m)
-func MultMatrixd(m *float64) {
-	C.glMultMatrixd((*C.GLdouble)(m))
+func MultMatrixd(m []float64) {
+	if len(m) > 0 {
+		C.glMultMatrixd((*C.GLdouble)(unsafe.Pointer(&m[0])))
+	}
 }
 
 //void glMultMatrixf (const float32 *m)
-func MultMatrixf(m *float32) {
-	C.glMultMatrixf((*C.GLfloat)(m))
+func MultMatrixf(m []float32) {
+	if len(m) > 0 {
+		C.glMultMatrixf((*C.GLfloat)(unsafe.Pointer(&m[0])))
+	}
 }
 
 //void glNewList (uint list, GLenum mode)
