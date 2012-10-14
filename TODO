@@ -1,6 +1,0 @@
-* gl.go is missing some functions look for TODO in comments, commented out functions and functions missing at all
-* make more/better test/example programs
-* add godoc comments
-* probably split GLenum into more types
-* fix issues with NVIDIA glx drivers, 260.19.44 segfaults
-* figure out a better way to transfer raw data to OpenGL (e.g. in glTexImage2D), better than unsafe.Pointer and arrays. Probably something like http://download.oracle.com/javase/1.4.2/docs/api/java/nio/ByteBuffer.html
