@@ -627,8 +627,8 @@ func GetBufferSubData(target GLenum, offset int, size int, data interface{}) {
 }
 
 //  Map a buffer object's data store
-func MapBuffer(target GLenum, access GLenum) {
-	C.glMapBuffer(C.GLenum(target), C.GLenum(access))
+func MapBuffer(target GLenum, access GLenum) unsafe.Pointer {
+	return unsafe.Pointer(C.glMapBuffer(C.GLenum(target), C.GLenum(access)))
 }
 
 //  Unmap a buffer object's data store
