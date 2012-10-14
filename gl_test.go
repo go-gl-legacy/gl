@@ -1,8 +1,7 @@
-package gl_test
+package gl
 
 import (
 	"github.com/banthar/Go-SDL/sdl"
-	"github.com/shogg/gl"
 	"testing"
 )
 
@@ -21,167 +20,167 @@ func init() {
 		panic("Couldn't set video mode: " + sdl.GetError() + "\n")
 	}
 
-	if err := gl.Init(); err != 0 {
+	if err := Init(); err != 0 {
 		panic("glInit error")
 	}
 }
 
 func TestTexImage1D(t *testing.T) {
 
-	gl.TexImage1D(gl.TEXTURE_1D,
-		0, gl.RGBA, 16, 0, gl.RGBA, gl.INT,
+	TexImage1D(TEXTURE_1D,
+		0, RGBA, 16, 0, RGBA, INT,
 		&array)
-	if gl.GetError() != gl.NO_ERROR {
+	if GetError() != NO_ERROR {
 		t.Error("pointer to array failed")
 	}
 
-	gl.Enable(gl.TEXTURE_1D)
-	gl.TexImage1D(gl.TEXTURE_1D,
-		1, gl.RGBA, 16, 1, gl.RGBA, gl.INT,
+	Enable(TEXTURE_1D)
+	TexImage1D(TEXTURE_1D,
+		1, RGBA, 16, 1, RGBA, INT,
 		&slice[3])
-	if gl.GetError() != gl.NO_ERROR {
+	if GetError() != NO_ERROR {
 		t.Error("pointer to element failed")
 	}
 
-	gl.TexImage1D(gl.TEXTURE_1D,
-		0, gl.RGBA, 16, 0, gl.RGBA, gl.INT,
+	TexImage1D(TEXTURE_1D,
+		0, RGBA, 16, 0, RGBA, INT,
 		slice)
-	if gl.GetError() != gl.NO_ERROR {
+	if GetError() != NO_ERROR {
 		t.Error("slice failed")
 	}
 
-	gl.TexImage1D(gl.PROXY_TEXTURE_1D,
-		0, gl.RGBA, 16, 0, gl.RGBA, gl.INT,
+	TexImage1D(PROXY_TEXTURE_1D,
+		0, RGBA, 16, 0, RGBA, INT,
 		nil)
-	if gl.GetError() != gl.NO_ERROR {
+	if GetError() != NO_ERROR {
 		t.Error("nil pointer failed")
 	}
 }
 
 func TestTexImage2D(t *testing.T) {
 
-	gl.TexImage2D(gl.TEXTURE_2D,
-		0, gl.RGBA, 4, 4, 0, gl.RGBA, gl.INT,
+	TexImage2D(TEXTURE_2D,
+		0, RGBA, 4, 4, 0, RGBA, INT,
 		&array)
-	if gl.GetError() != gl.NO_ERROR {
+	if GetError() != NO_ERROR {
 		t.Error("pointer to array failed")
 	}
 
-	gl.TexImage2D(gl.TEXTURE_2D,
-		0, gl.RGBA, 4, 4, 0, gl.RGBA, gl.INT,
+	TexImage2D(TEXTURE_2D,
+		0, RGBA, 4, 4, 0, RGBA, INT,
 		slice)
-	if gl.GetError() != gl.NO_ERROR {
+	if GetError() != NO_ERROR {
 		t.Error("slice failed")
 	}
 
-	gl.TexImage2D(gl.PROXY_TEXTURE_2D,
-		0, gl.RGBA, 4, 4, 0, gl.RGBA, gl.INT,
+	TexImage2D(PROXY_TEXTURE_2D,
+		0, RGBA, 4, 4, 0, RGBA, INT,
 		nil)
-	if gl.GetError() != gl.NO_ERROR {
+	if GetError() != NO_ERROR {
 		t.Error("nil pointer failed")
 	}
 }
 
 func TestTexImage3D(t *testing.T) {
 
-	gl.TexImage3D(gl.TEXTURE_3D,
-		0, gl.RGBA, 2, 2, 2, 0, gl.RGBA, gl.INT,
+	TexImage3D(TEXTURE_3D,
+		0, RGBA, 2, 2, 2, 0, RGBA, INT,
 		&array)
-	if gl.GetError() != gl.NO_ERROR {
+	if GetError() != NO_ERROR {
 		t.Error("pointer to array failed")
 	}
 
-	gl.TexImage3D(gl.TEXTURE_3D,
-		0, gl.RGBA, 2, 2, 2, 0, gl.RGBA, gl.INT,
+	TexImage3D(TEXTURE_3D,
+		0, RGBA, 2, 2, 2, 0, RGBA, INT,
 		slice)
-	if gl.GetError() != gl.NO_ERROR {
+	if GetError() != NO_ERROR {
 		t.Error("slice failed")
 	}
 
-	gl.TexImage3D(gl.PROXY_TEXTURE_3D,
-		0, gl.RGBA, 2, 2, 2, 0, gl.RGBA, gl.INT,
+	TexImage3D(PROXY_TEXTURE_3D,
+		0, RGBA, 2, 2, 2, 0, RGBA, INT,
 		nil)
-	if gl.GetError() != gl.NO_ERROR {
+	if GetError() != NO_ERROR {
 		t.Error("nil pointer failed")
 	}
 }
 
 func TestTexSubImage1D(t *testing.T) {
 
-	gl.TexSubImage1D(gl.TEXTURE_1D,
-		0, 8, 8, gl.RGBA, gl.INT,
+	TexSubImage1D(TEXTURE_1D,
+		0, 8, 8, RGBA, INT,
 		&array)
-	if gl.GetError() != gl.NO_ERROR {
+	if GetError() != NO_ERROR {
 		t.Error("pointer to array failed")
 	}
 
-	gl.TexSubImage1D(gl.TEXTURE_1D,
-		0, 8, 8, gl.RGBA, gl.INT,
+	TexSubImage1D(TEXTURE_1D,
+		0, 8, 8, RGBA, INT,
 		slice)
-	if gl.GetError() != gl.NO_ERROR {
+	if GetError() != NO_ERROR {
 		t.Error("slice failed")
 	}
 
-	// gl.TexSubImage1D(gl.PROXY_TEXTURE_1D,
-	// 	0, 8, 8, gl.RGBA, gl.INT,
+	// TexSubImage1D(PROXY_TEXTURE_1D,
+	// 	0, 8, 8, RGBA, INT,
 	// 	nil)
-	// if gl.GetError() != gl.NO_ERROR {
+	// if GetError() != NO_ERROR {
 	// 	t.Error("nil pointer failed")
 	// }
 }
 
 func TestTexSubImage2D(t *testing.T) {
 
-	gl.TexSubImage2D(gl.TEXTURE_2D,
-		0, 2, 2, 2, 2, gl.RGBA, gl.INT,
+	TexSubImage2D(TEXTURE_2D,
+		0, 2, 2, 2, 2, RGBA, INT,
 		&array)
-	if gl.GetError() != gl.NO_ERROR {
+	if GetError() != NO_ERROR {
 		t.Error("pointer to failed")
 	}
 
-	gl.TexSubImage2D(gl.TEXTURE_2D,
-		0, 2, 2, 2, 2, gl.RGBA, gl.INT,
+	TexSubImage2D(TEXTURE_2D,
+		0, 2, 2, 2, 2, RGBA, INT,
 		slice)
-	if gl.GetError() != gl.NO_ERROR {
+	if GetError() != NO_ERROR {
 		t.Error("slice failed")
 	}
 
-	// gl.TexSubImage2D(gl.PROXY_TEXTURE_2D,
-	// 	0, 2, 2, 2, 2, gl.RGBA, gl.INT,
+	// TexSubImage2D(PROXY_TEXTURE_2D,
+	// 	0, 2, 2, 2, 2, RGBA, INT,
 	// 	nil)
-	// if gl.GetError() != gl.NO_ERROR {
+	// if GetError() != NO_ERROR {
 	// 	t.Error("nil pointer failed")
 	// }
 }
 
 func TestTexSubImage3D(t *testing.T) {
 
-	gl.TexSubImage3D(gl.TEXTURE_3D,
-		0, 1, 1, 1, 1, 1, 1, gl.RGBA, gl.INT,
+	TexSubImage3D(TEXTURE_3D,
+		0, 1, 1, 1, 1, 1, 1, RGBA, INT,
 		&array)
-	if gl.GetError() != gl.NO_ERROR {
+	if GetError() != NO_ERROR {
 		t.Error("pointer to failed")
 	}
 
-	gl.TexSubImage3D(gl.TEXTURE_3D,
-		0, 1, 1, 1, 1, 1, 1, gl.RGBA, gl.INT,
+	TexSubImage3D(TEXTURE_3D,
+		0, 1, 1, 1, 1, 1, 1, RGBA, INT,
 		slice)
-	if gl.GetError() != gl.NO_ERROR {
+	if GetError() != NO_ERROR {
 		t.Error("slice failed")
 	}
 
-	// gl.TexSubImage3D(gl.PROXY_TEXTURE_3D,
-	// 	0, 1, 1, 1, 1, 1, 1, gl.RGBA, gl.INT,
+	// TexSubImage3D(PROXY_TEXTURE_3D,
+	// 	0, 1, 1, 1, 1, 1, 1, RGBA, INT,
 	// 	nil)
-	// if gl.GetError() != gl.NO_ERROR {
+	// if GetError() != NO_ERROR {
 	// 	t.Error("nil pointer failed")
 	// }
 }
 
-func newBuffer(bytes int) gl.Buffer {
-	buf := gl.GenBuffer()
-	buf.Bind(gl.ARRAY_BUFFER)
-	gl.BufferData(gl.ARRAY_BUFFER, bytes, slice, gl.STATIC_READ)
+func newBuffer(bytes int) Buffer {
+	buf := GenBuffer()
+	buf.Bind(ARRAY_BUFFER)
+	BufferData(ARRAY_BUFFER, bytes, slice, STATIC_READ)
 	return buf
 }
 
@@ -190,18 +189,18 @@ func TestBufferData(t *testing.T) {
 	buf := newBuffer(16 * 4)
 	defer buf.Delete()
 
-	gl.BufferData(gl.ARRAY_BUFFER, 16*4, &array, gl.STATIC_READ)
-	if gl.GetError() != gl.NO_ERROR {
+	BufferData(ARRAY_BUFFER, 16*4, &array, STATIC_READ)
+	if GetError() != NO_ERROR {
 		t.Error("pointer to array failed")
 	}
 
-	gl.BufferData(gl.ARRAY_BUFFER, 16*4, slice, gl.STATIC_READ)
-	if gl.GetError() != gl.NO_ERROR {
+	BufferData(ARRAY_BUFFER, 16*4, slice, STATIC_READ)
+	if GetError() != NO_ERROR {
 		t.Error("slice failed")
 	}
 
-	gl.BufferData(gl.ARRAY_BUFFER, 16*4, nil, gl.STATIC_READ)
-	if gl.GetError() != gl.NO_ERROR {
+	BufferData(ARRAY_BUFFER, 16*4, nil, STATIC_READ)
+	if GetError() != NO_ERROR {
 		t.Error("nil pointer failed")
 	}
 }
@@ -211,13 +210,13 @@ func TestBufferSubData(t *testing.T) {
 	buf := newBuffer(16 * 4)
 	defer buf.Delete()
 
-	gl.BufferSubData(gl.ARRAY_BUFFER, 0, 4*4, &array)
-	if gl.GetError() != gl.NO_ERROR {
+	BufferSubData(ARRAY_BUFFER, 0, 4*4, &array)
+	if GetError() != NO_ERROR {
 		t.Error("pointer to array failed")
 	}
 
-	gl.BufferSubData(gl.ARRAY_BUFFER, 0, 4*4, slice)
-	if gl.GetError() != gl.NO_ERROR {
+	BufferSubData(ARRAY_BUFFER, 0, 4*4, slice)
+	if GetError() != NO_ERROR {
 		t.Error("slice failed")
 	}
 }
@@ -228,8 +227,8 @@ func TestGetBufferSubData(t *testing.T) {
 	defer buf.Delete()
 
 	result := make([]int32, 4)
-	gl.GetBufferSubData(gl.ARRAY_BUFFER, 7*4, 4*4, result)
-	if gl.GetError() != gl.NO_ERROR {
+	GetBufferSubData(ARRAY_BUFFER, 7*4, 4*4, result)
+	if GetError() != NO_ERROR {
 		t.Error("slice failed")
 	}
 	if result[0] != 8 {
@@ -237,11 +236,11 @@ func TestGetBufferSubData(t *testing.T) {
 	}
 }
 
-func newProgram() gl.Program {
+func newProgram() Program {
 
 	vs := `
 		uniform float[] foo;
-		attribute int bar;
+		attribute float bar;
 
 		void main()
 		{
@@ -255,27 +254,27 @@ func newProgram() gl.Program {
 		}`
 
 	// vertex shader
-	vshader := gl.CreateShader(gl.VERTEX_SHADER)
+	vshader := CreateShader(VERTEX_SHADER)
 	vshader.Source(vs)
 	vshader.Compile()
-	if vshader.Get(gl.COMPILE_STATUS) != gl.TRUE {
+	if vshader.Get(COMPILE_STATUS) != TRUE {
 		panic("vertex shader error: " + vshader.GetInfoLog())
 	}
 
 	// fragment shader
-	fshader := gl.CreateShader(gl.FRAGMENT_SHADER)
+	fshader := CreateShader(FRAGMENT_SHADER)
 	fshader.Source(fs)
 	fshader.Compile()
-	if fshader.Get(gl.COMPILE_STATUS) != gl.TRUE {
+	if fshader.Get(COMPILE_STATUS) != TRUE {
 		panic("fragment shader error: " + fshader.GetInfoLog())
 	}
 
 	// program
-	prg := gl.CreateProgram()
+	prg := CreateProgram()
 	prg.AttachShader(vshader)
 	prg.AttachShader(fshader)
 	prg.Link()
-	if prg.Get(gl.LINK_STATUS) != gl.TRUE {
+	if prg.Get(LINK_STATUS) != TRUE {
 		panic("linker error: " + prg.GetInfoLog())
 	}
 
@@ -291,13 +290,13 @@ func TestAttribPointer(t *testing.T) {
 	bar := prg.GetAttribLocation("bar")
 	bar.EnableArray()
 
-	bar.AttribPointer(1, gl.INT, false, 0, &array)
-	if gl.GetError() != gl.NO_ERROR {
+	bar.AttribPointer(1, INT, false, 0, &array)
+	if GetError() != NO_ERROR {
 		t.Error("pointer to array failed")
 	}
 
-	bar.AttribPointer(1, gl.INT, false, 0, slice)
-	if gl.GetError() != gl.NO_ERROR {
+	bar.AttribPointer(1, INT, false, 0, slice)
+	if GetError() != NO_ERROR {
 		t.Error("slice failed")
 	}
 }
@@ -310,156 +309,156 @@ func TestUniform1fv(t *testing.T) {
 	values := []float32{1.0, 1.1, 1.2, 1.3}
 	foo := prg.GetUniformLocation("foo")
 	foo.Uniform1fv(values)
-	if gl.GetError() != gl.NO_ERROR {
+	if GetError() != NO_ERROR {
 		t.Error("slice failed")
 	}
 }
 
 func TestCallLists(t *testing.T) {
 
-	base := gl.GenLists(2)
+	base := GenLists(2)
 	if base == 0 {
 		t.Error("GenLists failed")
 	}
 
-	gl.NewList(base+0, gl.COMPILE)
-	gl.Color3i(1, 2, 3)
-	gl.Begin(gl.POLYGON)
-	gl.Vertex2f(1.0, 2.0)
-	gl.Vertex2f(3.0, 4.0)
-	gl.Vertex2f(5.0, 6.0)
-	gl.End()
-	gl.EndList()
-	if gl.GetError() != gl.NO_ERROR {
+	NewList(base+0, COMPILE)
+	Color3i(1, 2, 3)
+	Begin(POLYGON)
+	Vertex2f(1.0, 2.0)
+	Vertex2f(3.0, 4.0)
+	Vertex2f(5.0, 6.0)
+	End()
+	EndList()
+	if GetError() != NO_ERROR {
 		t.Error("NewList 1 failed")
 	}
 
-	gl.NewList(base+1, gl.COMPILE)
-	gl.Begin(gl.POINTS)
-	gl.Vertex2i(3, 4)
-	gl.End()
-	gl.EndList()
-	if gl.GetError() != gl.NO_ERROR {
+	NewList(base+1, COMPILE)
+	Begin(POINTS)
+	Vertex2i(3, 4)
+	End()
+	EndList()
+	if GetError() != NO_ERROR {
 		t.Error("NewList 2 failed")
 	}
 
-	gl.CallList(base)
-	if gl.GetError() != gl.NO_ERROR {
+	CallList(base)
+	if GetError() != NO_ERROR {
 		t.Error("CallList 1 failed")
 	}
 
-	gl.ListBase(base)
-	if gl.GetError() != gl.NO_ERROR {
+	ListBase(base)
+	if GetError() != NO_ERROR {
 		t.Error("ListBase failed")
 	}
 
 	lists := []uint{0, 1}
-	gl.CallLists(2, gl.UNSIGNED_INT, lists)
-	if gl.GetError() != gl.NO_ERROR {
+	CallLists(2, UNSIGNED_INT, lists)
+	if GetError() != NO_ERROR {
 		t.Error("CallLists 1 2 failed")
 	}
 }
 
 func TestColorPointer(t *testing.T) {
 
-	gl.EnableClientState(gl.COLOR_ARRAY)
+	EnableClientState(COLOR_ARRAY)
 
-	gl.ColorPointer(4, gl.INT, 0, &array)
-	if gl.GetError() != gl.NO_ERROR {
+	ColorPointer(4, INT, 0, &array)
+	if GetError() != NO_ERROR {
 		t.Error("pointer to array failed")
 	}
 
-	gl.ColorPointer(4, gl.INT, 0, slice)
-	if gl.GetError() != gl.NO_ERROR {
+	ColorPointer(4, INT, 0, slice)
+	if GetError() != NO_ERROR {
 		t.Error("slice failed")
 	}
 
-	gl.DisableClientState(gl.COLOR_ARRAY)
+	DisableClientState(COLOR_ARRAY)
 	buf := newBuffer(16 * 4)
 	defer buf.Delete()
 
-	gl.ColorPointer(4, gl.INT, 0, uintptr(0))
-	if gl.GetError() != gl.NO_ERROR {
+	ColorPointer(4, INT, 0, uintptr(0))
+	if GetError() != NO_ERROR {
 		t.Error("buffer offset failed")
 	}
 }
 
 func TestDrawElements(t *testing.T) {
 
-	gl.EnableClientState(gl.VERTEX_ARRAY)
-	gl.VertexPointer(2, gl.INT, 0, slice)
+	EnableClientState(VERTEX_ARRAY)
+	VertexPointer(2, INT, 0, slice)
 
 	indices := []uint32{0, 1, 2, 3}
 
-	gl.DrawElements(gl.TRIANGLE_STRIP, 4, gl.UNSIGNED_INT, indices)
-	if gl.GetError() != gl.NO_ERROR {
+	DrawElements(TRIANGLE_STRIP, 4, UNSIGNED_INT, indices)
+	if GetError() != NO_ERROR {
 		t.Error("slice failed")
 	}
 
-	gl.DisableClientState(gl.VERTEX_ARRAY)
+	DisableClientState(VERTEX_ARRAY)
 }
 
 func TestDrawPixels(t *testing.T) {
 
-	gl.DrawPixels(4, 4, gl.RGBA, gl.UNSIGNED_INT, slice)
-	if gl.GetError() != gl.NO_ERROR {
+	DrawPixels(4, 4, RGBA, UNSIGNED_INT, slice)
+	if GetError() != NO_ERROR {
 		t.Error("slice failed")
 	}
 
 	buf := newBuffer(16 * 4)
-	buf.Bind(gl.PIXEL_UNPACK_BUFFER)
+	buf.Bind(PIXEL_UNPACK_BUFFER)
 	defer buf.Delete()
 
-	gl.DrawPixels(2, 2, gl.RGBA, gl.UNSIGNED_INT, uintptr(0))
-	if gl.GetError() != gl.NO_ERROR {
+	DrawPixels(2, 2, RGBA, UNSIGNED_INT, uintptr(0))
+	if GetError() != NO_ERROR {
 		t.Error("buffer offset failed")
 	}
 }
 
 func TestIndexPointer(t *testing.T) {
 
-	gl.EnableClientState(gl.INDEX_ARRAY)
+	EnableClientState(INDEX_ARRAY)
 
-	gl.IndexPointer(gl.INT, 0, &array)
-	if gl.GetError() != gl.NO_ERROR {
+	IndexPointer(INT, 0, &array)
+	if GetError() != NO_ERROR {
 		t.Error("pointer to array failed")
 	}
 
-	gl.IndexPointer(gl.INT, 0, slice)
-	if gl.GetError() != gl.NO_ERROR {
+	IndexPointer(INT, 0, slice)
+	if GetError() != NO_ERROR {
 		t.Error("slice failed")
 	}
 
-	gl.DisableClientState(gl.INDEX_ARRAY)
+	DisableClientState(INDEX_ARRAY)
 	buf := newBuffer(16 * 4)
 	defer buf.Delete()
 
-	gl.IndexPointer(gl.INT, 0, uintptr(0))
-	if gl.GetError() != gl.NO_ERROR {
+	IndexPointer(INT, 0, uintptr(0))
+	if GetError() != NO_ERROR {
 		t.Error("buffer offset failed")
 	}
 }
 
 func TestNormalPointer(t *testing.T) {
 
-	gl.EnableClientState(gl.NORMAL_ARRAY)
+	EnableClientState(NORMAL_ARRAY)
 
-	gl.NormalPointer(gl.INT, 0, &array)
-	if gl.GetError() != gl.NO_ERROR {
+	NormalPointer(INT, 0, &array)
+	if GetError() != NO_ERROR {
 		t.Error("pointer to array failed")
 	}
 
-	gl.NormalPointer(gl.INT, 0, slice)
-	if gl.GetError() != gl.NO_ERROR {
+	NormalPointer(INT, 0, slice)
+	if GetError() != NO_ERROR {
 		t.Error("slice failed")
 	}
 
-	gl.DisableClientState(gl.NORMAL_ARRAY)
+	DisableClientState(NORMAL_ARRAY)
 	buf := newBuffer(16 * 4)
 	defer buf.Delete()
 
-	gl.NormalPointer(gl.INT, 0, uintptr(0))
-	if gl.GetError() != gl.NO_ERROR {
+	NormalPointer(INT, 0, uintptr(0))
+	if GetError() != NO_ERROR {
 		t.Error("buffer offset failed")
 	}
 }
@@ -467,11 +466,11 @@ func TestNormalPointer(t *testing.T) {
 func TestReadPixels(t *testing.T) {
 
 	pixels := []byte{1, 1, 1, 2, 2, 2, 3, 3, 3, 4, 4, 4}
-	gl.DrawPixels(2, 2, gl.RGB, gl.UNSIGNED_BYTE, pixels)
+	DrawPixels(2, 2, RGB, UNSIGNED_BYTE, pixels)
 
 	result := make([]byte, 4*3)
-	gl.ReadPixels(0, 0, 2, 2, gl.RGB, gl.UNSIGNED_BYTE, result)
-	if gl.GetError() != gl.NO_ERROR {
+	ReadPixels(0, 0, 2, 2, RGB, UNSIGNED_BYTE, result)
+	if GetError() != NO_ERROR {
 		t.Error("slice failed")
 	}
 
@@ -483,48 +482,48 @@ func TestReadPixels(t *testing.T) {
 
 func TestTexCoordPointer(t *testing.T) {
 
-	gl.EnableClientState(gl.TEXTURE_COORD_ARRAY)
+	EnableClientState(TEXTURE_COORD_ARRAY)
 
-	gl.TexCoordPointer(3, gl.INT, 0, &array)
-	if gl.GetError() != gl.NO_ERROR {
+	TexCoordPointer(3, INT, 0, &array)
+	if GetError() != NO_ERROR {
 		t.Error("pointer to array failed")
 	}
 
-	gl.TexCoordPointer(3, gl.INT, 0, slice)
-	if gl.GetError() != gl.NO_ERROR {
+	TexCoordPointer(3, INT, 0, slice)
+	if GetError() != NO_ERROR {
 		t.Error("slice failed")
 	}
 
-	gl.DisableClientState(gl.TEXTURE_COORD_ARRAY)
+	DisableClientState(TEXTURE_COORD_ARRAY)
 	buf := newBuffer(16 * 4)
 	defer buf.Delete()
 
-	gl.TexCoordPointer(3, gl.INT, 0, uintptr(0))
-	if gl.GetError() != gl.NO_ERROR {
+	TexCoordPointer(3, INT, 0, uintptr(0))
+	if GetError() != NO_ERROR {
 		t.Error("buffer offset failed")
 	}
 }
 
 func TestVertexPointer(t *testing.T) {
 
-	gl.EnableClientState(gl.VERTEX_ARRAY)
+	EnableClientState(VERTEX_ARRAY)
 
-	gl.VertexPointer(3, gl.INT, 0, &array)
-	if gl.GetError() != gl.NO_ERROR {
+	VertexPointer(3, INT, 0, &array)
+	if GetError() != NO_ERROR {
 		t.Error("pointer to array failed")
 	}
 
-	gl.VertexPointer(3, gl.INT, 0, slice)
-	if gl.GetError() != gl.NO_ERROR {
+	VertexPointer(3, INT, 0, slice)
+	if GetError() != NO_ERROR {
 		t.Error("slice failed")
 	}
 
-	gl.DisableClientState(gl.VERTEX_ARRAY)
+	DisableClientState(VERTEX_ARRAY)
 	buf := newBuffer(16 * 4)
 	defer buf.Delete()
 
-	gl.VertexPointer(3, gl.INT, 0, uintptr(0))
-	if gl.GetError() != gl.NO_ERROR {
+	VertexPointer(3, INT, 0, uintptr(0))
+	if GetError() != NO_ERROR {
 		t.Error("buffer offset failed")
 	}
 }
