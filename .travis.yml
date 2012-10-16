@@ -1,0 +1,25 @@
+language: go
+
+install:
+  - wget -q https://raw.github.com/go-gl/testutils/master/travis-helper-functions.sh
+  - source travis-helper-functions.sh
+
+script:
+  - go build -v
+
+after_script:
+  - go test -v
+  - upload_to_imgur
+  - subtest go-gl/gl go-gl/examples
+
+after_failure: failure
+after_error: failure
+
+notifications:
+  email:
+    recipients:
+      - peter@pwaller.net
+      - jimteeuwen@gmail.com
+    on_success: change
+    on_failure: always
+
