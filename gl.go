@@ -562,6 +562,10 @@ func GetTexParameteriv(target GLenum, pname GLenum, params []int32) {
 	C.glGetTexParameteriv(C.GLenum(target), C.GLenum(pname), (*C.GLint)(&params[0]))
 }
 
+func GenerateMipmap(target GLenum) {
+	C.glGenerateMipmap(C.GLenum(target))
+}
+
 // Buffer Objects
 
 type Buffer Object
