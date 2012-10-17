@@ -1334,4 +1334,3 @@ const (
 	ZOOM_X                                        = C.GL_ZOOM_X
 	ZOOM_Y                                        = C.GL_ZOOM_Y
 )
-
