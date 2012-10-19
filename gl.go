@@ -395,7 +395,7 @@ func TexEnvf(target GLenum, pname GLenum, param float32) {
 
 //void glTexEnvfv (GLenum target, GLenum pname, const float *params)
 func TexEnvfv(target GLenum, pname GLenum, params []float32) {
-	if len(params) == 0 {
+	if len(params) != 1 && len(params) != 4 {
 		panic("Invalid params slice length")
 	}
 	C.glTexEnvfv(C.GLenum(target), C.GLenum(pname), (*C.GLfloat)(&params[0]))
@@ -408,7 +408,7 @@ func TexEnvi(target GLenum, pname GLenum, param int) {
 
 //void glTexEnviv (GLenum target, GLenum pname, const int *params)
 func TexEnviv(target GLenum, pname GLenum, params []int32) {
-	if len(params) == 0 {
+	if len(params) != 1 && len(params) != 4 {
 		panic("Invalid params slice length")
 	}
 	C.glTexEnviv(C.GLenum(target), C.GLenum(pname), (*C.GLint)(&params[0]))
@@ -645,19 +645,17 @@ func UnmapBuffer(target GLenum) bool {
 }
 
 // Return buffer pointer
-func glGetBufferPointerv(target GLenum, pname GLenum, params []unsafe.Pointer) {
-	if len(params) == 0 {
-		panic("Invalid param slice length")
-	}
-	C.glGetBufferPointerv(C.GLenum(target), C.GLenum(pname), &params[0])
+func GetBufferPointerv(target GLenum, pname GLenum) uintptr {
+	var ptr unsafe.Pointer
+	C.glGetBufferPointerv(C.GLenum(target), C.GLenum(pname), &ptr)
+	return uintptr(ptr)
 }
 
 // Return parameters of a buffer object
-func GetBufferParameteriv(target GLenum, pname GLenum, params []int32) {
-	if len(params) == 0 {
-		panic("Invalid param slice length")
-	}
-	C.glGetBufferParameteriv(C.GLenum(target), C.GLenum(pname), (*C.GLint)(&params[0]))
+func GetBufferParameteriv(target GLenum, pname GLenum) int32 {
+	var param C.GLint
+	C.glGetBufferParameteriv(C.GLenum(target), C.GLenum(pname), &param)
+	return int32(param)
 }
 
 // Transform Feedback Objects
@@ -673,10 +671,8 @@ func GenTransformFeedback() TransformFeedback {
 
 // Fill slice with new transform feedbacks
 func GenTransformFeedbacks(feedbacks []TransformFeedback) {
-	// FIXME(jimt): glGenBuffers is correct?
-	// If so, this is a duplicate of GenBuffers().
 	if len(feedbacks) > 0 {
-		C.glGenBuffers(C.GLsizei(len(feedbacks)), (*C.GLuint)(&feedbacks[0]))
+		C.glGenTransformFeedbacks(C.GLsizei(len(feedbacks)), (*C.GLuint)(&feedbacks[0]))
 	}
 }
 
@@ -725,10 +721,7 @@ func (indx AttribLocation) Attrib1f(x float32) {
 	C.glVertexAttrib1f(C.GLuint(indx), C.GLfloat(x))
 }
 
-func (indx AttribLocation) Attrib1fv(values []float32) {
-	if len(values) == 0 {
-		panic("Invalid value slice length")
-	}
+func (indx AttribLocation) Attrib1fv(values *[1]float32) {
 	C.glVertexAttrib1fv(C.GLuint(indx), (*C.GLfloat)(unsafe.Pointer(&values[0])))
 }
 
@@ -736,10 +729,7 @@ func (indx AttribLocation) Attrib2f(x float32, y float32) {
 	C.glVertexAttrib2f(C.GLuint(indx), C.GLfloat(x), C.GLfloat(y))
 }
 
-func (indx AttribLocation) Attrib2fv(values []float32) {
-	if len(values) == 0 {
-		panic("Invalid value slice length")
-	}
+func (indx AttribLocation) Attrib2fv(values *[2]float32) {
 	C.glVertexAttrib2fv(C.GLuint(indx), (*C.GLfloat)(unsafe.Pointer(&values[0])))
 }
 
@@ -747,10 +737,7 @@ func (indx AttribLocation) Attrib3f(x float32, y float32, z float32) {
 	C.glVertexAttrib3f(C.GLuint(indx), C.GLfloat(x), C.GLfloat(y), C.GLfloat(z))
 }
 
-func (indx AttribLocation) Attrib3fv(values []float32) {
-	if len(values) == 0 {
-		panic("Invalid value slice length")
-	}
+func (indx AttribLocation) Attrib3fv(values *[3]float32) {
 	C.glVertexAttrib3fv(C.GLuint(indx), (*C.GLfloat)(unsafe.Pointer(&values[0])))
 }
 
@@ -758,10 +745,7 @@ func (indx AttribLocation) Attrib4f(x float32, y float32, z float32, w float32) 
 	C.glVertexAttrib4f(C.GLuint(indx), C.GLfloat(x), C.GLfloat(y), C.GLfloat(z), C.GLfloat(w))
 }
 
-func (indx AttribLocation) Attrib4fv(values []float32) {
-	if len(values) == 0 {
-		panic("Invalid value slice length")
-	}
+func (indx AttribLocation) Attrib4fv(values *[4]float32) {
 	C.glVertexAttrib4fv(C.GLuint(indx), (*C.GLfloat)(unsafe.Pointer(&values[0])))
 }
 
@@ -788,10 +772,9 @@ func GenVertexArray() VertexArray {
 }
 
 func GenVertexArrays(arrays []VertexArray) {
-	if len(arrays) == 0 {
-		panic("Invalid array slice length")
+	if len(arrays) > 0 {
+		C.glGenVertexArrays(C.GLsizei(len(arrays)), (*C.GLuint)(&arrays[0]))
 	}
-	C.glGenVertexArrays(C.GLsizei(len(arrays)), (*C.GLuint)(&arrays[0]))
 }
 
 func (array VertexArray) Delete() {
@@ -799,10 +782,9 @@ func (array VertexArray) Delete() {
 }
 
 func DeleteVertexArrays(arrays []VertexArray) {
-	if len(arrays) == 0 {
-		panic("Invalid array slice length")
+	if len(arrays) > 0 {
+		C.glDeleteVertexArrays(C.GLsizei(len(arrays)), (*C.GLuint)(&arrays[0]))
 	}
-	C.glDeleteVertexArrays(C.GLsizei(len(arrays)), (*C.GLuint)(&arrays[0]))
 }
 
 func (array VertexArray) Bind() {
@@ -836,13 +818,15 @@ func (location UniformLocation) Uniform1i(x int) {
 }
 
 func (location UniformLocation) Uniform1iv(v []int) {
-	panic("unimplemented")
-	//	C.glUniform1iv(C.GLint(location), (*C.int)(&v[0]));
+	if len(v) > 0 {
+		C.glUniform1iv(C.GLint(location), C.GLsizei(len(v)), (*C.GLint)(unsafe.Pointer(&v[0])))
+	}
 }
 
 func (location UniformLocation) Uniform2fv(v []float32) {
-	panic("unimplemented")
-	//	C.glUniform2fv(C.GLint(location), (*C.float)(&v[0]));
+	if len(v) > 0 {
+		C.glUniform2fv(C.GLint(location), C.GLsizei(len(v)), (*C.GLfloat)(unsafe.Pointer(&v[0])))
+	}
 }
 
 func (location UniformLocation) Uniform2i(x int, y int) {
@@ -850,13 +834,15 @@ func (location UniformLocation) Uniform2i(x int, y int) {
 }
 
 func (location UniformLocation) Uniform2iv(v []int32) {
-	panic("unimplemented")
-	//	C.glUniform2iv(C.GLint(location), (*C.int)(&v[0]));
+	if len(v) > 0 {
+		C.glUniform2iv(C.GLint(location), C.GLsizei(len(v)), (*C.GLint)(unsafe.Pointer(&v[0])))
+	}
 }
 
 func (location UniformLocation) Uniform3fv(v []float32) {
-	panic("unimplemented")
-	//	C.glUniform3fv(C.GLint(location), (*C.float)(&v[0]));
+	if len(v) > 0 {
+		C.glUniform3fv(C.GLint(location), C.GLsizei(len(v)), (*C.GLfloat)(unsafe.Pointer(&v[0])))
+	}
 }
 
 func (location UniformLocation) Uniform3i(x int, y int, z int) {
@@ -864,8 +850,9 @@ func (location UniformLocation) Uniform3i(x int, y int, z int) {
 }
 
 func (location UniformLocation) Uniform3iv(v []int32) {
-	panic("unimplemented")
-	//	C.glUniform3iv(C.GLint(location), (*C.int)(&v[0]));
+	if len(v) > 0 {
+		C.glUniform3iv(C.GLint(location), C.GLsizei(len(v)), (*C.GLint)(unsafe.Pointer(&v[0])))
+	}
 }
 
 func (location UniformLocation) Uniform4f(x float32, y float32, z float32, w float32) {
@@ -873,8 +860,9 @@ func (location UniformLocation) Uniform4f(x float32, y float32, z float32, w flo
 }
 
 func (location UniformLocation) Uniform4fv(v []float32) {
-	panic("unimplemented")
-	//	C.glUniform4fv(C.GLint(location), (*C.float)(&v[0]));
+	if len(v) > 0 {
+		C.glUniform4fv(C.GLint(location), C.GLsizei(len(v)), (*C.GLfloat)(unsafe.Pointer(&v[0])))
+	}
 }
 
 func (location UniformLocation) Uniform4i(x int, y int, z int, w int) {
@@ -882,8 +870,9 @@ func (location UniformLocation) Uniform4i(x int, y int, z int, w int) {
 }
 
 func (location UniformLocation) Uniform4iv(v []int32) {
-	panic("unimplemented")
-	//	C.glUniform4iv(C.GLint(location), (*C.int)(&v[0]));
+	if len(v) > 0 {
+		C.glUniform4iv(C.GLint(location), C.GLsizei(len(v)), (*C.GLint)(unsafe.Pointer(&v[0])))
+	}
 }
 
 /*
@@ -940,11 +929,27 @@ func AlphaFunc(func_ GLenum, ref GLclampf) {
 }
 
 //bool glAreTexturesResident (GLsizei n, const uint *textures, bool *residences)
-func AreTexturesResident(n int, textures *uint, residences *bool) bool {
-	//TODO
-	panic("unimlemented")
-	//return C.glAreTexturesResident(C.GLsizei(n), (*C.GLuint)(unsafe.Pointer(textures)), (*C.GLboolean)(unsafe.Pointer(residences))) != 0
+func AreTexturesResident(textures []uint, residences []bool) bool {
+	sz := len(textures)
+	if sz == 0 {
+		return false
+	}
 
+	if sz != len(residences) {
+		panic("Residences slice must be equal in length to textures slice.")
+	}
+
+	ret := C.glAreTexturesResident(
+		C.GLsizei(sz),
+		(*C.GLuint)(unsafe.Pointer(&textures[0])),
+		(*C.GLboolean)(unsafe.Pointer(&residences[0])),
+	)
+
+	if ret == TRUE {
+		return true
+	}
+
+	return false
 }
 
 //void glArrayElement (int i)
@@ -1023,10 +1028,7 @@ func Color3b(red int8, green int8, blue int8) {
 }
 
 //void glColor3bv (const int8 *v)
-func Color3bv(v []int8) {
-	if len(v) != 3 {
-		panic("Invalid color length")
-	}
+func Color3bv(v *[3]int8) {
 	C.glColor3bv((*C.GLbyte)(&v[0]))
 }
 
@@ -1036,10 +1038,7 @@ func Color3d(red float64, green float64, blue float64) {
 }
 
 //void glColor3dv (const float64 *v)
-func Color3dv(v []float64) {
-	if len(v) != 3 {
-		panic("Invalid color length")
-	}
+func Color3dv(v *[3]float64) {
 	C.glColor3dv((*C.GLdouble)(&v[0]))
 }
 
@@ -1049,10 +1048,7 @@ func Color3f(red float32, green float32, blue float32) {
 }
 
 //void glColor3fv (const float *v)
-func Color3fv(v []float32) {
-	if len(v) != 3 {
-		panic("Invalid color length")
-	}
+func Color3fv(v *[3]float32) {
 	C.glColor3fv((*C.GLfloat)(&v[0]))
 }
 
@@ -1062,10 +1058,7 @@ func Color3i(red int, green int, blue int) {
 }
 
 //void glColor3iv (const int *v)
-func Color3iv(v []int32) {
-	if len(v) != 3 {
-		panic("Invalid color length")
-	}
+func Color3iv(v *[3]int32) {
 	C.glColor3iv((*C.GLint)(&v[0]))
 }
 
@@ -1075,7 +1068,7 @@ func Color3s(red int16, green int16, blue int16) {
 }
 
 //void glColor3sv (const int16 *v)
-func Color3sv(v []int16) {
+func Color3sv(v *[3]int16) {
 	C.glColor3sv((*C.GLshort)(&v[0]))
 }
 
@@ -1085,10 +1078,7 @@ func Color3ub(red uint8, green uint8, blue uint8) {
 }
 
 //void glColor3ubv (const uint8 *v)
-func Color3ubv(v []uint8) {
-	if len(v) != 3 {
-		panic("Invalid color length")
-	}
+func Color3ubv(v *[3]uint8) {
 	C.glColor3ubv((*C.GLubyte)(&v[0]))
 }
 
@@ -1098,10 +1088,7 @@ func Color3ui(red uint, green uint, blue uint) {
 }
 
 //void glColor3uiv (const uint *v)
-func Color3uiv(v []uint32) {
-	if len(v) != 3 {
-		panic("Invalid color length")
-	}
+func Color3uiv(v *[3]uint32) {
 	C.glColor3uiv((*C.GLuint)(&v[0]))
 }
 
@@ -1111,10 +1098,7 @@ func Color3us(red uint16, green uint16, blue uint16) {
 }
 
 //void glColor3usv (const uint16 *v)
-func Color3usv(v []uint16) {
-	if len(v) != 3 {
-		panic("Invalid color length")
-	}
+func Color3usv(v *[3]uint16) {
 	C.glColor3usv((*C.GLushort)(&v[0]))
 }
 
@@ -1124,10 +1108,7 @@ func Color4b(red int8, green int8, blue int8, alpha int8) {
 }
 
 //void glColor4bv (const int8 *v)
-func Color4bv(v []int8) {
-	if len(v) != 4 {
-		panic("Invalid color length")
-	}
+func Color4bv(v *[4]int8) {
 	C.glColor4bv((*C.GLbyte)(&v[0]))
 }
 
@@ -1137,10 +1118,7 @@ func Color4d(red float64, green float64, blue float64, alpha float64) {
 }
 
 //void glColor4dv (const float64 *v)
-func Color4dv(v []float64) {
-	if len(v) != 4 {
-		panic("Invalid color length")
-	}
+func Color4dv(v *[4]float64) {
 	C.glColor4dv((*C.GLdouble)(&v[0]))
 }
 
@@ -1150,10 +1128,7 @@ func Color4f(red float32, green float32, blue float32, alpha float32) {
 }
 
 //void glColor4fv (const float *v)
-func Color4fv(v []float32) {
-	if len(v) != 4 {
-		panic("Invalid color length")
-	}
+func Color4fv(v *[4]float32) {
 	C.glColor4fv((*C.GLfloat)(&v[0]))
 }
 
@@ -1163,10 +1138,7 @@ func Color4i(red int, green int, blue int, alpha int) {
 }
 
 //void glColor4iv (const int *v)
-func Color4iv(v []int32) {
-	if len(v) != 4 {
-		panic("Invalid color length")
-	}
+func Color4iv(v *[4]int32) {
 	C.glColor4iv((*C.GLint)(&v[0]))
 }
 
@@ -1176,10 +1148,7 @@ func Color4s(red int16, green int16, blue int16, alpha int16) {
 }
 
 //void glColor4sv (const int16 *v)
-func Color4sv(v []int16) {
-	if len(v) != 4 {
-		panic("Invalid color length")
-	}
+func Color4sv(v *[4]int16) {
 	C.glColor4sv((*C.GLshort)(&v[0]))
 }
 
@@ -1189,10 +1158,7 @@ func Color4ub(red uint8, green uint8, blue uint8, alpha uint8) {
 }
 
 //void glColor4ubv (const uint8 *v)
-func Color4ubv(v []uint8) {
-	if len(v) != 4 {
-		panic("Invalid color length")
-	}
+func Color4ubv(v *[4]uint8) {
 	C.glColor4ubv((*C.GLubyte)(&v[0]))
 }
 
@@ -1202,10 +1168,7 @@ func Color4ui(red uint, green uint, blue uint, alpha uint) {
 }
 
 //void glColor4uiv (const uint *v)
-func Color4uiv(v []uint32) {
-	if len(v) != 4 {
-		panic("Invalid color length")
-	}
+func Color4uiv(v *[4]uint32) {
 	C.glColor4uiv((*C.GLuint)(&v[0]))
 }
 
@@ -1215,10 +1178,7 @@ func Color4us(red uint16, green uint16, blue uint16, alpha uint16) {
 }
 
 //void glColor4usv (const uint16 *v)
-func Color4usv(v []uint16) {
-	if len(v) != 4 {
-		panic("Invalid color length")
-	}
+func Color4usv(v *[4]uint16) {
 	C.glColor4usv((*C.GLushort)(&v[0]))
 }
 
@@ -1311,10 +1271,10 @@ func EdgeFlagPointer(stride int, pointer unsafe.Pointer) {
 }
 
 //void glEdgeFlagv (const bool *flag)
-func EdgeFlagv(flag *bool) {
-	//TODO
-	panic("unimplemented")
-	//C.glEdgeFlagv((*C.GLboolean)(flag))
+func EdgeFlagv(flag []bool) {
+	if len(flag) > 0 {
+		C.glEdgeFlagv((*C.GLboolean)(unsafe.Pointer(&flag[0])))
+	}
 }
 
 //void glEnable (GLenum cap)
@@ -1353,10 +1313,7 @@ func EvalCoord1f(u float32) {
 }
 
 //void glEvalCoord1fv (const float *u)
-func EvalCoord1fv(u []float32) {
-	if len(u) != 1 {
-		panic("Invalid coordinate length")
-	}
+func EvalCoord1fv(u *[1]float32) {
 	C.glEvalCoord1fv((*C.GLfloat)(&u[0]))
 }
 
@@ -1376,10 +1333,7 @@ func EvalCoord2f(u float32, v float32) {
 }
 
 //void glEvalCoord2fv (const float *u)
-func EvalCoord2fv(u []float32) {
-	if len(u) != 2 {
-		panic("Invalid coordinate length")
-	}
+func EvalCoord2fv(u *[2]float32) {
 	C.glEvalCoord2fv((*C.GLfloat)(&u[0]))
 }
 
@@ -1461,9 +1415,10 @@ func GenLists(range_ int) uint {
 
 //void glGetBooleanv (GLenum pname, bool *params)
 func GetBooleanv(pname GLenum, params []bool) {
-	//TODO
-	panic("unimplemented")
-	//C.glGetBooleanv(C.GLenum(pname), (*C.GLboolean)(&params[0]))
+	if len(params) == 0 {
+		panic("Invalid params length")
+	}
+	C.glGetBooleanv(C.GLenum(pname), (*C.GLboolean)(unsafe.Pointer(&params[0])))
 }
 
 //void glGetClipPlane (GLenum plane, float64 *equation)
@@ -1614,8 +1569,8 @@ func Indexd(c float64) {
 }
 
 //void glIndexdv (const float64 *c)
-func Indexdv(c *float64) {
-	C.glIndexdv((*C.GLdouble)(c))
+func Indexdv(c *[1]float64) {
+	C.glIndexdv((*C.GLdouble)(unsafe.Pointer(&c[0])))
 }
 
 //void glIndexf (float32 c)
@@ -1624,8 +1579,8 @@ func Indexf(c float32) {
 }
 
 //void glIndexfv (const float32 *c)
-func Indexfv(c *float32) {
-	C.glIndexfv((*C.GLfloat)(c))
+func Indexfv(c *[1]float32) {
+	C.glIndexfv((*C.GLfloat)(unsafe.Pointer(&c[0])))
 }
 
 //void glIndexi (int c)
@@ -1634,8 +1589,8 @@ func Indexi(c int) {
 }
 
 //void glIndexiv (const int *c)
-func Indexiv(c *int32) {
-	C.glIndexiv((*C.GLint)(c))
+func Indexiv(c *[1]int32) {
+	C.glIndexiv((*C.GLint)(unsafe.Pointer(&c[0])))
 }
 
 //void glIndexs (int16 c)
@@ -1644,8 +1599,8 @@ func Indexs(c int16) {
 }
 
 //void glIndexsv (const int16 *c)
-func Indexsv(c *int16) {
-	C.glIndexsv((*C.GLshort)(c))
+func Indexsv(c *[1]int16) {
+	C.glIndexsv((*C.GLshort)(unsafe.Pointer(&c[0])))
 }
 
 //void glIndexub (uint8 c)
@@ -1654,8 +1609,8 @@ func Indexub(c uint8) {
 }
 
 //void glIndexubv (const uint8 *c)
-func Indexubv(c *uint8) {
-	C.glIndexubv((*C.GLubyte)(c))
+func Indexubv(c *[1]uint8) {
+	C.glIndexubv((*C.GLubyte)(unsafe.Pointer(&c[0])))
 }
 
 //void glInitNames (void)
@@ -1751,13 +1706,13 @@ func LoadIdentity() {
 }
 
 //void glLoadMatrixd (const float64 *m)
-func LoadMatrixd(m *float64) {
-	C.glLoadMatrixd((*C.GLdouble)(m))
+func LoadMatrixd(m *[16]float64) {
+	C.glLoadMatrixd((*C.GLdouble)(unsafe.Pointer(&m[0])))
 }
 
 //void glLoadMatrixf (const float32 *m)
-func LoadMatrixf(m *float32) {
-	C.glLoadMatrixf((*C.GLfloat)(m))
+func LoadMatrixf(m *[16]float32) {
+	C.glLoadMatrixf((*C.GLfloat)(unsafe.Pointer(&m[0])))
 }
 
 //void glLoadName (uint name)
@@ -1771,23 +1726,41 @@ func LogicOp(opcode GLenum) {
 }
 
 //void glMap1d (GLenum target, float64 u1, float64 u2, int stride, int order, const float64 *points)
-func Map1d(target GLenum, u1 float64, u2 float64, stride int, order int, points *float64) {
-	C.glMap1d(C.GLenum(target), C.GLdouble(u1), C.GLdouble(u2), C.GLint(stride), C.GLint(order), (*C.GLdouble)(points))
+func Map1d(target GLenum, u1 float64, u2 float64, stride int, order int, points []float64) {
+	if len(points) == 0 {
+		panic("Invalid points size")
+	}
+	C.glMap1d(C.GLenum(target), C.GLdouble(u1), C.GLdouble(u2),
+		C.GLint(stride), C.GLint(order), (*C.GLdouble)(unsafe.Pointer(&points[0])))
 }
 
 //void glMap1f (GLenum target, float32 u1, float32 u2, int stride, int order, const float32 *points)
-func Map1f(target GLenum, u1 float32, u2 float32, stride int, order int, points *float32) {
-	C.glMap1f(C.GLenum(target), C.GLfloat(u1), C.GLfloat(u2), C.GLint(stride), C.GLint(order), (*C.GLfloat)(points))
+func Map1f(target GLenum, u1 float32, u2 float32, stride int, order int, points []float32) {
+	if len(points) == 0 {
+		panic("Invalid points size")
+	}
+	C.glMap1f(C.GLenum(target), C.GLfloat(u1), C.GLfloat(u2), C.GLint(stride),
+		C.GLint(order), (*C.GLfloat)(unsafe.Pointer(&points[0])))
 }
 
 //void glMap2d (GLenum target, float64 u1, float64 u2, int ustride, int uorder, float64 v1, float64 v2, int vstride, int vorder, const float64 *points)
-func Map2d(target GLenum, u1 float64, u2 float64, ustride int, uorder int, v1 float64, v2 float64, vstride int, vorder int, points *float64) {
-	C.glMap2d(C.GLenum(target), C.GLdouble(u1), C.GLdouble(u2), C.GLint(ustride), C.GLint(uorder), C.GLdouble(v1), C.GLdouble(v2), C.GLint(vstride), C.GLint(vorder), (*C.GLdouble)(points))
+func Map2d(target GLenum, u1 float64, u2 float64, ustride int, uorder int, v1 float64, v2 float64, vstride int, vorder int, points []float64) {
+	if len(points) == 0 {
+		panic("Invalid points size")
+	}
+	C.glMap2d(C.GLenum(target), C.GLdouble(u1), C.GLdouble(u2), C.GLint(ustride),
+		C.GLint(uorder), C.GLdouble(v1), C.GLdouble(v2), C.GLint(vstride),
+		C.GLint(vorder), (*C.GLdouble)(unsafe.Pointer(&points[0])))
 }
 
 //void glMap2f (GLenum target, float32 u1, float32 u2, int ustride, int uorder, float32 v1, float32 v2, int vstride, int vorder, const float32 *points)
-func Map2f(target GLenum, u1 float32, u2 float32, ustride int, uorder int, v1 float32, v2 float32, vstride int, vorder int, points *float32) {
-	C.glMap2f(C.GLenum(target), C.GLfloat(u1), C.GLfloat(u2), C.GLint(ustride), C.GLint(uorder), C.GLfloat(v1), C.GLfloat(v2), C.GLint(vstride), C.GLint(vorder), (*C.GLfloat)(points))
+func Map2f(target GLenum, u1 float32, u2 float32, ustride int, uorder int, v1 float32, v2 float32, vstride int, vorder int, points []float32) {
+	if len(points) == 0 {
+		panic("Invalid points size")
+	}
+	C.glMap2f(C.GLenum(target), C.GLfloat(u1), C.GLfloat(u2), C.GLint(ustride),
+		C.GLint(uorder), C.GLfloat(v1), C.GLfloat(v2), C.GLint(vstride),
+		C.GLint(vorder), (*C.GLfloat)(unsafe.Pointer(&points[0])))
 }
 
 //void glMapGrid1d (int un, float64 u1, float64 u2)
@@ -1842,18 +1815,12 @@ func MatrixMode(mode GLenum) {
 }
 
 //void glMultMatrixd (const float64 *m)
-func MultMatrixd(m []float64) {
-	if len(m) != 16 {
-		panic("Invalid matrix size")
-	}
+func MultMatrixd(m *[16]float64) {
 	C.glMultMatrixd((*C.GLdouble)(unsafe.Pointer(&m[0])))
 }
 
 //void glMultMatrixf (const float32 *m)
-func MultMatrixf(m []float32) {
-	if len(m) != 16 {
-		panic("Invalid matrix size")
-	}
+func MultMatrixf(m *[16]float32) {
 	C.glMultMatrixf((*C.GLfloat)(unsafe.Pointer(&m[0])))
 }
 
@@ -1868,7 +1835,7 @@ func Normal3b(nx int8, ny int8, nz int8) {
 }
 
 //void glNormal3bv (const int8 *v)
-func Normal3bv(v []int8) {
+func Normal3bv(v *[3]int8) {
 	C.glNormal3bv((*C.GLbyte)(&v[0]))
 }
 
@@ -1878,10 +1845,7 @@ func Normal3d(nx float64, ny float64, nz float64) {
 }
 
 //void glNormal3dv (const float64 *v)
-func Normal3dv(v []float64) {
-	if len(v) != 3 {
-		panic("Invalid normal size")
-	}
+func Normal3dv(v *[3]float64) {
 	C.glNormal3dv((*C.GLdouble)(&v[0]))
 }
 
@@ -1891,10 +1855,7 @@ func Normal3f(nx float32, ny float32, nz float32) {
 }
 
 //void glNormal3fv (const float *v)
-func Normal3fv(v []float32) {
-	if len(v) != 3 {
-		panic("Invalid normal size")
-	}
+func Normal3fv(v *[3]float32) {
 	C.glNormal3fv((*C.GLfloat)(&v[0]))
 }
 
@@ -1904,10 +1865,7 @@ func Normal3i(nx int, ny int, nz int) {
 }
 
 //void glNormal3iv (const int *v)
-func Normal3iv(v []int32) {
-	if len(v) != 3 {
-		panic("Invalid normal size")
-	}
+func Normal3iv(v *[3]int32) {
 	C.glNormal3iv((*C.GLint)(&v[0]))
 }
 
@@ -1917,10 +1875,7 @@ func Normal3s(nx int16, ny int16, nz int16) {
 }
 
 //void glNormal3sv (const int16 *v)
-func Normal3sv(v []int16) {
-	if len(v) != 3 {
-		panic("Invalid normal size")
-	}
+func Normal3sv(v *[3]int16) {
 	C.glNormal3sv((*C.GLshort)(&v[0]))
 }
 
@@ -2030,10 +1985,7 @@ func RasterPos2d(x float64, y float64) {
 }
 
 //void glRasterPos2dv (const float64 *v)
-func RasterPos2dv(v []float64) {
-	if len(v) != 2 {
-		panic("Invalid point size")
-	}
+func RasterPos2dv(v *[2]float64) {
 	C.glRasterPos2dv((*C.GLdouble)(&v[0]))
 }
 
@@ -2043,10 +1995,7 @@ func RasterPos2f(x float32, y float32) {
 }
 
 //void glRasterPos2fv (const float *v)
-func RasterPos2fv(v []float32) {
-	if len(v) != 2 {
-		panic("Invalid point size")
-	}
+func RasterPos2fv(v *[2]float32) {
 	C.glRasterPos2fv((*C.GLfloat)(&v[0]))
 }
 
@@ -2056,10 +2005,7 @@ func RasterPos2i(x int, y int) {
 }
 
 //void glRasterPos2iv (const int *v)
-func RasterPos2iv(v []int32) {
-	if len(v) != 2 {
-		panic("Invalid point size")
-	}
+func RasterPos2iv(v *[2]int32) {
 	C.glRasterPos2iv((*C.GLint)(&v[0]))
 }
 
@@ -2069,10 +2015,7 @@ func RasterPos2s(x int16, y int16) {
 }
 
 //void glRasterPos2sv (const int16 *v)
-func RasterPos2sv(v []int16) {
-	if len(v) != 2 {
-		panic("Invalid point size")
-	}
+func RasterPos2sv(v *[2]int16) {
 	C.glRasterPos2sv((*C.GLshort)(&v[0]))
 }
 
@@ -2082,10 +2025,7 @@ func RasterPos3d(x float64, y float64, z float64) {
 }
 
 //void glRasterPos3dv (const float64 *v)
-func RasterPos3dv(v []float64) {
-	if len(v) != 3 {
-		panic("Invalid point size")
-	}
+func RasterPos3dv(v *[3]float64) {
 	C.glRasterPos3dv((*C.GLdouble)(&v[0]))
 }
 
@@ -2095,10 +2035,7 @@ func RasterPos3f(x float32, y float32, z float32) {
 }
 
 //void glRasterPos3fv (const float *v)
-func RasterPos3fv(v []float32) {
-	if len(v) != 3 {
-		panic("Invalid point size")
-	}
+func RasterPos3fv(v *[3]float32) {
 	C.glRasterPos3fv((*C.GLfloat)(&v[0]))
 }
 
@@ -2108,10 +2045,7 @@ func RasterPos3i(x int, y int, z int) {
 }
 
 //void glRasterPos3iv (const int *v)
-func RasterPos3iv(v []int32) {
-	if len(v) != 3 {
-		panic("Invalid point size")
-	}
+func RasterPos3iv(v *[3]int32) {
 	C.glRasterPos3iv((*C.GLint)(&v[0]))
 }
 
@@ -2121,10 +2055,7 @@ func RasterPos3s(x int16, y int16, z int16) {
 }
 
 //void glRasterPos3sv (const int16 *v)
-func RasterPos3sv(v []int16) {
-	if len(v) != 3 {
-		panic("Invalid point size")
-	}
+func RasterPos3sv(v *[3]int16) {
 	C.glRasterPos3sv((*C.GLshort)(&v[0]))
 }
 
@@ -2134,10 +2065,7 @@ func RasterPos4d(x float64, y float64, z float64, w float64) {
 }
 
 //void glRasterPos4dv (const float64 *v)
-func RasterPos4dv(v []float64) {
-	if len(v) != 3 {
-		panic("Invalid point size")
-	}
+func RasterPos4dv(v *[3]float64) {
 	C.glRasterPos4dv((*C.GLdouble)(&v[0]))
 }
 
@@ -2147,10 +2075,7 @@ func RasterPos4f(x float32, y float32, z float32, w float32) {
 }
 
 //void glRasterPos4fv (const float *v)
-func RasterPos4fv(v []float32) {
-	if len(v) != 4 {
-		panic("Invalid point size")
-	}
+func RasterPos4fv(v *[4]float32) {
 	C.glRasterPos4fv((*C.GLfloat)(&v[0]))
 }
 
@@ -2160,10 +2085,7 @@ func RasterPos4i(x int, y int, z int, w int) {
 }
 
 //void glRasterPos4iv (const int *v)
-func RasterPos4iv(v []int32) {
-	if len(v) != 4 {
-		panic("Invalid point size")
-	}
+func RasterPos4iv(v *[4]int32) {
 	C.glRasterPos4iv((*C.GLint)(&v[0]))
 }
 
@@ -2173,10 +2095,7 @@ func RasterPos4s(x int16, y int16, z int16, w int16) {
 }
 
 //void glRasterPos4sv (const int16 *v)
-func RasterPos4sv(v []int16) {
-	if len(v) != 4 {
-		panic("Invalid point size")
-	}
+func RasterPos4sv(v *[4]int16) {
 	C.glRasterPos4sv((*C.GLshort)(&v[0]))
 }
 
@@ -2197,8 +2116,8 @@ func Rectd(x1 float64, y1 float64, x2 float64, y2 float64) {
 }
 
 //void glRectdv (const float64 *v1, const float64 *v2)
-func Rectdv(v1 *float64, v2 *float64) {
-	C.glRectdv((*C.GLdouble)(v1), (*C.GLdouble)(v2))
+func Rectdv(a, b *[2]float64) {
+	C.glRectdv((*C.GLdouble)(&a[0]), (*C.GLdouble)(&b[0]))
 }
 
 //void glRectf (float32 x1, float32 y1, float32 x2, float32 y2)
@@ -2207,11 +2126,8 @@ func Rectf(x1 float32, y1 float32, x2 float32, y2 float32) {
 }
 
 //void glRectfv (const float *v1, const float *v2)
-func Rectfv(v1 []float32, v2 []float32) {
-	if len(v1) != 2 || len(v2) != 2 {
-		panic("Invalid vertex size")
-	}
-	C.glRectfv((*C.GLfloat)(&v1[0]), (*C.GLfloat)(&v2[0]))
+func Rectfv(a, b *[2]float32) {
+	C.glRectfv((*C.GLfloat)(&a[0]), (*C.GLfloat)(&b[0]))
 }
 
 //void glRecti (int x1, int y1, int x2, int y2)
@@ -2220,8 +2136,8 @@ func Recti(x1 int, y1 int, x2 int, y2 int) {
 }
 
 //void glRectiv (const int *v1, const int *v2)
-func Rectiv(v1 *int32, v2 *int32) {
-	C.glRectiv((*C.GLint)(v1), (*C.GLint)(v2))
+func Rectiv(a, b *[2]int32) {
+	C.glRectiv((*C.GLint)(&a[0]), (*C.GLint)(&b[0]))
 }
 
 //void glRects (int16 x1, int16 y1, int16 x2, int16 y2)
@@ -2230,8 +2146,8 @@ func Rects(x1 int16, y1 int16, x2 int16, y2 int16) {
 }
 
 //void glRectsv (const int16 *v1, const int16 *v2)
-func Rectsv(v1 *int16, v2 *int16) {
-	C.glRectsv((*C.GLshort)(v1), (*C.GLshort)(v2))
+func Rectsv(a, b *[2]int16) {
+	C.glRectsv((*C.GLshort)(&a[0]), (*C.GLshort)(&b[0]))
 }
 
 //int glRenderMode (GLenum mode)
@@ -2266,10 +2182,9 @@ func Scissor(x int, y int, width int, height int) {
 
 //void glSelectBuffer (GLsizei size, uint *buffer)
 func SelectBuffer(buffer []uint32) {
-	if len(buffer) < 1 {
-		panic("Invalid buffer size")
+	if len(buffer) > 0 {
+		C.glSelectBuffer(C.GLsizei(len(buffer)), (*C.GLuint)(&buffer[0]))
 	}
-	C.glSelectBuffer(C.GLsizei(len(buffer)), (*C.GLuint)(&buffer[0]))
 }
 
 //void glShadeModel (GLenum mode)
@@ -2298,10 +2213,7 @@ func TexCoord1d(s float64) {
 }
 
 //void glTexCoord1dv (const float64 *v)
-func TexCoord1dv(v []float64) {
-	if len(v) != 1 {
-		panic("Invalid vector size")
-	}
+func TexCoord1dv(v *[1]float64) {
 	C.glTexCoord1dv((*C.GLdouble)(&v[0]))
 }
 
@@ -2311,10 +2223,7 @@ func TexCoord1f(s float32) {
 }
 
 //void glTexCoord1fv (const float *v)
-func TexCoord1fv(v []float32) {
-	if len(v) != 1 {
-		panic("Invalid vector size")
-	}
+func TexCoord1fv(v *[1]float32) {
 	C.glTexCoord1fv((*C.GLfloat)(&v[0]))
 }
 
@@ -2324,10 +2233,7 @@ func TexCoord1i(s int) {
 }
 
 //void glTexCoord1iv (const int *v)
-func TexCoord1iv(v []int32) {
-	if len(v) != 1 {
-		panic("Invalid vector size")
-	}
+func TexCoord1iv(v *[1]int32) {
 	C.glTexCoord1iv((*C.GLint)(&v[0]))
 }
 
@@ -2337,10 +2243,7 @@ func TexCoord1s(s int16) {
 }
 
 //void glTexCoord1sv (const int16 *v)
-func TexCoord1sv(v []int16) {
-	if len(v) != 1 {
-		panic("Invalid vector size")
-	}
+func TexCoord1sv(v *[1]int16) {
 	C.glTexCoord1sv((*C.GLshort)(&v[0]))
 }
 
@@ -2350,10 +2253,7 @@ func TexCoord2d(s float64, t float64) {
 }
 
 //void glTexCoord2dv (const float64 *v)
-func TexCoord2dv(v []float64) {
-	if len(v) != 2 {
-		panic("Invalid vector size")
-	}
+func TexCoord2dv(v *[2]float64) {
 	C.glTexCoord2dv((*C.GLdouble)(&v[0]))
 }
 
@@ -2363,10 +2263,7 @@ func TexCoord2f(s float32, t float32) {
 }
 
 //void glTexCoord2fv (const float *v)
-func TexCoord2fv(v []float32) {
-	if len(v) != 2 {
-		panic("Invalid vector size")
-	}
+func TexCoord2fv(v *[2]float32) {
 	C.glTexCoord2fv((*C.GLfloat)(&v[0]))
 }
 
@@ -2376,10 +2273,7 @@ func TexCoord2i(s int, t int) {
 }
 
 //void glTexCoord2iv (const int *v)
-func TexCoord2iv(v []int32) {
-	if len(v) != 2 {
-		panic("Invalid vector size")
-	}
+func TexCoord2iv(v *[2]int32) {
 	C.glTexCoord2iv((*C.GLint)(&v[0]))
 }
 
@@ -2389,10 +2283,7 @@ func TexCoord2s(s int16, t int16) {
 }
 
 //void glTexCoord2sv (const int16 *v)
-func TexCoord2sv(v []int16) {
-	if len(v) != 2 {
-		panic("Invalid vector size")
-	}
+func TexCoord2sv(v *[2]int16) {
 	C.glTexCoord2sv((*C.GLshort)(&v[0]))
 }
 
@@ -2402,10 +2293,7 @@ func TexCoord3d(s float64, t float64, r float64) {
 }
 
 //void glTexCoord3dv (const float64 *v)
-func TexCoord3dv(v []float64) {
-	if len(v) != 3 {
-		panic("Invalid vector size")
-	}
+func TexCoord3dv(v *[3]float64) {
 	C.glTexCoord3dv((*C.GLdouble)(&v[0]))
 }
 
@@ -2415,10 +2303,7 @@ func TexCoord3f(s float32, t float32, r float32) {
 }
 
 //void glTexCoord3fv (const float *v)
-func TexCoord3fv(v []float32) {
-	if len(v) != 3 {
-		panic("Invalid vector size")
-	}
+func TexCoord3fv(v *[3]float32) {
 	C.glTexCoord3fv((*C.GLfloat)(&v[0]))
 }
 
@@ -2428,10 +2313,7 @@ func TexCoord3i(s int, t int, r int) {
 }
 
 //void glTexCoord3iv (const int *v)
-func TexCoord3iv(v []int32) {
-	if len(v) != 3 {
-		panic("Invalid vector size")
-	}
+func TexCoord3iv(v *[3]int32) {
 	C.glTexCoord3iv((*C.GLint)(&v[0]))
 }
 
@@ -2441,10 +2323,7 @@ func TexCoord3s(s int16, t int16, r int16) {
 }
 
 //void glTexCoord3sv (const int16 *v)
-func TexCoord3sv(v []int16) {
-	if len(v) != 3 {
-		panic("Invalid vector size")
-	}
+func TexCoord3sv(v *[3]int16) {
 	C.glTexCoord3sv((*C.GLshort)(&v[0]))
 }
 
@@ -2454,10 +2333,7 @@ func TexCoord4d(s float64, t float64, r float64, q float64) {
 }
 
 //void glTexCoord4dv (const float64 *v)
-func TexCoord4dv(v []float64) {
-	if len(v) != 4 {
-		panic("Invalid vector size")
-	}
+func TexCoord4dv(v *[4]float64) {
 	C.glTexCoord4dv((*C.GLdouble)(&v[0]))
 }
 
@@ -2467,10 +2343,7 @@ func TexCoord4f(s float32, t float32, r float32, q float32) {
 }
 
 //void glTexCoord4fv (const float *v)
-func TexCoord4fv(v []float32) {
-	if len(v) != 4 {
-		panic("Invalid vector size")
-	}
+func TexCoord4fv(v *[4]float32) {
 	C.glTexCoord4fv((*C.GLfloat)(&v[0]))
 }
 
@@ -2480,10 +2353,7 @@ func TexCoord4i(s int, t int, r int, q int) {
 }
 
 //void glTexCoord4iv (const int *v)
-func TexCoord4iv(v []int32) {
-	if len(v) != 4 {
-		panic("Invalid vector size")
-	}
+func TexCoord4iv(v *[4]int32) {
 	C.glTexCoord4iv((*C.GLint)(&v[0]))
 }
 
@@ -2493,10 +2363,7 @@ func TexCoord4s(s int16, t int16, r int16, q int16) {
 }
 
 //void glTexCoord4sv (const int16 *v)
-func TexCoord4sv(v []int16) {
-	if len(v) != 4 {
-		panic("Invalid vector size")
-	}
+func TexCoord4sv(v *[4]int16) {
 	C.glTexCoord4sv((*C.GLshort)(&v[0]))
 }
 
@@ -2522,10 +2389,7 @@ func Vertex2d(x float64, y float64) {
 }
 
 //void glVertex2dv (const float64 *v)
-func Vertex2dv(v []float64) {
-	if len(v) != 2 {
-		panic("Invalid vertex coord size")
-	}
+func Vertex2dv(v *[2]float64) {
 	C.glVertex2dv((*C.GLdouble)(&v[0]))
 }
 
@@ -2535,10 +2399,7 @@ func Vertex2f(x float32, y float32) {
 }
 
 //void glVertex2fv (const float *v)
-func Vertex2fv(v []float32) {
-	if len(v) != 2 {
-		panic("Invalid vertex coord size")
-	}
+func Vertex2fv(v *[2]float32) {
 	C.glVertex2fv((*C.GLfloat)(&v[0]))
 }
 
@@ -2548,10 +2409,7 @@ func Vertex2i(x int, y int) {
 }
 
 //void glVertex2iv (const int *v)
-func Vertex2iv(v []int32) {
-	if len(v) != 2 {
-		panic("Invalid vertex coord size")
-	}
+func Vertex2iv(v *[2]int32) {
 	C.glVertex2iv((*C.GLint)(&v[0]))
 }
 
@@ -2561,10 +2419,7 @@ func Vertex2s(x int16, y int16) {
 }
 
 //void glVertex2sv (const int16 *v)
-func Vertex2sv(v []int16) {
-	if len(v) != 2 {
-		panic("Invalid vertex coord size")
-	}
+func Vertex2sv(v *[2]int16) {
 	C.glVertex2sv((*C.GLshort)(&v[0]))
 }
 
@@ -2574,10 +2429,7 @@ func Vertex3d(x float64, y float64, z float64) {
 }
 
 //void glVertex3dv (const float64 *v)
-func Vertex3dv(v []float64) {
-	if len(v) != 3 {
-		panic("Invalid vertex coord size")
-	}
+func Vertex3dv(v *[3]float64) {
 	C.glVertex3dv((*C.GLdouble)(&v[0]))
 }
 
@@ -2587,10 +2439,7 @@ func Vertex3f(x float32, y float32, z float32) {
 }
 
 //void glVertex3fv (const float *v)
-func Vertex3fv(v []float32) {
-	if len(v) != 3 {
-		panic("Invalid vertex coord size")
-	}
+func Vertex3fv(v *[3]float32) {
 	C.glVertex3fv((*C.GLfloat)(&v[0]))
 }
 
@@ -2600,10 +2449,7 @@ func Vertex3i(x int, y int, z int) {
 }
 
 //void glVertex3iv (const int *v)
-func Vertex3iv(v []int32) {
-	if len(v) != 3 {
-		panic("Invalid vertex coord size")
-	}
+func Vertex3iv(v *[3]int32) {
 	C.glVertex3iv((*C.GLint)(&v[0]))
 }
 
@@ -2613,10 +2459,7 @@ func Vertex3s(x int16, y int16, z int16) {
 }
 
 //void glVertex3sv (const int16 *v)
-func Vertex3sv(v []int16) {
-	if len(v) != 3 {
-		panic("Invalid vertex coord size")
-	}
+func Vertex3sv(v *[3]int16) {
 	C.glVertex3sv((*C.GLshort)(&v[0]))
 }
 
@@ -2626,10 +2469,7 @@ func Vertex4d(x float64, y float64, z float64, w float64) {
 }
 
 //void glVertex4dv (const float64 *v)
-func Vertex4dv(v []float64) {
-	if len(v) != 4 {
-		panic("Invalid vertex coord size")
-	}
+func Vertex4dv(v *[4]float64) {
 	C.glVertex4dv((*C.GLdouble)(&v[0]))
 }
 
@@ -2639,10 +2479,7 @@ func Vertex4f(x float32, y float32, z float32, w float32) {
 }
 
 //void glVertex4fv (const float *v)
-func Vertex4fv(v []float32) {
-	if len(v) != 4 {
-		panic("Invalid vertex coord size")
-	}
+func Vertex4fv(v *[4]float32) {
 	C.glVertex4fv((*C.GLfloat)(&v[0]))
 }
 
@@ -2652,10 +2489,7 @@ func Vertex4i(x int, y int, z int, w int) {
 }
 
 //void glVertex4iv (const int *v)
-func Vertex4iv(v []int32) {
-	if len(v) != 4 {
-		panic("Invalid vertex coord size")
-	}
+func Vertex4iv(v *[4]int32) {
 	C.glVertex4iv((*C.GLint)(&v[0]))
 }
 
@@ -2665,10 +2499,7 @@ func Vertex4s(x int16, y int16, z int16, w int16) {
 }
 
 //void glVertex4sv (const int16 *v)
-func Vertex4sv(v []int16) {
-	if len(v) != 4 {
-		panic("Invalid vertex coord size")
-	}
+func Vertex4sv(v *[4]int16) {
 	C.glVertex4sv((*C.GLshort)(&v[0]))
 }
 
@@ -2695,10 +2526,9 @@ func GenRenderbuffer() Renderbuffer {
 
 // Fill slice with new renderbuffers
 func GenRenderbuffers(bufs []Renderbuffer) {
-	if len(bufs) == 0 {
-		panic("Invalid buffer size")
+	if len(bufs) > 0 {
+		C.glGenRenderbuffers(C.GLsizei(len(bufs)), (*C.GLuint)(&bufs[0]))
 	}
-	C.glGenRenderbuffers(C.GLsizei(len(bufs)), (*C.GLuint)(&bufs[0]))
 }
 
 // void glBindRenderbuffer(GLenum target, GLuint renderbuffer);
@@ -2717,16 +2547,20 @@ func (rb Renderbuffer) Delete() {
 }
 
 func DeleteRenderbuffers(bufs []Renderbuffer) {
-	if len(bufs) == 0 {
-		panic("Invalid buffer size")
+	if len(bufs) > 0 {
+		C.glDeleteRenderbuffers(C.GLsizei(len(bufs)), (*C.GLuint)(&bufs[0]))
 	}
-	C.glDeleteRenderbuffers(C.GLsizei(len(bufs)), (*C.GLuint)(&bufs[0]))
 }
 
 // void glGetRenderbufferParameteriv(GLenum target, GLenum pname, GLint* params);
-//func GetRenderbufferParameteriv (target, pname GLenum, params []int) {
-//  C.glGetRenderbufferParameteriv (C.GLenum(target), C.GLenum(pname), (*C.GLint)(&params[0]))
-//}
+func GetRenderbufferParameteriv(target, pname GLenum, params []int) {
+	if len(params) == 0 {
+		panic("Invalid params size")
+	}
+
+	C.glGetRenderbufferParameteriv(C.GLenum(target), C.GLenum(pname),
+		(*C.GLint)(unsafe.Pointer(&params[0])))
+}
 
 // void glRenderbufferStorage(GLenum target, GLenum internalformat, GLsizei width, GLsizei height);
 func RenderbufferStorage(target, internalformat GLenum, width int, height int) {
@@ -2767,10 +2601,9 @@ func (fb Framebuffer) Delete() {
 }
 
 func DeleteFramebuffers(bufs []Framebuffer) {
-	if len(bufs) == 0 {
-		panic("Invalid buffer size")
+	if len(bufs) > 0 {
+		C.glDeleteFramebuffers(C.GLsizei(len(bufs)), (*C.GLuint)(&bufs[0]))
 	}
-	C.glDeleteFramebuffers(C.GLsizei(len(bufs)), (*C.GLuint)(&bufs[0]))
 }
 
 // GLsync glFramebufferRenderbuffer(GLenum target, GLenum attachment, GLenum renderbuffertarget, GLuint renderbuffer);
@@ -2807,15 +2640,18 @@ func GenFramebuffer() Framebuffer {
 }
 
 func GenFramebuffers(bufs []Framebuffer) {
-	if len(bufs) == 0 {
-		panic("Invalid buffer size")
+	if len(bufs) > 0 {
+		C.glGenFramebuffers(C.GLsizei(len(bufs)), (*C.GLuint)(&bufs[0]))
 	}
-	C.glGenFramebuffers(C.GLsizei(len(bufs)), (*C.GLuint)(&bufs[0]))
 }
 
 // void glGetFramebufferAttachmentParameter(GLenum target, GLenum attachment, GLenum pname, GLint* params);
 //func GetFramebufferAttachmentParameter (target, attachment, pname GLenum, params []int) {
-//  C.glGetFramebufferAttachmentParameter (C.GLenum(target), C.GLenum(attachment), C.GLenum(pname), (*C.GLint)(&params[0]))
+//	if len(params) == 0 {
+//		panic("Invalid params size")
+//	}
+//  C.glGetFramebufferAttachmentParameter (C.GLenum(target), C.GLenum(attachment),
+//  	C.GLenum(pname), (*C.GLint)(unsafe.Pointer(&params[0])))
 //}
 
 func Init() GLenum {
