@@ -645,10 +645,10 @@ func UnmapBuffer(target GLenum) bool {
 }
 
 // Return buffer pointer
-func GetBufferPointerv(target GLenum, pname GLenum) uintptr {
+func GetBufferPointerv(target GLenum, pname GLenum) unsafe.Pointer {
 	var ptr unsafe.Pointer
 	C.glGetBufferPointerv(C.GLenum(target), C.GLenum(pname), &ptr)
-	return uintptr(ptr)
+	return ptr
 }
 
 // Return parameters of a buffer object
