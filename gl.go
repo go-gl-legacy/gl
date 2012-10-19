@@ -220,13 +220,13 @@ func (program Program) Get(param GLenum) int {
 	return int(rv)
 }
 
-func (program Program) GetUniformiv(location UniformLocation, values []int) {
+func (program Program) GetUniformiv(location UniformLocation, values []int32) {
 	if len(values) == 0 {
 		panic("Invalid values length")
 	}
 	// FIXME(jimt): This should really yield only one return value instead of using a slice.
 	// http://www.opengl.org/sdk/docs/man/xhtml/glGetUniform.xml
-	C.glGetUniformiv(C.GLuint(program), C.GLint(location), (*C.GLint)(unsafe.Pointer(&(values[0]))))
+	C.glGetUniformiv(C.GLuint(program), C.GLint(location), (*C.GLint)(&(values[0])))
 }
 
 func (program Program) GetUniformfv(location UniformLocation, values []float32) {
@@ -235,7 +235,7 @@ func (program Program) GetUniformfv(location UniformLocation, values []float32) 
 	}
 	// FIXME(jimt): This should really yield only one return value instead of using a slice.
 	// http://www.opengl.org/sdk/docs/man/xhtml/glGetUniform.xml
-	C.glGetUniformfv(C.GLuint(program), C.GLint(location), (*C.GLfloat)(unsafe.Pointer(&(values[0]))))
+	C.glGetUniformfv(C.GLuint(program), C.GLint(location), (*C.GLfloat)(&(values[0])))
 }
 
 func (program Program) GetUniformLocation(name string) UniformLocation {
@@ -722,7 +722,7 @@ func (indx AttribLocation) Attrib1f(x float32) {
 }
 
 func (indx AttribLocation) Attrib1fv(values *[1]float32) {
-	C.glVertexAttrib1fv(C.GLuint(indx), (*C.GLfloat)(unsafe.Pointer(&values[0])))
+	C.glVertexAttrib1fv(C.GLuint(indx), (*C.GLfloat)(&values[0]))
 }
 
 func (indx AttribLocation) Attrib2f(x float32, y float32) {
@@ -730,7 +730,7 @@ func (indx AttribLocation) Attrib2f(x float32, y float32) {
 }
 
 func (indx AttribLocation) Attrib2fv(values *[2]float32) {
-	C.glVertexAttrib2fv(C.GLuint(indx), (*C.GLfloat)(unsafe.Pointer(&values[0])))
+	C.glVertexAttrib2fv(C.GLuint(indx), (*C.GLfloat)(&values[0]))
 }
 
 func (indx AttribLocation) Attrib3f(x float32, y float32, z float32) {
@@ -738,7 +738,7 @@ func (indx AttribLocation) Attrib3f(x float32, y float32, z float32) {
 }
 
 func (indx AttribLocation) Attrib3fv(values *[3]float32) {
-	C.glVertexAttrib3fv(C.GLuint(indx), (*C.GLfloat)(unsafe.Pointer(&values[0])))
+	C.glVertexAttrib3fv(C.GLuint(indx), (*C.GLfloat)(&values[0]))
 }
 
 func (indx AttribLocation) Attrib4f(x float32, y float32, z float32, w float32) {
@@ -746,7 +746,7 @@ func (indx AttribLocation) Attrib4f(x float32, y float32, z float32, w float32) 
 }
 
 func (indx AttribLocation) Attrib4fv(values *[4]float32) {
-	C.glVertexAttrib4fv(C.GLuint(indx), (*C.GLfloat)(unsafe.Pointer(&values[0])))
+	C.glVertexAttrib4fv(C.GLuint(indx), (*C.GLfloat)(&values[0]))
 }
 
 func (indx AttribLocation) AttribPointer(size uint, typ GLenum, normalized bool, stride int, pointer interface{}) {
@@ -817,15 +817,15 @@ func (location UniformLocation) Uniform1i(x int) {
 	C.glUniform1i(C.GLint(location), C.GLint(x))
 }
 
-func (location UniformLocation) Uniform1iv(v []int) {
+func (location UniformLocation) Uniform1iv(v []int32) {
 	if len(v) > 0 {
-		C.glUniform1iv(C.GLint(location), C.GLsizei(len(v)), (*C.GLint)(unsafe.Pointer(&v[0])))
+		C.glUniform1iv(C.GLint(location), C.GLsizei(len(v)), (*C.GLint)(&v[0]))
 	}
 }
 
 func (location UniformLocation) Uniform2fv(v []float32) {
 	if len(v) > 0 {
-		C.glUniform2fv(C.GLint(location), C.GLsizei(len(v)), (*C.GLfloat)(unsafe.Pointer(&v[0])))
+		C.glUniform2fv(C.GLint(location), C.GLsizei(len(v)), (*C.GLfloat)(&v[0]))
 	}
 }
 
@@ -835,13 +835,13 @@ func (location UniformLocation) Uniform2i(x int, y int) {
 
 func (location UniformLocation) Uniform2iv(v []int32) {
 	if len(v) > 0 {
-		C.glUniform2iv(C.GLint(location), C.GLsizei(len(v)), (*C.GLint)(unsafe.Pointer(&v[0])))
+		C.glUniform2iv(C.GLint(location), C.GLsizei(len(v)), (*C.GLint)(&v[0]))
 	}
 }
 
 func (location UniformLocation) Uniform3fv(v []float32) {
 	if len(v) > 0 {
-		C.glUniform3fv(C.GLint(location), C.GLsizei(len(v)), (*C.GLfloat)(unsafe.Pointer(&v[0])))
+		C.glUniform3fv(C.GLint(location), C.GLsizei(len(v)), (*C.GLfloat)(&v[0]))
 	}
 }
 
@@ -851,7 +851,7 @@ func (location UniformLocation) Uniform3i(x int, y int, z int) {
 
 func (location UniformLocation) Uniform3iv(v []int32) {
 	if len(v) > 0 {
-		C.glUniform3iv(C.GLint(location), C.GLsizei(len(v)), (*C.GLint)(unsafe.Pointer(&v[0])))
+		C.glUniform3iv(C.GLint(location), C.GLsizei(len(v)), (*C.GLint)(&v[0]))
 	}
 }
 
@@ -861,7 +861,7 @@ func (location UniformLocation) Uniform4f(x float32, y float32, z float32, w flo
 
 func (location UniformLocation) Uniform4fv(v []float32) {
 	if len(v) > 0 {
-		C.glUniform4fv(C.GLint(location), C.GLsizei(len(v)), (*C.GLfloat)(unsafe.Pointer(&v[0])))
+		C.glUniform4fv(C.GLint(location), C.GLsizei(len(v)), (*C.GLfloat)(&v[0]))
 	}
 }
 
@@ -871,7 +871,7 @@ func (location UniformLocation) Uniform4i(x int, y int, z int, w int) {
 
 func (location UniformLocation) Uniform4iv(v []int32) {
 	if len(v) > 0 {
-		C.glUniform4iv(C.GLint(location), C.GLsizei(len(v)), (*C.GLint)(unsafe.Pointer(&v[0])))
+		C.glUniform4iv(C.GLint(location), C.GLsizei(len(v)), (*C.GLint)(&v[0]))
 	}
 }
 
@@ -1570,7 +1570,7 @@ func Indexd(c float64) {
 
 //void glIndexdv (const float64 *c)
 func Indexdv(c *[1]float64) {
-	C.glIndexdv((*C.GLdouble)(unsafe.Pointer(&c[0])))
+	C.glIndexdv((*C.GLdouble)(&c[0]))
 }
 
 //void glIndexf (float32 c)
@@ -1580,7 +1580,7 @@ func Indexf(c float32) {
 
 //void glIndexfv (const float32 *c)
 func Indexfv(c *[1]float32) {
-	C.glIndexfv((*C.GLfloat)(unsafe.Pointer(&c[0])))
+	C.glIndexfv((*C.GLfloat)(&c[0]))
 }
 
 //void glIndexi (int c)
@@ -1590,7 +1590,7 @@ func Indexi(c int) {
 
 //void glIndexiv (const int *c)
 func Indexiv(c *[1]int32) {
-	C.glIndexiv((*C.GLint)(unsafe.Pointer(&c[0])))
+	C.glIndexiv((*C.GLint)(&c[0]))
 }
 
 //void glIndexs (int16 c)
@@ -1600,7 +1600,7 @@ func Indexs(c int16) {
 
 //void glIndexsv (const int16 *c)
 func Indexsv(c *[1]int16) {
-	C.glIndexsv((*C.GLshort)(unsafe.Pointer(&c[0])))
+	C.glIndexsv((*C.GLshort)(&c[0]))
 }
 
 //void glIndexub (uint8 c)
@@ -1610,7 +1610,7 @@ func Indexub(c uint8) {
 
 //void glIndexubv (const uint8 *c)
 func Indexubv(c *[1]uint8) {
-	C.glIndexubv((*C.GLubyte)(unsafe.Pointer(&c[0])))
+	C.glIndexubv((*C.GLubyte)(&c[0]))
 }
 
 //void glInitNames (void)
@@ -1707,12 +1707,12 @@ func LoadIdentity() {
 
 //void glLoadMatrixd (const float64 *m)
 func LoadMatrixd(m *[16]float64) {
-	C.glLoadMatrixd((*C.GLdouble)(unsafe.Pointer(&m[0])))
+	C.glLoadMatrixd((*C.GLdouble)(&m[0]))
 }
 
 //void glLoadMatrixf (const float32 *m)
 func LoadMatrixf(m *[16]float32) {
-	C.glLoadMatrixf((*C.GLfloat)(unsafe.Pointer(&m[0])))
+	C.glLoadMatrixf((*C.GLfloat)(&m[0]))
 }
 
 //void glLoadName (uint name)
@@ -1731,7 +1731,7 @@ func Map1d(target GLenum, u1 float64, u2 float64, stride int, order int, points 
 		panic("Invalid points size")
 	}
 	C.glMap1d(C.GLenum(target), C.GLdouble(u1), C.GLdouble(u2),
-		C.GLint(stride), C.GLint(order), (*C.GLdouble)(unsafe.Pointer(&points[0])))
+		C.GLint(stride), C.GLint(order), (*C.GLdouble)(&points[0]))
 }
 
 //void glMap1f (GLenum target, float32 u1, float32 u2, int stride, int order, const float32 *points)
@@ -1740,7 +1740,7 @@ func Map1f(target GLenum, u1 float32, u2 float32, stride int, order int, points 
 		panic("Invalid points size")
 	}
 	C.glMap1f(C.GLenum(target), C.GLfloat(u1), C.GLfloat(u2), C.GLint(stride),
-		C.GLint(order), (*C.GLfloat)(unsafe.Pointer(&points[0])))
+		C.GLint(order), (*C.GLfloat)(&points[0]))
 }
 
 //void glMap2d (GLenum target, float64 u1, float64 u2, int ustride, int uorder, float64 v1, float64 v2, int vstride, int vorder, const float64 *points)
@@ -1750,7 +1750,7 @@ func Map2d(target GLenum, u1 float64, u2 float64, ustride int, uorder int, v1 fl
 	}
 	C.glMap2d(C.GLenum(target), C.GLdouble(u1), C.GLdouble(u2), C.GLint(ustride),
 		C.GLint(uorder), C.GLdouble(v1), C.GLdouble(v2), C.GLint(vstride),
-		C.GLint(vorder), (*C.GLdouble)(unsafe.Pointer(&points[0])))
+		C.GLint(vorder), (*C.GLdouble)(&points[0]))
 }
 
 //void glMap2f (GLenum target, float32 u1, float32 u2, int ustride, int uorder, float32 v1, float32 v2, int vstride, int vorder, const float32 *points)
@@ -1760,7 +1760,7 @@ func Map2f(target GLenum, u1 float32, u2 float32, ustride int, uorder int, v1 fl
 	}
 	C.glMap2f(C.GLenum(target), C.GLfloat(u1), C.GLfloat(u2), C.GLint(ustride),
 		C.GLint(uorder), C.GLfloat(v1), C.GLfloat(v2), C.GLint(vstride),
-		C.GLint(vorder), (*C.GLfloat)(unsafe.Pointer(&points[0])))
+		C.GLint(vorder), (*C.GLfloat)(&points[0]))
 }
 
 //void glMapGrid1d (int un, float64 u1, float64 u2)
@@ -1816,12 +1816,12 @@ func MatrixMode(mode GLenum) {
 
 //void glMultMatrixd (const float64 *m)
 func MultMatrixd(m *[16]float64) {
-	C.glMultMatrixd((*C.GLdouble)(unsafe.Pointer(&m[0])))
+	C.glMultMatrixd((*C.GLdouble)(&m[0]))
 }
 
 //void glMultMatrixf (const float32 *m)
 func MultMatrixf(m *[16]float32) {
-	C.glMultMatrixf((*C.GLfloat)(unsafe.Pointer(&m[0])))
+	C.glMultMatrixf((*C.GLfloat)(&m[0]))
 }
 
 //void glNewList (uint list, GLenum mode)
@@ -2553,13 +2553,12 @@ func DeleteRenderbuffers(bufs []Renderbuffer) {
 }
 
 // void glGetRenderbufferParameteriv(GLenum target, GLenum pname, GLint* params);
-func GetRenderbufferParameteriv(target, pname GLenum, params []int) {
+func GetRenderbufferParameteriv(target, pname GLenum, params []int32) {
 	if len(params) == 0 {
 		panic("Invalid params size")
 	}
 
-	C.glGetRenderbufferParameteriv(C.GLenum(target), C.GLenum(pname),
-		(*C.GLint)(unsafe.Pointer(&params[0])))
+	C.glGetRenderbufferParameteriv(C.GLenum(target), C.GLenum(pname), (*C.GLint)(&params[0]))
 }
 
 // void glRenderbufferStorage(GLenum target, GLenum internalformat, GLsizei width, GLsizei height);
@@ -2646,12 +2645,12 @@ func GenFramebuffers(bufs []Framebuffer) {
 }
 
 // void glGetFramebufferAttachmentParameter(GLenum target, GLenum attachment, GLenum pname, GLint* params);
-//func GetFramebufferAttachmentParameter (target, attachment, pname GLenum, params []int) {
+//func GetFramebufferAttachmentParameter (target, attachment, pname GLenum, params []int32) {
 //	if len(params) == 0 {
 //		panic("Invalid params size")
 //	}
 //  C.glGetFramebufferAttachmentParameter (C.GLenum(target), C.GLenum(attachment),
-//  	C.GLenum(pname), (*C.GLint)(unsafe.Pointer(&params[0])))
+//  	C.GLenum(pname), (*C.GLint)(&params[0]))
 //}
 
 func Init() GLenum {
