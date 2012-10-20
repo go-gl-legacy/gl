@@ -15,6 +15,38 @@ package gl
 // #undef GLEW_GET_FUN
 // #define GLEW_GET_FUN(x) (*x)
 import "C"
+import "unsafe"
+
+//bool glAreTexturesResident (GLsizei n, const uint *textures, bool *residences)
+func AreTexturesResident(textures []uint, residences []bool) bool {
+	sz := len(textures)
+	if sz == 0 {
+		return false
+	}
+
+	if sz != len(residences) {
+		panic("Residences slice must be equal in length to textures slice.")
+	}
+
+	ret := C.glAreTexturesResident(
+		C.GLsizei(sz),
+		(*C.GLuint)(unsafe.Pointer(&textures[0])),
+		(*C.GLboolean)(unsafe.Pointer(&residences[0])),
+	)
+
+	if ret == TRUE {
+		return true
+	}
+
+	return false
+}
+
+//void glBindTexture (GLenum target, uint texture)
+func BindTexture(target GLenum, texture uint) {
+	C.glBindTexture(C.GLenum(target), C.GLuint(texture))
+}
+
+func ActiveTexture(texture GLenum) { C.glActiveTexture(C.GLenum(texture)) }
 
 // Texture
 
@@ -317,4 +349,170 @@ func GetTexParameteriv(target GLenum, pname GLenum, params []int32) {
 
 func GenerateMipmap(target GLenum) {
 	C.glGenerateMipmap(C.GLenum(target))
+}
+
+//void glTexCoord1d (float64 s)
+func TexCoord1d(s float64) {
+	C.glTexCoord1d(C.GLdouble(s))
+}
+
+//void glTexCoord1dv (const float64 *v)
+func TexCoord1dv(v *[1]float64) {
+	C.glTexCoord1dv((*C.GLdouble)(&v[0]))
+}
+
+//void glTexCoord1f (float32 s)
+func TexCoord1f(s float32) {
+	C.glTexCoord1f(C.GLfloat(s))
+}
+
+//void glTexCoord1fv (const float *v)
+func TexCoord1fv(v *[1]float32) {
+	C.glTexCoord1fv((*C.GLfloat)(&v[0]))
+}
+
+//void glTexCoord1i (int s)
+func TexCoord1i(s int) {
+	C.glTexCoord1i(C.GLint(s))
+}
+
+//void glTexCoord1iv (const int *v)
+func TexCoord1iv(v *[1]int32) {
+	C.glTexCoord1iv((*C.GLint)(&v[0]))
+}
+
+//void glTexCoord1s (int16 s)
+func TexCoord1s(s int16) {
+	C.glTexCoord1s(C.GLshort(s))
+}
+
+//void glTexCoord1sv (const int16 *v)
+func TexCoord1sv(v *[1]int16) {
+	C.glTexCoord1sv((*C.GLshort)(&v[0]))
+}
+
+//void glTexCoord2d (float64 s, float64 t)
+func TexCoord2d(s float64, t float64) {
+	C.glTexCoord2d(C.GLdouble(s), C.GLdouble(t))
+}
+
+//void glTexCoord2dv (const float64 *v)
+func TexCoord2dv(v *[2]float64) {
+	C.glTexCoord2dv((*C.GLdouble)(&v[0]))
+}
+
+//void glTexCoord2f (float32 s, float32 t)
+func TexCoord2f(s float32, t float32) {
+	C.glTexCoord2f(C.GLfloat(s), C.GLfloat(t))
+}
+
+//void glTexCoord2fv (const float *v)
+func TexCoord2fv(v *[2]float32) {
+	C.glTexCoord2fv((*C.GLfloat)(&v[0]))
+}
+
+//void glTexCoord2i (int s, int t)
+func TexCoord2i(s int, t int) {
+	C.glTexCoord2i(C.GLint(s), C.GLint(t))
+}
+
+//void glTexCoord2iv (const int *v)
+func TexCoord2iv(v *[2]int32) {
+	C.glTexCoord2iv((*C.GLint)(&v[0]))
+}
+
+//void glTexCoord2s (int16 s, int16 t)
+func TexCoord2s(s int16, t int16) {
+	C.glTexCoord2s(C.GLshort(s), C.GLshort(t))
+}
+
+//void glTexCoord2sv (const int16 *v)
+func TexCoord2sv(v *[2]int16) {
+	C.glTexCoord2sv((*C.GLshort)(&v[0]))
+}
+
+//void glTexCoord3d (float64 s, float64 t, float64 r)
+func TexCoord3d(s float64, t float64, r float64) {
+	C.glTexCoord3d(C.GLdouble(s), C.GLdouble(t), C.GLdouble(r))
+}
+
+//void glTexCoord3dv (const float64 *v)
+func TexCoord3dv(v *[3]float64) {
+	C.glTexCoord3dv((*C.GLdouble)(&v[0]))
+}
+
+//void glTexCoord3f (float32 s, float32 t, float32 r)
+func TexCoord3f(s float32, t float32, r float32) {
+	C.glTexCoord3f(C.GLfloat(s), C.GLfloat(t), C.GLfloat(r))
+}
+
+//void glTexCoord3fv (const float *v)
+func TexCoord3fv(v *[3]float32) {
+	C.glTexCoord3fv((*C.GLfloat)(&v[0]))
+}
+
+//void glTexCoord3i (int s, int t, int r)
+func TexCoord3i(s int, t int, r int) {
+	C.glTexCoord3i(C.GLint(s), C.GLint(t), C.GLint(r))
+}
+
+//void glTexCoord3iv (const int *v)
+func TexCoord3iv(v *[3]int32) {
+	C.glTexCoord3iv((*C.GLint)(&v[0]))
+}
+
+//void glTexCoord3s (int16 s, int16 t, int16 r)
+func TexCoord3s(s int16, t int16, r int16) {
+	C.glTexCoord3s(C.GLshort(s), C.GLshort(t), C.GLshort(r))
+}
+
+//void glTexCoord3sv (const int16 *v)
+func TexCoord3sv(v *[3]int16) {
+	C.glTexCoord3sv((*C.GLshort)(&v[0]))
+}
+
+//void glTexCoord4d (float64 s, float64 t, float64 r, float64 q)
+func TexCoord4d(s float64, t float64, r float64, q float64) {
+	C.glTexCoord4d(C.GLdouble(s), C.GLdouble(t), C.GLdouble(r), C.GLdouble(q))
+}
+
+//void glTexCoord4dv (const float64 *v)
+func TexCoord4dv(v *[4]float64) {
+	C.glTexCoord4dv((*C.GLdouble)(&v[0]))
+}
+
+//void glTexCoord4f (float32 s, float32 t, float32 r, float32 q)
+func TexCoord4f(s float32, t float32, r float32, q float32) {
+	C.glTexCoord4f(C.GLfloat(s), C.GLfloat(t), C.GLfloat(r), C.GLfloat(q))
+}
+
+//void glTexCoord4fv (const float *v)
+func TexCoord4fv(v *[4]float32) {
+	C.glTexCoord4fv((*C.GLfloat)(&v[0]))
+}
+
+//void glTexCoord4i (int s, int t, int r, int q)
+func TexCoord4i(s int, t int, r int, q int) {
+	C.glTexCoord4i(C.GLint(s), C.GLint(t), C.GLint(r), C.GLint(q))
+}
+
+//void glTexCoord4iv (const int *v)
+func TexCoord4iv(v *[4]int32) {
+	C.glTexCoord4iv((*C.GLint)(&v[0]))
+}
+
+//void glTexCoord4s (int16 s, int16 t, int16 r, int16 q)
+func TexCoord4s(s int16, t int16, r int16, q int16) {
+	C.glTexCoord4s(C.GLshort(s), C.GLshort(t), C.GLshort(r), C.GLshort(q))
+}
+
+//void glTexCoord4sv (const int16 *v)
+func TexCoord4sv(v *[4]int16) {
+	C.glTexCoord4sv((*C.GLshort)(&v[0]))
+}
+
+//void glTexCoordPointer (int size, GLenum type, int stride, const GLvoid *pointer)
+func TexCoordPointer(size int, typ GLenum, stride int, pointer interface{}) {
+	C.glTexCoordPointer(C.GLint(size), C.GLenum(typ), C.GLsizei(stride),
+		ptr(pointer))
 }
