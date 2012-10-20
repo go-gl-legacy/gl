@@ -3,6 +3,7 @@ language: go
 install:
   - wget -q https://raw.github.com/go-gl/testutils/master/travis-helper-functions.sh
   - source travis-helper-functions.sh
+  - initialize
   - subtest-init go-gl/gl go-gl/examples
 
 script:
@@ -10,7 +11,7 @@ script:
 
 after_script:
   - go test -v
-  - upload_to_imgur
+  - upload-to-imgur
   - subtest go-gl/gl go-gl/examples
 
 after_failure: failure
