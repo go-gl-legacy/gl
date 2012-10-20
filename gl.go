@@ -575,11 +575,6 @@ func FrontFace(mode GLenum) {
 	C.glFrontFace(C.GLenum(mode))
 }
 
-//void glFrustum (float64 left, float64 right, float64 bottom, float64 top, float64 zNear, float64 zFar)
-func Frustum(left float64, right float64, bottom float64, top float64, zNear float64, zFar float64) {
-	C.glFrustum(C.GLdouble(left), C.GLdouble(right), C.GLdouble(bottom), C.GLdouble(top), C.GLdouble(zNear), C.GLdouble(zFar))
-}
-
 //uint glGenLists (GLsizei range)
 func GenLists(range_ int) uint {
 	return uint(C.glGenLists(C.GLsizei(range_)))
@@ -872,21 +867,6 @@ func ListBase(base uint) {
 	C.glListBase(C.GLuint(base))
 }
 
-//void glLoadIdentity (void)
-func LoadIdentity() {
-	C.glLoadIdentity()
-}
-
-//void glLoadMatrixd (const float64 *m)
-func LoadMatrixd(m *[16]float64) {
-	C.glLoadMatrixd((*C.GLdouble)(&m[0]))
-}
-
-//void glLoadMatrixf (const float32 *m)
-func LoadMatrixf(m *[16]float32) {
-	C.glLoadMatrixf((*C.GLfloat)(&m[0]))
-}
-
 //void glLoadName (uint name)
 func LoadName(name uint) {
 	C.glLoadName(C.GLuint(name))
@@ -981,21 +961,6 @@ func Materialiv(face GLenum, pname GLenum, params []int32) {
 	C.glMaterialiv(C.GLenum(face), C.GLenum(pname), (*C.GLint)(&params[0]))
 }
 
-//void glMatrixMode (GLenum mode)
-func MatrixMode(mode GLenum) {
-	C.glMatrixMode(C.GLenum(mode))
-}
-
-//void glMultMatrixd (const float64 *m)
-func MultMatrixd(m *[16]float64) {
-	C.glMultMatrixd((*C.GLdouble)(&m[0]))
-}
-
-//void glMultMatrixf (const float32 *m)
-func MultMatrixf(m *[16]float32) {
-	C.glMultMatrixf((*C.GLfloat)(&m[0]))
-}
-
 //void glNewList (uint list, GLenum mode)
 func NewList(list uint, mode GLenum) {
 	C.glNewList(C.GLuint(list), C.GLenum(mode))
@@ -1054,11 +1019,6 @@ func Normal3sv(v *[3]int16) {
 //void glNormalPointer (GLenum type, int stride, const GLvoid *pointer)
 func NormalPointer(typ GLenum, stride int, pointer interface{}) {
 	C.glNormalPointer(C.GLenum(typ), C.GLsizei(stride), ptr(pointer))
-}
-
-//void glOrtho (float64 left, float64 right, float64 bottom, float64 top, float64 zNear, float64 zFar)
-func Ortho(left float64, right float64, bottom float64, top float64, zNear float64, zFar float64) {
-	C.glOrtho(C.GLdouble(left), C.GLdouble(right), C.GLdouble(bottom), C.GLdouble(top), C.GLdouble(zNear), C.GLdouble(zFar))
 }
 
 //void glPassThrough (float32 token)
@@ -1121,11 +1081,6 @@ func PopClientAttrib() {
 	C.glPopClientAttrib()
 }
 
-//void glPopMatrix (void)
-func PopMatrix() {
-	C.glPopMatrix()
-}
-
 //void glPopName (void)
 func PopName() {
 	C.glPopName()
@@ -1139,11 +1094,6 @@ func PushAttrib(mask GLbitfield) {
 //void glPushClientAttrib (GLbitfield mask)
 func PushClientAttrib(mask GLbitfield) {
 	C.glPushClientAttrib(C.GLbitfield(mask))
-}
-
-//void glPushMatrix (void)
-func PushMatrix() {
-	C.glPushMatrix()
 }
 
 //void glPushName (uint name)
@@ -1325,26 +1275,6 @@ func Rectsv(a, b *[2]int16) {
 //int glRenderMode (GLenum mode)
 func RenderMode(mode GLenum) int {
 	return int(C.glRenderMode(C.GLenum(mode)))
-}
-
-//void glRotated (float64 angle, float64 x, float64 y, float64 z)
-func Rotated(angle float64, x float64, y float64, z float64) {
-	C.glRotated(C.GLdouble(angle), C.GLdouble(x), C.GLdouble(y), C.GLdouble(z))
-}
-
-//void glRotatef (float32 angle, float32 x, float32 y, float32 z)
-func Rotatef(angle float32, x float32, y float32, z float32) {
-	C.glRotatef(C.GLfloat(angle), C.GLfloat(x), C.GLfloat(y), C.GLfloat(z))
-}
-
-//void glScaled (float64 x, float64 y, float64 z)
-func Scaled(x float64, y float64, z float64) {
-	C.glScaled(C.GLdouble(x), C.GLdouble(y), C.GLdouble(z))
-}
-
-//void glScalef (float32 x, float32 y, float32 z)
-func Scalef(x float32, y float32, z float32) {
-	C.glScalef(C.GLfloat(x), C.GLfloat(y), C.GLfloat(z))
 }
 
 //void glScissor (int x, int y, int width, int height)
