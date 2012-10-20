@@ -4,16 +4,7 @@
 
 package gl
 
-// #cgo darwin LDFLAGS: -framework OpenGL -lGLEW
-// #cgo windows LDFLAGS: -lglew32 -lopengl32
-// #cgo linux LDFLAGS: -lGLEW -lGL
-//
-// #include <stdlib.h>
-//
-// #include <GL/glew.h>
-//
-// #undef GLEW_GET_FUN
-// #define GLEW_GET_FUN(x) (*x)
+// #include "gl.h"
 import "C"
 
 //void glFrustum (float64 left, float64 right, float64 bottom, float64 top, float64 zNear, float64 zFar)
