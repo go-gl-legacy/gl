@@ -32,11 +32,6 @@ func AreTexturesResident(textures []uint, residences []bool) bool {
 	return false
 }
 
-//void glBindTexture (GLenum target, uint texture)
-func BindTexture(target GLenum, texture uint) {
-	C.glBindTexture(C.GLenum(target), C.GLuint(texture))
-}
-
 func ActiveTexture(texture GLenum) { C.glActiveTexture(C.GLenum(texture)) }
 
 // Texture
