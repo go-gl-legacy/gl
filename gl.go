@@ -1142,15 +1142,14 @@ func Viewport(x int, y int, width int, height int) {
 //}
 
 func GlewExperimental(on bool) {
-  if on {
-    //turn on glew support for all exported extensions
-    C.glewExperimental = C.GLboolean(1)
-  } else {
-    C.glewExperimental = C.GLboolean(0)
-  }
+	if on {
+		//turn on glew support for all exported extensions
+		C.glewExperimental = C.GLboolean(1)
+	} else {
+		C.glewExperimental = C.GLboolean(0)
+	}
 }
 
 func Init() GLenum {
 	return GLenum(C.glewInit())
 }
-
