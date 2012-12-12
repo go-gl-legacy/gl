@@ -1,7 +1,7 @@
 gl | OpenGL Bindings for golang
 ===============================
 
-This fork of [gogl/gl](http://github.com/gogl/gl) enables OpenGL 3.2
+This fork of [go-gl/gl](http://github.com/go-gl/gl) enables OpenGL 3.2
 contexts on OSX (this is a core context with no backwards
 compatability). All the deprecated functions have been removed. I
 started this fork because GLEW (which gogl/gl uses) does not appear to
