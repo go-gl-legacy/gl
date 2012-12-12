@@ -93,5 +93,5 @@ func (location UniformLocation) Uniform4iv(v []int32) {
 
 //Can't really tie this to a specific matrix type, so just take a pointer to the first element and assume it's a simple, column-major array layout
 func (location UniformLocation) UniformMatrix4fv(fv *float32) {
-	C.glUniformMatrix4fv(C.GLint(location), C.GLsizei(1), GL_FALSE, (*C.GLfloat)(fv))
+	C.glUniformMatrix4fv(C.GLint(location), C.GLsizei(1), C.GL_FALSE, (*C.GLfloat)(fv))
 }
