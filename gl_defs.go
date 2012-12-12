@@ -4,7 +4,8 @@
 
 package gl
 
-// #include <GL/glew.h>
+// #cgo darwin LDFLAGS: -framework OpenGL
+//#include "gl.h"
 import "C"
 
 // Constants
@@ -37,16 +38,12 @@ const (
 	ALIASED_POINT_SIZE_RANGE                      = C.GL_ALIASED_POINT_SIZE_RANGE
 	ALL_ATTRIB_BITS                               = C.GL_ALL_ATTRIB_BITS
 	ALPHA12                                       = C.GL_ALPHA12
-	ALPHA16_SNORM                                 = C.GL_ALPHA16_SNORM
 	ALPHA16                                       = C.GL_ALPHA16
 	ALPHA4                                        = C.GL_ALPHA4
-	ALPHA8_SNORM                                  = C.GL_ALPHA8_SNORM
 	ALPHA8                                        = C.GL_ALPHA8
 	ALPHA_BIAS                                    = C.GL_ALPHA_BIAS
 	ALPHA_BITS                                    = C.GL_ALPHA_BITS
-	ALPHA_INTEGER                                 = C.GL_ALPHA_INTEGER
 	ALPHA_SCALE                                   = C.GL_ALPHA_SCALE
-	ALPHA_SNORM                                   = C.GL_ALPHA_SNORM
 	ALPHA_TEST_FUNC                               = C.GL_ALPHA_TEST_FUNC
 	ALPHA_TEST_REF                                = C.GL_ALPHA_TEST_REF
 	ALPHA_TEST                                    = C.GL_ALPHA_TEST
@@ -111,11 +108,9 @@ const (
 	C4UB_V2F                                      = C.GL_C4UB_V2F
 	C4UB_V3F                                      = C.GL_C4UB_V3F
 	CCW                                           = C.GL_CCW
-	CLAMP_FRAGMENT_COLOR                          = C.GL_CLAMP_FRAGMENT_COLOR
 	CLAMP_READ_COLOR                              = C.GL_CLAMP_READ_COLOR
 	CLAMP_TO_BORDER                               = C.GL_CLAMP_TO_BORDER
 	CLAMP_TO_EDGE                                 = C.GL_CLAMP_TO_EDGE
-	CLAMP_VERTEX_COLOR                            = C.GL_CLAMP_VERTEX_COLOR
 	CLAMP                                         = C.GL_CLAMP
 	CLEAR                                         = C.GL_CLEAR
 	CLIENT_ACTIVE_TEXTURE                         = C.GL_CLIENT_ACTIVE_TEXTURE
@@ -264,7 +259,6 @@ const (
 	DEPTH_BIAS                                    = C.GL_DEPTH_BIAS
 	DEPTH_BITS                                    = C.GL_DEPTH_BITS
 	DEPTH_BUFFER_BIT                              = C.GL_DEPTH_BUFFER_BIT
-	DEPTH_BUFFER                                  = C.GL_DEPTH_BUFFER
 	DEPTH_CLAMP                                   = C.GL_DEPTH_CLAMP
 	DEPTH_CLEAR_VALUE                             = C.GL_DEPTH_CLEAR_VALUE
 	DEPTH_COMPONENT16                             = C.GL_DEPTH_COMPONENT16
@@ -322,7 +316,6 @@ const (
 	ELEMENT_ARRAY_BUFFER_BINDING                  = C.GL_ELEMENT_ARRAY_BUFFER_BINDING
 	ELEMENT_ARRAY_BUFFER                          = C.GL_ELEMENT_ARRAY_BUFFER
 	EMISSION                                      = C.GL_EMISSION
-	ENABLE_BIT                                    = C.GL_ENABLE_BIT
 	EQUAL                                         = C.GL_EQUAL
 	EQUIV                                         = C.GL_EQUIV
 	EVAL_BIT                                      = C.GL_EVAL_BIT
@@ -454,15 +447,11 @@ const (
 	INDEX_OFFSET                                  = C.GL_INDEX_OFFSET
 	INDEX_SHIFT                                   = C.GL_INDEX_SHIFT
 	INDEX_WRITEMASK                               = C.GL_INDEX_WRITEMASK
-	INDEX                                         = C.GL_INDEX
 	INFO_LOG_LENGTH                               = C.GL_INFO_LOG_LENGTH
 	INTENSITY12                                   = C.GL_INTENSITY12
-	INTENSITY16_SNORM                             = C.GL_INTENSITY16_SNORM
 	INTENSITY16                                   = C.GL_INTENSITY16
 	INTENSITY4                                    = C.GL_INTENSITY4
-	INTENSITY8_SNORM                              = C.GL_INTENSITY8_SNORM
 	INTENSITY8                                    = C.GL_INTENSITY8
-	INTENSITY_SNORM                               = C.GL_INTENSITY_SNORM
 	INTENSITY                                     = C.GL_INTENSITY
 	INTERLEAVED_ATTRIBS                           = C.GL_INTERLEAVED_ATTRIBS
 	INTERPOLATE                                   = C.GL_INTERPOLATE
@@ -475,7 +464,6 @@ const (
 	INT_SAMPLER_2D                                = C.GL_INT_SAMPLER_2D
 	INT_SAMPLER_3D                                = C.GL_INT_SAMPLER_3D
 	INT_SAMPLER_BUFFER                            = C.GL_INT_SAMPLER_BUFFER
-	INT_SAMPLER_CUBE_MAP_ARRAY                    = C.GL_INT_SAMPLER_CUBE_MAP_ARRAY
 	INT_SAMPLER_CUBE                              = C.GL_INT_SAMPLER_CUBE
 	INT_VEC2                                      = C.GL_INT_VEC2
 	INT_VEC3                                      = C.GL_INT_VEC3
@@ -486,7 +474,6 @@ const (
 	INVALID_INDEX                                 = C.GL_INVALID_INDEX
 	INVALID_OPERATION                             = C.GL_INVALID_OPERATION
 	INVALID_VALUE                                 = C.GL_INVALID_VALUE
-	INVERTED_SCREEN_W_REND                        = C.GL_INVERTED_SCREEN_W_REND
 	INVERT                                        = C.GL_INVERT
 	KEEP                                          = C.GL_KEEP
 	LAST_VERTEX_CONVENTION                        = C.GL_LAST_VERTEX_CONVENTION
@@ -540,20 +527,14 @@ const (
 	LUMINANCE12_ALPHA12                           = C.GL_LUMINANCE12_ALPHA12
 	LUMINANCE12_ALPHA4                            = C.GL_LUMINANCE12_ALPHA4
 	LUMINANCE12                                   = C.GL_LUMINANCE12
-	LUMINANCE16_ALPHA16_SNORM                     = C.GL_LUMINANCE16_ALPHA16_SNORM
 	LUMINANCE16_ALPHA16                           = C.GL_LUMINANCE16_ALPHA16
-	LUMINANCE16_SNORM                             = C.GL_LUMINANCE16_SNORM
 	LUMINANCE16                                   = C.GL_LUMINANCE16
 	LUMINANCE4_ALPHA4                             = C.GL_LUMINANCE4_ALPHA4
 	LUMINANCE4                                    = C.GL_LUMINANCE4
 	LUMINANCE6_ALPHA2                             = C.GL_LUMINANCE6_ALPHA2
-	LUMINANCE8_ALPHA8_SNORM                       = C.GL_LUMINANCE8_ALPHA8_SNORM
 	LUMINANCE8_ALPHA8                             = C.GL_LUMINANCE8_ALPHA8
-	LUMINANCE8_SNORM                              = C.GL_LUMINANCE8_SNORM
 	LUMINANCE8                                    = C.GL_LUMINANCE8
-	LUMINANCE_ALPHA_SNORM                         = C.GL_LUMINANCE_ALPHA_SNORM
 	LUMINANCE_ALPHA                               = C.GL_LUMINANCE_ALPHA
-	LUMINANCE_SNORM                               = C.GL_LUMINANCE_SNORM
 	LUMINANCE                                     = C.GL_LUMINANCE
 	MAJOR_VERSION                                 = C.GL_MAJOR_VERSION
 	MAP1_COLOR_4                                  = C.GL_MAP1_COLOR_4
@@ -626,8 +607,6 @@ const (
 	MAX_NAME_STACK_DEPTH                          = C.GL_MAX_NAME_STACK_DEPTH
 	MAX_PIXEL_MAP_TABLE                           = C.GL_MAX_PIXEL_MAP_TABLE
 	MAX_PROGRAM_TEXEL_OFFSET                      = C.GL_MAX_PROGRAM_TEXEL_OFFSET
-	MAX_PROGRAM_TEXTURE_GATHER_COMPONENTS         = C.GL_MAX_PROGRAM_TEXTURE_GATHER_COMPONENTS
-	MAX_PROGRAM_TEXTURE_GATHER_OFFSET             = C.GL_MAX_PROGRAM_TEXTURE_GATHER_OFFSET
 	MAX_PROJECTION_STACK_DEPTH                    = C.GL_MAX_PROJECTION_STACK_DEPTH
 	MAX_RECTANGLE_TEXTURE_SIZE                    = C.GL_MAX_RECTANGLE_TEXTURE_SIZE
 	MAX_RENDERBUFFER_SIZE                         = C.GL_MAX_RENDERBUFFER_SIZE
@@ -660,8 +639,6 @@ const (
 	MINMAX                                        = C.GL_MINMAX
 	MINOR_VERSION                                 = C.GL_MINOR_VERSION
 	MIN_PROGRAM_TEXEL_OFFSET                      = C.GL_MIN_PROGRAM_TEXEL_OFFSET
-	MIN_PROGRAM_TEXTURE_GATHER_OFFSET             = C.GL_MIN_PROGRAM_TEXTURE_GATHER_OFFSET
-	MIN_SAMPLE_SHADING_VALUE                      = C.GL_MIN_SAMPLE_SHADING_VALUE
 	MIN                                           = C.GL_MIN
 	MIRRORED_REPEAT                               = C.GL_MIRRORED_REPEAT
 	MODELVIEW_MATRIX                              = C.GL_MODELVIEW_MATRIX
@@ -684,7 +661,6 @@ const (
 	NOOP                                          = C.GL_NOOP
 	NORMAL_ARRAY_BUFFER_BINDING                   = C.GL_NORMAL_ARRAY_BUFFER_BINDING
 	NORMAL_ARRAY_POINTER                          = C.GL_NORMAL_ARRAY_POINTER
-	NORMAL_ARRAY_STRIDE                           = C.GL_NORMAL_ARRAY_STRIDE
 	NORMAL_ARRAY_TYPE                             = C.GL_NORMAL_ARRAY_TYPE
 	NORMAL_ARRAY                                  = C.GL_NORMAL_ARRAY
 	NORMALIZE                                     = C.GL_NORMALIZE
@@ -816,7 +792,6 @@ const (
 	PROXY_TEXTURE_2D_MULTISAMPLE                  = C.GL_PROXY_TEXTURE_2D_MULTISAMPLE
 	PROXY_TEXTURE_2D                              = C.GL_PROXY_TEXTURE_2D
 	PROXY_TEXTURE_3D                              = C.GL_PROXY_TEXTURE_3D
-	PROXY_TEXTURE_CUBE_MAP_ARRAY                  = C.GL_PROXY_TEXTURE_CUBE_MAP_ARRAY
 	PROXY_TEXTURE_CUBE_MAP                        = C.GL_PROXY_TEXTURE_CUBE_MAP
 	PROXY_TEXTURE_RECTANGLE                       = C.GL_PROXY_TEXTURE_RECTANGLE
 	QUADRATIC_ATTENUATION                         = C.GL_QUADRATIC_ATTENUATION
@@ -855,7 +830,6 @@ const (
 	RED_BITS                                      = C.GL_RED_BITS
 	RED_INTEGER                                   = C.GL_RED_INTEGER
 	RED_SCALE                                     = C.GL_RED_SCALE
-	RED_SNORM                                     = C.GL_RED_SNORM
 	REDUCE                                        = C.GL_REDUCE
 	RED                                           = C.GL_RED
 	REFLECTION_MAP                                = C.GL_REFLECTION_MAP
@@ -874,7 +848,6 @@ const (
 	RENDERER                                      = C.GL_RENDERER
 	RENDER_MODE                                   = C.GL_RENDER_MODE
 	RENDER                                        = C.GL_RENDER
-	REND_screen_coordinates                       = C.GL_REND_screen_coordinates
 	REPEAT                                        = C.GL_REPEAT
 	REPLACE                                       = C.GL_REPLACE
 	REPLICATE_BORDER                              = C.GL_REPLICATE_BORDER
@@ -928,14 +901,11 @@ const (
 	RGBA8                                         = C.GL_RGBA8
 	RGBA_INTEGER                                  = C.GL_RGBA_INTEGER
 	RGBA_MODE                                     = C.GL_RGBA_MODE
-	RGBA_SNORM                                    = C.GL_RGBA_SNORM
 	RGBA                                          = C.GL_RGBA
 	RGB_INTEGER                                   = C.GL_RGB_INTEGER
 	RGB_SCALE                                     = C.GL_RGB_SCALE
-	RGB_SNORM                                     = C.GL_RGB_SNORM
 	RGB                                           = C.GL_RGB
 	RG_INTEGER                                    = C.GL_RG_INTEGER
-	RG_SNORM                                      = C.GL_RG_SNORM
 	RG                                            = C.GL_RG
 	RIGHT                                         = C.GL_RIGHT
 	R                                             = C.GL_R
@@ -962,17 +932,13 @@ const (
 	SAMPLER_2D                                    = C.GL_SAMPLER_2D
 	SAMPLER_3D                                    = C.GL_SAMPLER_3D
 	SAMPLER_BUFFER                                = C.GL_SAMPLER_BUFFER
-	SAMPLER_CUBE_MAP_ARRAY_SHADOW                 = C.GL_SAMPLER_CUBE_MAP_ARRAY_SHADOW
-	SAMPLER_CUBE_MAP_ARRAY                        = C.GL_SAMPLER_CUBE_MAP_ARRAY
 	SAMPLER_CUBE_SHADOW                           = C.GL_SAMPLER_CUBE_SHADOW
 	SAMPLER_CUBE                                  = C.GL_SAMPLER_CUBE
-	SAMPLE_SHADING                                = C.GL_SAMPLE_SHADING
 	SAMPLES_PASSED                                = C.GL_SAMPLES_PASSED
 	SAMPLES                                       = C.GL_SAMPLES
 	SCISSOR_BIT                                   = C.GL_SCISSOR_BIT
 	SCISSOR_BOX                                   = C.GL_SCISSOR_BOX
 	SCISSOR_TEST                                  = C.GL_SCISSOR_TEST
-	SCREEN_COORDINATES_REND                       = C.GL_SCREEN_COORDINATES_REND
 	SECONDARY_COLOR_ARRAY_BUFFER_BINDING          = C.GL_SECONDARY_COLOR_ARRAY_BUFFER_BINDING
 	SECONDARY_COLOR_ARRAY_POINTER                 = C.GL_SECONDARY_COLOR_ARRAY_POINTER
 	SECONDARY_COLOR_ARRAY_SIZE                    = C.GL_SECONDARY_COLOR_ARRAY_SIZE
@@ -1043,7 +1009,6 @@ const (
 	STENCIL_BACK_WRITEMASK                        = C.GL_STENCIL_BACK_WRITEMASK
 	STENCIL_BITS                                  = C.GL_STENCIL_BITS
 	STENCIL_BUFFER_BIT                            = C.GL_STENCIL_BUFFER_BIT
-	STENCIL_BUFFER                                = C.GL_STENCIL_BUFFER
 	STENCIL_CLEAR_VALUE                           = C.GL_STENCIL_CLEAR_VALUE
 	STENCIL_FAIL                                  = C.GL_STENCIL_FAIL
 	STENCIL_FUNC                                  = C.GL_STENCIL_FUNC
@@ -1130,7 +1095,6 @@ const (
 	TEXTURE_BINDING_2D                            = C.GL_TEXTURE_BINDING_2D
 	TEXTURE_BINDING_3D                            = C.GL_TEXTURE_BINDING_3D
 	TEXTURE_BINDING_BUFFER                        = C.GL_TEXTURE_BINDING_BUFFER
-	TEXTURE_BINDING_CUBE_MAP_ARRAY                = C.GL_TEXTURE_BINDING_CUBE_MAP_ARRAY
 	TEXTURE_BINDING_CUBE_MAP                      = C.GL_TEXTURE_BINDING_CUBE_MAP
 	TEXTURE_BINDING_RECTANGLE                     = C.GL_TEXTURE_BINDING_RECTANGLE
 	TEXTURE_BIT                                   = C.GL_TEXTURE_BIT
@@ -1139,7 +1103,6 @@ const (
 	TEXTURE_BORDER_COLOR                          = C.GL_TEXTURE_BORDER_COLOR
 	TEXTURE_BORDER                                = C.GL_TEXTURE_BORDER
 	TEXTURE_BUFFER_DATA_STORE_BINDING             = C.GL_TEXTURE_BUFFER_DATA_STORE_BINDING
-	TEXTURE_BUFFER_FORMAT                         = C.GL_TEXTURE_BUFFER_FORMAT
 	TEXTURE_BUFFER                                = C.GL_TEXTURE_BUFFER
 	TEXTURE_COMPARE_FUNC                          = C.GL_TEXTURE_COMPARE_FUNC
 	TEXTURE_COMPARE_MODE                          = C.GL_TEXTURE_COMPARE_MODE
@@ -1153,7 +1116,6 @@ const (
 	TEXTURE_COORD_ARRAY_STRIDE                    = C.GL_TEXTURE_COORD_ARRAY_STRIDE
 	TEXTURE_COORD_ARRAY_TYPE                      = C.GL_TEXTURE_COORD_ARRAY_TYPE
 	TEXTURE_COORD_ARRAY                           = C.GL_TEXTURE_COORD_ARRAY
-	TEXTURE_CUBE_MAP_ARRAY                        = C.GL_TEXTURE_CUBE_MAP_ARRAY
 	TEXTURE_CUBE_MAP_NEGATIVE_X                   = C.GL_TEXTURE_CUBE_MAP_NEGATIVE_X
 	TEXTURE_CUBE_MAP_NEGATIVE_Y                   = C.GL_TEXTURE_CUBE_MAP_NEGATIVE_Y
 	TEXTURE_CUBE_MAP_NEGATIVE_Z                   = C.GL_TEXTURE_CUBE_MAP_NEGATIVE_Z
@@ -1179,11 +1141,9 @@ const (
 	TEXTURE_GREEN_TYPE                            = C.GL_TEXTURE_GREEN_TYPE
 	TEXTURE_HEIGHT                                = C.GL_TEXTURE_HEIGHT
 	TEXTURE_INTENSITY_SIZE                        = C.GL_TEXTURE_INTENSITY_SIZE
-	TEXTURE_INTENSITY_TYPE                        = C.GL_TEXTURE_INTENSITY_TYPE
 	TEXTURE_INTERNAL_FORMAT                       = C.GL_TEXTURE_INTERNAL_FORMAT
 	TEXTURE_LOD_BIAS                              = C.GL_TEXTURE_LOD_BIAS
 	TEXTURE_LUMINANCE_SIZE                        = C.GL_TEXTURE_LUMINANCE_SIZE
-	TEXTURE_LUMINANCE_TYPE                        = C.GL_TEXTURE_LUMINANCE_TYPE
 	TEXTURE_MAG_FILTER                            = C.GL_TEXTURE_MAG_FILTER
 	TEXTURE_MATRIX                                = C.GL_TEXTURE_MATRIX
 	TEXTURE_MAX_LEVEL                             = C.GL_TEXTURE_MAX_LEVEL
@@ -1206,7 +1166,6 @@ const (
 	TEXTURE                                       = C.GL_TEXTURE
 	TIMEOUT_EXPIRED                               = C.GL_TIMEOUT_EXPIRED
 	TIMEOUT_IGNORED                               = C.GL_TIMEOUT_IGNORED
-	TRANSFORM_FEEDBACK                            = C.GL_TRANSFORM_FEEDBACK
 	TRANSFORM_BIT                                 = C.GL_TRANSFORM_BIT
 	TRANSFORM_FEEDBACK_BUFFER_BINDING             = C.GL_TRANSFORM_FEEDBACK_BUFFER_BINDING
 	TRANSFORM_FEEDBACK_BUFFER_MODE                = C.GL_TRANSFORM_FEEDBACK_BUFFER_MODE
@@ -1276,7 +1235,6 @@ const (
 	UNSIGNED_INT_SAMPLER_2D                       = C.GL_UNSIGNED_INT_SAMPLER_2D
 	UNSIGNED_INT_SAMPLER_3D                       = C.GL_UNSIGNED_INT_SAMPLER_3D
 	UNSIGNED_INT_SAMPLER_BUFFER                   = C.GL_UNSIGNED_INT_SAMPLER_BUFFER
-	UNSIGNED_INT_SAMPLER_CUBE_MAP_ARRAY           = C.GL_UNSIGNED_INT_SAMPLER_CUBE_MAP_ARRAY
 	UNSIGNED_INT_SAMPLER_CUBE                     = C.GL_UNSIGNED_INT_SAMPLER_CUBE
 	UNSIGNED_INT_VEC2                             = C.GL_UNSIGNED_INT_VEC2
 	UNSIGNED_INT_VEC3                             = C.GL_UNSIGNED_INT_VEC3
