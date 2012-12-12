@@ -8,7 +8,7 @@ started this fork because GLEW (which gogl/gl uses) does not appear to
 play nicely with Apple's OpenGL 3 implementation. If anyone knows
 better, please let me know.
 
-You should only need this if you are targetting a strict OpenGL 3+
+You should only need this if you are targeting a strict OpenGL 3+
 context and need OSX compatibility (I have also tested it on Ubuntu
 12.04, but for any other OS you're on your own!)
 
