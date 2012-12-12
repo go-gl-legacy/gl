@@ -8,6 +8,7 @@ package gl
 // #cgo windows LDFLAGS: -lglew32 -lopengl32
 // #cgo linux LDFLAGS: -lGLEW -lGL
 // #include "gl.h"
+// #include "init.h"
 import "C"
 import "unsafe"
 import "reflect"
