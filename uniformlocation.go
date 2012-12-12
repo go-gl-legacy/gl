@@ -76,9 +76,7 @@ func (location UniformLocation) Uniform4f(x float32, y float32, z float32, w flo
 }
 
 func (location UniformLocation) Uniform4fv(v []float32) {
-	if len(v) > 0 {
-		C.glUniform4fv(C.GLint(location), C.GLsizei(len(v)), (*C.GLfloat)(&v[0]))
-	}
+  C.glUniform4fv(C.GLint(location), C.GLsizei(1), (*C.GLfloat)(&v[0]))
 }
 
 func (location UniformLocation) Uniform4i(x int, y int, z int, w int) {
