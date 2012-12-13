@@ -35,3 +35,7 @@ func DeleteVertexArrays(arrays []VertexArray) {
 func (array VertexArray) Bind() {
 	C.glBindVertexArray(C.GLuint(array))
 }
+
+func (array VertexArray) Unbind() {
+	C.glBindVertexArray(C.GLuint(0))
+}

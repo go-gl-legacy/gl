@@ -19,6 +19,4 @@ func (object Object) IsShader() bool { return C.glIsShader(C.GLuint(object)) != 
 
 func (object Object) IsTexture() bool { return C.glIsTexture(C.GLuint(object)) != 0 }
 
-func (object Object) IsTransformFeedback() bool { return C.glIsTransformFeedback(C.GLuint(object)) != 0 }
-
 func (object Object) IsVertexArray() bool { return C.glIsVertexArray(C.GLuint(object)) != 0 }
