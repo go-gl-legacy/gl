@@ -94,4 +94,8 @@ func (location UniformLocation) UniformMatrix4fv(fv []*float32) {
 	C.glUniformMatrix4fv(C.GLint(location), C.GLsizei(len(fv)), C.GL_FALSE, (*C.GLfloat)(fv[0]))
 }
 
+func (location UniformLocation) UniformMatrix4f(fv *float32) {
+	C.glUniformMatrix4fv(C.GLint(location), C.GLsizei(1), C.GL_FALSE, (*C.GLfloat)(fv))
+}
+
 
