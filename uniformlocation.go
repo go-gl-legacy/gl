@@ -41,7 +41,7 @@ func (location UniformLocation) Uniform1iv(v []int32) {
 
 func (location UniformLocation) Uniform2fv(v []float32) {
 	if len(v) > 0 {
-		C.glUniform2fv(C.GLint(location), C.GLsizei(len(v)), (*C.GLfloat)(&v[0]))
+		C.glUniform2fv(C.GLint(location), C.GLsizei(len(v) / 2), (*C.GLfloat)(&v[0]))
 	}
 }
 
@@ -51,13 +51,13 @@ func (location UniformLocation) Uniform2i(x int, y int) {
 
 func (location UniformLocation) Uniform2iv(v []int32) {
 	if len(v) > 0 {
-		C.glUniform2iv(C.GLint(location), C.GLsizei(len(v)), (*C.GLint)(&v[0]))
+		C.glUniform2iv(C.GLint(location), C.GLsizei(len(v) / 2), (*C.GLint)(&v[0]))
 	}
 }
 
 func (location UniformLocation) Uniform3fv(v []float32) {
 	if len(v) > 0 {
-		C.glUniform3fv(C.GLint(location), C.GLsizei(len(v)), (*C.GLfloat)(&v[0]))
+		C.glUniform3fv(C.GLint(location), C.GLsizei(len(v) / 3), (*C.GLfloat)(&v[0]))
 	}
 }
 
@@ -76,7 +76,7 @@ func (location UniformLocation) Uniform4f(x float32, y float32, z float32, w flo
 }
 
 func (location UniformLocation) Uniform4fv(v []float32) {
-  C.glUniform4fv(C.GLint(location), C.GLsizei(1), (*C.GLfloat)(&v[0]))
+  C.glUniform4fv(C.GLint(location), C.GLsizei(len(v) / 4), (*C.GLfloat)(&v[0]))
 }
 
 func (location UniformLocation) Uniform4i(x int, y int, z int, w int) {
@@ -85,11 +85,13 @@ func (location UniformLocation) Uniform4i(x int, y int, z int, w int) {
 
 func (location UniformLocation) Uniform4iv(v []int32) {
 	if len(v) > 0 {
-		C.glUniform4iv(C.GLint(location), C.GLsizei(len(v)), (*C.GLint)(&v[0]))
+		C.glUniform4iv(C.GLint(location), C.GLsizei(len(v) / 4), (*C.GLint)(&v[0]))
 	}
 }
 
 //Can't really tie this to a specific matrix type, so just take a pointer to the first element and assume it's a simple, column-major array layout
-func (location UniformLocation) UniformMatrix4fv(fv *float32) {
-	C.glUniformMatrix4fv(C.GLint(location), C.GLsizei(1), C.GL_FALSE, (*C.GLfloat)(fv))
+func (location UniformLocation) UniformMatrix4fv(fv []*float32) {
+	C.glUniformMatrix4fv(C.GLint(location), C.GLsizei(len(fv)), C.GL_FALSE, (*C.GLfloat)(fv[0]))
 }
+
+
