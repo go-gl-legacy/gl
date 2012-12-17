@@ -28,7 +28,7 @@ func (location UniformLocation) Uniform1fv(count int, v []float32) {
 	if len(v) < 1 {
 		panic("Invalid array length - must be at least 1")
 	}
-	C.glUniform1fv(C.GLint(location), C.GLsizei(count), (*C.GLfloat)(ptr(v)))
+	C.glUniform1fv(C.GLint(location), C.GLsizei(count), (*C.GLfloat)(&v[0]))
 }
 
 func (location UniformLocation) Uniform1i(x int) {
