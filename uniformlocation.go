@@ -6,6 +6,7 @@ package gl
 
 // #include "gl.h"
 import "C"
+import "unsafe"
 
 // UniformLocation
 //TODO
@@ -98,4 +99,18 @@ func (location UniformLocation) Uniform4iv(count int, v []int32) {
 		panic("Invalid array length - must be at least 1")
 	}
 	C.glUniform4iv(C.GLint(location), C.GLsizei(count), (*C.GLint)(&v[0]))
+}
+
+func (location UniformLocation) UniformMatrix4fv(transpose bool, list ...[16]float32) {
+	if len(list) < 1 {
+		panic("Invalid array length - must be at least 1")
+	}
+	C.glUniformMatrix4fv(C.GLint(location), C.GLsizei(len(list)), glBool(transpose), ((*C.GLfloat)((unsafe.Pointer)(&list[0]))))
+}
+
+func (location UniformLocation) UniformMatrix4fvOne(transpose bool, matrix *[16]float32) {
+	if matrix == nil {
+		panic("Matrix is nil")
+	}
+	C.glUniformMatrix4fv(C.GLint(location), 1, glBool(transpose), ((*C.GLfloat)((unsafe.Pointer)(&matrix[0]))))
 }
