@@ -40,7 +40,7 @@ func (location UniformLocation) Uniform4ui(x uint, y uint, z uint, w uint) {
 	C.glUniform4ui(C.GLint(location), C.GLuint(x), C.GLuint(y), C.GLuint(z), C.GLuint(w))
 }
 
-func (location UniformLocation) Uniform1uiv(v []uint32) {
+func (location UniformLocation) Uniform1uiv(v ...uint32) {
 	if len(v) < 1 {
 		panic("Invalid array length - must be at least 1")
 	}
@@ -68,7 +68,7 @@ func (location UniformLocation) Uniform4uiv(v ...[4]uint32) {
 	C.glUniform4uiv(C.GLint(location), C.GLsizei(len(v)), (*C.GLuint)((unsafe.Pointer)(&v[0])))
 }
 
-func (location UniformLocation) Uniform1fv(v []float32) {
+func (location UniformLocation) Uniform1fv(v ...float32) {
 	if len(v) < 1 {
 		panic("Invalid array length - must be at least 1")
 	}
@@ -79,7 +79,7 @@ func (location UniformLocation) Uniform1i(x int) {
 	C.glUniform1i(C.GLint(location), C.GLint(x))
 }
 
-func (location UniformLocation) Uniform1iv(v []int32) {
+func (location UniformLocation) Uniform1iv(v ...int32) {
 	if len(v) < 1 {
 		panic("Invalid array length - must be at least 1")
 	}
