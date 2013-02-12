@@ -32,7 +32,7 @@ func (buffer Buffer) Delete() {
 	C.glDeleteBuffers(1, &b)
 }
 
-// Delete all textures in slice
+// Delete all buffers in slice
 func DeleteBuffers(buffers []Buffer) {
 	if len(buffers) > 0 {
 		C.glDeleteBuffers(C.GLsizei(len(buffers)), (*C.GLuint)(&buffers[0]))
