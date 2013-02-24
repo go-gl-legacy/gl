@@ -1144,3 +1144,7 @@ func Viewport(x int, y int, width int, height int) {
 func Init() GLenum {
 	return GLenum(C.glewInit())
 }
+
+func GlewExperimental(experimental bool) {
+	C.glewExperimental = *(*C.GLboolean)(unsafe.Pointer(&experimental))
+}
