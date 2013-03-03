@@ -24,11 +24,11 @@ Examples can be found in our [examples repository](https://github.com/go-gl/exam
 
 # More libraries: Easy windowing, meshes, text rendering, etc:
 
-* [GLFW bindings](/go-gl/glfw) for easy windowing, input etc.
-* [gltext](/go-gl/gltext) a native go library for glyph packing and text rendering
-* [glu](/go-gl/glu) GLU bindings
-* [glchart](/go-gl/glchart) a [go chart](/vdobler/chart) OpenGL backend
-* [gldebug](/go-gl/gldebug) graphical timing and memory debugging utilities
+* [GLFW bindings](https://github.com/go-gl/glfw) for easy windowing, input etc.
+* [gltext](https://github.com/go-gl/gltext) a native go library for glyph packing and text rendering
+* [glu](https://github.com/go-gl/glu) GLU bindings
+* [glchart](https://github.com/go-gl/glchart) a [go chart](https://github.com/vdobler/chart) OpenGL backend
+* [gldebug](https://github.com/go-gl/gldebug) graphical timing and memory debugging utilities
 
 # Problems and contributing
 
