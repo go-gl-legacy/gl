@@ -30,15 +30,16 @@ func (shader Shader) GetInfoLog() string {
 }
 
 func (shader Shader) GetSource() string {
-	var len C.GLint
-	C.glGetShaderiv(C.GLuint(shader), C.GLenum(SHADER_SOURCE_LENGTH), &len)
+	var length C.GLint
+	C.glGetShaderiv(C.GLuint(shader), C.GLenum(SHADER_SOURCE_LENGTH), &length)
 
-	log := C.malloc(C.size_t(len + 1))
-	C.glGetShaderSource(C.GLuint(shader), C.GLsizei(len), nil, (*C.GLchar)(log))
-
-	defer C.free(log)
-
-	return C.GoString((*C.char)(log))
+	if length > 1 {
+		log := C.malloc(C.size_t(length + 1))
+		defer C.free(log)
+		C.glGetShaderSource(C.GLuint(shader), C.GLsizei(length), nil, (*C.GLchar)(log))
+		return C.GoString((*C.char)(log))
+	}
+	return ""
 }
 
 func (shader Shader) Source(source string) {
