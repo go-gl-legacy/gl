@@ -34,9 +34,9 @@ func (shader Shader) GetSource() string {
 	C.glGetShaderiv(C.GLuint(shader), C.GLenum(SHADER_SOURCE_LENGTH), &length)
 
 	if length > 1 {
-		log := C.malloc(C.size_t(len + 1))
+		log := C.malloc(C.size_t(length + 1))
 		defer C.free(log)
-		C.glGetShaderSource(C.GLuint(shader), C.GLsizei(len), nil, (*C.GLchar)(log))
+		C.glGetShaderSource(C.GLuint(shader), C.GLsizei(length), nil, (*C.GLchar)(log))
 		return C.GoString((*C.char)(log))
 	}
 	return ""
