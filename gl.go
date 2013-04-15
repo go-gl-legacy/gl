@@ -8,6 +8,7 @@ package gl
 // #cgo windows LDFLAGS: -lglew32 -lopengl32
 // #cgo linux LDFLAGS: -lGLEW -lGL
 // #include "gl.h"
+// void SetGlewExperimental(GLboolean v) {  glewExperimental = v;  }
 import "C"
 import "unsafe"
 import "reflect"
@@ -1142,6 +1143,6 @@ func Viewport(x int, y int, width int, height int) {
 //}
 
 func Init() GLenum {
-	C.glewExperimental = C.GLboolean(1)
+	C.SetGlewExperimental(C.GLboolean(1))
 	return GLenum(C.glewInit())
 }
