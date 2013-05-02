@@ -89,6 +89,13 @@ func TexImage2D(target GLenum, level int, internalformat int, width int, height 
 		C.GLenum(typ), ptr(pixels))
 }
 
+//void glCompressedTexImage2D(	GLenum  target, GLint  level, GLenum internalformat, GLsizei width,
+// GLsizei height, GLint border, GLsizei imagesize, const GLvoid * data )
+func CompressedTexImage2D(target GLenum, level int, internalformat GLenum, width int, height int, border int, imagesize int, data interface{}) {
+	C.glCompressedTexImage2D(C.GLenum(target), C.GLint(level), C.GLenum(internalformat),
+		C.GLsizei(width), C.GLsizei(height), C.GLint(border), C.GLsizei(imagesize), ptr(data))
+}
+
 //void glTexImage3D (GLenum target, int level, int internalformat, int width, int height, int depth, int border, GLenum format, GLenum type, const GLvoid *pixels)
 func TexImage3D(target GLenum, level int, internalformat int, width, height, depth int, border int, format, typ GLenum, pixels interface{}) {
 	C.glTexImage3D(C.GLenum(target), C.GLint(level), C.GLint(internalformat),
