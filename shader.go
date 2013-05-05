@@ -5,6 +5,12 @@
 package gl
 
 // #include "gl.h"
+//
+// // Workaround for https://github.com/go-gl/gl/issues/104
+// void gogl_glGetShaderSource(GLuint shader, GLsizei bufsize, GLsizei* len, GLchar* source) {
+//     glGetShaderSource(shader, bufsize, len, source);
+// }
+//
 import "C"
 
 // Shader
@@ -32,6 +38,11 @@ func (shader Shader) GetInfoLog() string {
 func (shader Shader) GetSource() string {
 	var length C.GLint
 	C.glGetShaderiv(C.GLuint(shader), C.GLenum(SHADER_SOURCE_LENGTH), &length)
+
+	log := C.malloc(C.size_t(len + 1))
+	C.gogl_glGetShaderSource(C.GLuint(shader), C.GLsizei(len), nil, (*C.GLchar)(log))
+
+	defer C.free(log)
 
 	if length > 1 {
 		log := C.malloc(C.size_t(length + 1))
