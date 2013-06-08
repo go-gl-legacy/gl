@@ -49,7 +49,7 @@ func DeleteRenderbuffers(bufs []Renderbuffer) {
 // void glGetRenderbufferParameteriv(GLenum target, GLenum pname, GLint* params);
 func GetRenderbufferParameteriv(target, pname GLenum, params []int32) {
 	if len(params) == 0 {
-		panic("Invalid input size")
+		panic(ErrorInputSize)
 	}
 
 	C.glGetRenderbufferParameteriv(C.GLenum(target), C.GLenum(pname), (*C.GLint)(&params[0]))

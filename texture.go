@@ -16,7 +16,7 @@ func AreTexturesResident(textures []uint, residences []bool) bool {
 	}
 
 	if sz != len(residences) {
-		panic("Residences slice must be equal in length to textures slice.")
+		panic(ErrorEqualSliceLength)
 	}
 
 	ret := C.glAreTexturesResident(
@@ -174,7 +174,7 @@ func TexEnvf(target GLenum, pname GLenum, param float32) {
 //void glTexEnvfv (GLenum target, GLenum pname, const float *params)
 func TexEnvfv(target GLenum, pname GLenum, params []float32) {
 	if len(params) != 1 && len(params) != 4 {
-		panic("Invalid input size")
+		panic(ErrorInputSize)
 	}
 	C.glTexEnvfv(C.GLenum(target), C.GLenum(pname), (*C.GLfloat)(&params[0]))
 }
@@ -187,7 +187,7 @@ func TexEnvi(target GLenum, pname GLenum, param int) {
 //void glTexEnviv (GLenum target, GLenum pname, const int *params)
 func TexEnviv(target GLenum, pname GLenum, params []int32) {
 	if len(params) != 1 && len(params) != 4 {
-		panic("Invalid input size")
+		panic(ErrorInputSize)
 	}
 	C.glTexEnviv(C.GLenum(target), C.GLenum(pname), (*C.GLint)(&params[0]))
 }
@@ -200,7 +200,7 @@ func TexGend(coord GLenum, pname GLenum, param float64) {
 //void glTexGendv (GLenum coord, GLenum pname, const float64 *params)
 func TexGendv(coord GLenum, pname GLenum, params []float64) {
 	if len(params) == 0 {
-		panic("Invalid input size")
+		panic(ErrorInputSize)
 	}
 	C.glTexGendv(C.GLenum(coord), C.GLenum(pname), (*C.GLdouble)(&params[0]))
 }
@@ -213,7 +213,7 @@ func TexGenf(coord GLenum, pname GLenum, param float32) {
 //void glTexGenfv (GLenum coord, GLenum pname, const float *params)
 func TexGenfv(coord GLenum, pname GLenum, params []float32) {
 	if len(params) == 0 {
-		panic("Invalid input size")
+		panic(ErrorInputSize)
 	}
 	C.glTexGenfv(C.GLenum(coord), C.GLenum(pname), (*C.GLfloat)(&params[0]))
 }
@@ -226,7 +226,7 @@ func TexGeni(coord GLenum, pname GLenum, param int) {
 //void glTexGeniv (GLenum coord, GLenum pname, const int *params)
 func TexGeniv(coord GLenum, pname GLenum, params []int32) {
 	if len(params) == 0 {
-		panic("Invalid input size")
+		panic(ErrorInputSize)
 	}
 	C.glTexGeniv(C.GLenum(coord), C.GLenum(pname), (*C.GLint)(&params[0]))
 }
@@ -239,7 +239,7 @@ func TexParameterf(target GLenum, pname GLenum, param float32) {
 //void glTexParameterfv (GLenum target, GLenum pname, const float *params)
 func TexParameterfv(target GLenum, pname GLenum, params []float32) {
 	if len(params) == 0 {
-		panic("Invalid input size")
+		panic(ErrorInputSize)
 	}
 	C.glTexParameterfv(C.GLenum(target), C.GLenum(pname), (*C.GLfloat)(&params[0]))
 }
@@ -252,7 +252,7 @@ func TexParameteri(target GLenum, pname GLenum, param int) {
 //void glTexParameteriv (GLenum target, GLenum pname, const int *params)
 func TexParameteriv(target GLenum, pname GLenum, params []int32) {
 	if len(params) == 0 {
-		panic("Invalid input size")
+		panic(ErrorInputSize)
 	}
 	C.glTexParameteriv(C.GLenum(target), C.GLenum(pname), (*C.GLint)(&params[0]))
 }
@@ -265,7 +265,7 @@ func PrioritizeTextures(n int, textures *uint32, priorities *GLclampf) {
 //void glGetTexEnvfv (GLenum target, GLenum pname, float *params)
 func GetTexEnvfv(target GLenum, pname GLenum, params []float32) {
 	if len(params) == 0 {
-		panic("Invalid input size")
+		panic(ErrorInputSize)
 	}
 	C.glGetTexEnvfv(C.GLenum(target), C.GLenum(pname), (*C.GLfloat)(&params[0]))
 }
@@ -273,7 +273,7 @@ func GetTexEnvfv(target GLenum, pname GLenum, params []float32) {
 //void glGetTexEnviv (GLenum target, GLenum pname, int *params)
 func GetTexEnviv(target GLenum, pname GLenum, params []int32) {
 	if len(params) == 0 {
-		panic("Invalid input size")
+		panic(ErrorInputSize)
 	}
 	C.glGetTexEnviv(C.GLenum(target), C.GLenum(pname), (*C.GLint)(&params[0]))
 }
@@ -281,7 +281,7 @@ func GetTexEnviv(target GLenum, pname GLenum, params []int32) {
 //void glGetTexGendv (GLenum coord, GLenum pname, float64 *params)
 func GetTexGendv(coord GLenum, pname GLenum, params []float64) {
 	if len(params) == 0 {
-		panic("Invalid input size")
+		panic(ErrorInputSize)
 	}
 	C.glGetTexGendv(C.GLenum(coord), C.GLenum(pname), (*C.GLdouble)(&params[0]))
 }
@@ -289,7 +289,7 @@ func GetTexGendv(coord GLenum, pname GLenum, params []float64) {
 //void glGetTexGenfv (GLenum coord, GLenum pname, float *params)
 func GetTexGenfv(coord GLenum, pname GLenum, params []float32) {
 	if len(params) == 0 {
-		panic("Invalid input size")
+		panic(ErrorInputSize)
 	}
 	C.glGetTexGenfv(C.GLenum(coord), C.GLenum(pname), (*C.GLfloat)(&params[0]))
 }
@@ -297,7 +297,7 @@ func GetTexGenfv(coord GLenum, pname GLenum, params []float32) {
 //void glGetTexGeniv (GLenum coord, GLenum pname, int *params)
 func GetTexGeniv(coord GLenum, pname GLenum, params []int32) {
 	if len(params) == 0 {
-		panic("Invalid input size")
+		panic(ErrorInputSize)
 	}
 	C.glGetTexGeniv(C.GLenum(coord), C.GLenum(pname), (*C.GLint)(&params[0]))
 }
@@ -311,7 +311,7 @@ func GetTexImage(target GLenum, level int, format, typ GLenum, pixels interface{
 //void glGetTexLevelParameterfv (GLenum target, int level, GLenum pname, float *params)
 func GetTexLevelParameterfv(target GLenum, level int, pname GLenum, params []float32) {
 	if len(params) == 0 {
-		panic("Invalid input size")
+		panic(ErrorInputSize)
 	}
 	C.glGetTexLevelParameterfv(C.GLenum(target), C.GLint(level), C.GLenum(pname), (*C.GLfloat)(&params[0]))
 }
@@ -319,7 +319,7 @@ func GetTexLevelParameterfv(target GLenum, level int, pname GLenum, params []flo
 //void glGetTexLevelParameteriv (GLenum target, int level, GLenum pname, int *params)
 func GetTexLevelParameteriv(target GLenum, level int, pname GLenum, params []int32) {
 	if len(params) == 0 {
-		panic("Invalid input size")
+		panic(ErrorInputSize)
 	}
 	C.glGetTexLevelParameteriv(C.GLenum(target), C.GLint(level), C.GLenum(pname), (*C.GLint)(&params[0]))
 }
@@ -327,7 +327,7 @@ func GetTexLevelParameteriv(target GLenum, level int, pname GLenum, params []int
 //void glGetTexParameterfv (GLenum target, GLenum pname, float *params)
 func GetTexParameterfv(target GLenum, pname GLenum, params []float32) {
 	if len(params) == 0 {
-		panic("Invalid input size")
+		panic(ErrorInputSize)
 	}
 	C.glGetTexParameterfv(C.GLenum(target), C.GLenum(pname), (*C.GLfloat)(&params[0]))
 }
@@ -335,7 +335,7 @@ func GetTexParameterfv(target GLenum, pname GLenum, params []float32) {
 //void glGetTexParameteriv (GLenum target, GLenum pname, int *params)
 func GetTexParameteriv(target GLenum, pname GLenum, params []int32) {
 	if len(params) == 0 {
-		panic("Invalid input size")
+		panic(ErrorInputSize)
 	}
 	C.glGetTexParameteriv(C.GLenum(target), C.GLenum(pname), (*C.GLint)(&params[0]))
 }
@@ -352,7 +352,7 @@ func TexCoord1d(s float64) {
 //void glTexCoord1dv (const float64 *v)
 func TexCoord1dv(v []float64) {
 	if len(v) != 1 {
-		panic("Invalid input size")
+		panic(ErrorInputSize)
 	}
 	C.glTexCoord1dv((*C.GLdouble)(&v[0]))
 }
@@ -365,7 +365,7 @@ func TexCoord1f(s float32) {
 //void glTexCoord1fv (const float *v)
 func TexCoord1fv(v []float32) {
 	if len(v) != 1 {
-		panic("Invalid input size")
+		panic(ErrorInputSize)
 	}
 	C.glTexCoord1fv((*C.GLfloat)(&v[0]))
 }
@@ -378,7 +378,7 @@ func TexCoord1i(s int) {
 //void glTexCoord1iv (const int *v)
 func TexCoord1iv(v []int32) {
 	if len(v) != 1 {
-		panic("Invalid input size")
+		panic(ErrorInputSize)
 	}
 	C.glTexCoord1iv((*C.GLint)(&v[0]))
 }
@@ -391,7 +391,7 @@ func TexCoord1s(s int16) {
 //void glTexCoord1sv (const int16 *v)
 func TexCoord1sv(v []int16) {
 	if len(v) != 1 {
-		panic("Invalid input size")
+		panic(ErrorInputSize)
 	}
 	C.glTexCoord1sv((*C.GLshort)(&v[0]))
 }
@@ -404,7 +404,7 @@ func TexCoord2d(s float64, t float64) {
 //void glTexCoord2dv (const float64 *v)
 func TexCoord2dv(v []float64) {
 	if len(v) != 2 {
-		panic("Invalid input size")
+		panic(ErrorInputSize)
 	}
 	C.glTexCoord2dv((*C.GLdouble)(&v[0]))
 }
@@ -417,7 +417,7 @@ func TexCoord2f(s float32, t float32) {
 //void glTexCoord2fv (const float *v)
 func TexCoord2fv(v []float32) {
 	if len(v) != 2 {
-		panic("Invalid input size")
+		panic(ErrorInputSize)
 	}
 	C.glTexCoord2fv((*C.GLfloat)(&v[0]))
 }
@@ -430,7 +430,7 @@ func TexCoord2i(s int, t int) {
 //void glTexCoord2iv (const int *v)
 func TexCoord2iv(v []int32) {
 	if len(v) != 2 {
-		panic("Invalid input size")
+		panic(ErrorInputSize)
 	}
 	C.glTexCoord2iv((*C.GLint)(&v[0]))
 }
@@ -443,7 +443,7 @@ func TexCoord2s(s int16, t int16) {
 //void glTexCoord2sv (const int16 *v)
 func TexCoord2sv(v []int16) {
 	if len(v) != 2 {
-		panic("Invalid input size")
+		panic(ErrorInputSize)
 	}
 	C.glTexCoord2sv((*C.GLshort)(&v[0]))
 }
@@ -456,7 +456,7 @@ func TexCoord3d(s float64, t float64, r float64) {
 //void glTexCoord3dv (const float64 *v)
 func TexCoord3dv(v []float64) {
 	if len(v) != 3 {
-		panic("Invalid input size")
+		panic(ErrorInputSize)
 	}
 	C.glTexCoord3dv((*C.GLdouble)(&v[0]))
 }
@@ -469,7 +469,7 @@ func TexCoord3f(s float32, t float32, r float32) {
 //void glTexCoord3fv (const float *v)
 func TexCoord3fv(v []float32) {
 	if len(v) != 3 {
-		panic("Invalid input size")
+		panic(ErrorInputSize)
 	}
 	C.glTexCoord3fv((*C.GLfloat)(&v[0]))
 }
@@ -482,7 +482,7 @@ func TexCoord3i(s int, t int, r int) {
 //void glTexCoord3iv (const int *v)
 func TexCoord3iv(v []int32) {
 	if len(v) != 3 {
-		panic("Invalid input size")
+		panic(ErrorInputSize)
 	}
 	C.glTexCoord3iv((*C.GLint)(&v[0]))
 }
@@ -495,7 +495,7 @@ func TexCoord3s(s int16, t int16, r int16) {
 //void glTexCoord3sv (const int16 *v)
 func TexCoord3sv(v []int16) {
 	if len(v) != 3 {
-		panic("Invalid input size")
+		panic(ErrorInputSize)
 	}
 	C.glTexCoord3sv((*C.GLshort)(&v[0]))
 }
@@ -508,7 +508,7 @@ func TexCoord4d(s float64, t float64, r float64, q float64) {
 //void glTexCoord4dv (const float64 *v)
 func TexCoord4dv(v []float64) {
 	if len(v) != 4 {
-		panic("Invalid input size")
+		panic(ErrorInputSize)
 	}
 	C.glTexCoord4dv((*C.GLdouble)(&v[0]))
 }
@@ -521,7 +521,7 @@ func TexCoord4f(s float32, t float32, r float32, q float32) {
 //void glTexCoord4fv (const float *v)
 func TexCoord4fv(v []float32) {
 	if len(v) != 4 {
-		panic("Invalid input size")
+		panic(ErrorInputSize)
 	}
 	C.glTexCoord4fv((*C.GLfloat)(&v[0]))
 }
@@ -534,7 +534,7 @@ func TexCoord4i(s int, t int, r int, q int) {
 //void glTexCoord4iv (const int *v)
 func TexCoord4iv(v []int32) {
 	if len(v) != 4 {
-		panic("Invalid input size")
+		panic(ErrorInputSize)
 	}
 	C.glTexCoord4iv((*C.GLint)(&v[0]))
 }
@@ -547,7 +547,7 @@ func TexCoord4s(s int16, t int16, r int16, q int16) {
 //void glTexCoord4sv (const int16 *v)
 func TexCoord4sv(v []int16) {
 	if len(v) != 4 {
-		panic("Invalid input size")
+		panic(ErrorInputSize)
 	}
 	C.glTexCoord4sv((*C.GLshort)(&v[0]))
 }

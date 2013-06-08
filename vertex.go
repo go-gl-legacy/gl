@@ -15,7 +15,7 @@ func Vertex2d(x float64, y float64) {
 //void glVertex2dv (const float64 *v)
 func Vertex2dv(v []float64) {
 	if len(v) != 2 {
-		panic("Invalid input size")
+		panic(ErrorInputSize)
 	}
 	C.glVertex2dv((*C.GLdouble)(&v[0]))
 }
@@ -28,7 +28,7 @@ func Vertex2f(x float32, y float32) {
 //void glVertex2fv (const float *v)
 func Vertex2fv(v []float32) {
 	if len(v) != 2 {
-		panic("Invalid input size")
+		panic(ErrorInputSize)
 	}
 	C.glVertex2fv((*C.GLfloat)(&v[0]))
 }
@@ -41,7 +41,7 @@ func Vertex2i(x int, y int) {
 //void glVertex2iv (const int *v)
 func Vertex2iv(v []int32) {
 	if len(v) != 2 {
-		panic("Invalid input size")
+		panic(ErrorInputSize)
 	}
 	C.glVertex2iv((*C.GLint)(&v[0]))
 }
@@ -54,7 +54,7 @@ func Vertex2s(x int16, y int16) {
 //void glVertex2sv (const int16 *v)
 func Vertex2sv(v []int16) {
 	if len(v) != 2 {
-		panic("Invalid input size")
+		panic(ErrorInputSize)
 	}
 	C.glVertex2sv((*C.GLshort)(&v[0]))
 }
@@ -67,7 +67,7 @@ func Vertex3d(x float64, y float64, z float64) {
 //void glVertex3dv (const float64 *v)
 func Vertex3dv(v []float64) {
 	if len(v) != 3 {
-		panic("Invalid input size")
+		panic(ErrorInputSize)
 	}
 	C.glVertex3dv((*C.GLdouble)(&v[0]))
 }
@@ -80,7 +80,7 @@ func Vertex3f(x float32, y float32, z float32) {
 //void glVertex3fv (const float *v)
 func Vertex3fv(v []float32) {
 	if len(v) != 3 {
-		panic("Invalid input size")
+		panic(ErrorInputSize)
 	}
 	C.glVertex3fv((*C.GLfloat)(&v[0]))
 }
@@ -93,7 +93,7 @@ func Vertex3i(x int, y int, z int) {
 //void glVertex3iv (const int *v)
 func Vertex3iv(v []int32) {
 	if len(v) != 3 {
-		panic("Invalid input size")
+		panic(ErrorInputSize)
 	}
 	C.glVertex3iv((*C.GLint)(&v[0]))
 }
@@ -106,7 +106,7 @@ func Vertex3s(x int16, y int16, z int16) {
 //void glVertex3sv (const int16 *v)
 func Vertex3sv(v []int16) {
 	if len(v) != 3 {
-		panic("Invalid input size")
+		panic(ErrorInputSize)
 	}
 	C.glVertex3sv((*C.GLshort)(&v[0]))
 }
@@ -119,7 +119,7 @@ func Vertex4d(x float64, y float64, z float64, w float64) {
 //void glVertex4dv (const float64 *v)
 func Vertex4dv(v []float64) {
 	if len(v) != 4 {
-		panic("Invalid input size")
+		panic(ErrorInputSize)
 	}
 	C.glVertex4dv((*C.GLdouble)(&v[0]))
 }
@@ -132,7 +132,7 @@ func Vertex4f(x float32, y float32, z float32, w float32) {
 //void glVertex4fv (const float *v)
 func Vertex4fv(v []float32) {
 	if len(v) != 4 {
-		panic("Invalid input size")
+		panic(ErrorInputSize)
 	}
 	C.glVertex4fv((*C.GLfloat)(&v[0]))
 }
@@ -145,7 +145,7 @@ func Vertex4i(x int, y int, z int, w int) {
 //void glVertex4iv (const int *v)
 func Vertex4iv(v []int32) {
 	if len(v) != 4 {
-		panic("Invalid input size")
+		panic(ErrorInputSize)
 	}
 	C.glVertex4iv((*C.GLint)(&v[0]))
 }
@@ -158,7 +158,7 @@ func Vertex4s(x int16, y int16, z int16, w int16) {
 //void glVertex4sv (const int16 *v)
 func Vertex4sv(v []int16) {
 	if len(v) != 4 {
-		panic("Invalid input size")
+		panic(ErrorInputSize)
 	}
 	C.glVertex4sv((*C.GLshort)(&v[0]))
 }

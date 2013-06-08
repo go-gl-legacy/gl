@@ -17,7 +17,7 @@ func (indx AttribLocation) Attrib1f(x float32) {
 
 func (indx AttribLocation) Attrib1fv(values []float32) {
 	if len(values) != 1 {
-		panic("Invalid input size")
+		panic(ErrorInputSize)
 	}
 	C.glVertexAttrib1fv(C.GLuint(indx), (*C.GLfloat)(&values[0]))
 }
@@ -28,7 +28,7 @@ func (indx AttribLocation) Attrib2f(x float32, y float32) {
 
 func (indx AttribLocation) Attrib2fv(values []float32) {
 	if len(values) != 2 {
-		panic("Invalid input size")
+		panic(ErrorInputSize)
 	}
 	C.glVertexAttrib2fv(C.GLuint(indx), (*C.GLfloat)(&values[0]))
 }
@@ -39,7 +39,7 @@ func (indx AttribLocation) Attrib3f(x float32, y float32, z float32) {
 
 func (indx AttribLocation) Attrib3fv(values []float32) {
 	if len(values) != 3 {
-		panic("Invalid input size")
+		panic(ErrorInputSize)
 	}
 	C.glVertexAttrib3fv(C.GLuint(indx), (*C.GLfloat)(&values[0]))
 }
@@ -50,7 +50,7 @@ func (indx AttribLocation) Attrib4f(x float32, y float32, z float32, w float32) 
 
 func (indx AttribLocation) Attrib4fv(values []float32) {
 	if len(values) != 4 {
-		panic("Invalid input size")
+		panic(ErrorInputSize)
 	}
 	C.glVertexAttrib4fv(C.GLuint(indx), (*C.GLfloat)(&values[0]))
 }
