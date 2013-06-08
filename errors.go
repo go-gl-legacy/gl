@@ -5,11 +5,11 @@
 package gl
 
 import (
-  "errors"
+	"errors"
 )
 
 var (
-  ErrorInputSize = errors.New("Invalid input size")
-  ErrorPointerType = errors.New("type must be a pointer, a slice, uintptr or nil")
-  ErrorEqualSliceLength = errors.New("Residences slice must be equal in length to textures slice")
+	ErrorInputSize        = errors.New("Invalid input size")
+	ErrorPointerType      = errors.New("type must be a pointer, a slice, uintptr or nil")
+	ErrorEqualSliceLength = errors.New("Residences slice must be equal in length to textures slice")
 )
