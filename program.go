@@ -83,7 +83,7 @@ func (program Program) Get(param GLenum) int {
 
 func (program Program) GetUniformiv(location UniformLocation, values []int32) {
 	if len(values) == 0 {
-		panic("Invalid values length")
+		panic("Invalid input size")
 	}
 	// FIXME(jimt): This should really yield only one return value instead of using a slice.
 	// http://www.opengl.org/sdk/docs/man/xhtml/glGetUniform.xml
@@ -92,7 +92,7 @@ func (program Program) GetUniformiv(location UniformLocation, values []int32) {
 
 func (program Program) GetUniformfv(location UniformLocation, values []float32) {
 	if len(values) == 0 {
-		panic("Invalid values length")
+		panic("Invalid input size")
 	}
 	// FIXME(jimt): This should really yield only one return value instead of using a slice.
 	// http://www.opengl.org/sdk/docs/man/xhtml/glGetUniform.xml
