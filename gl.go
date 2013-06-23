@@ -239,6 +239,11 @@ func DrawBuffer(mode GLenum) {
 	C.glDrawBuffer(C.GLenum(mode))
 }
 
+// //void glDrawBuffers(GLsizei n, const GLenum *bufs)
+func DrawBuffers(n int, bufs []GLenum) {
+	C.glDrawBuffers(C.GLsizei(n), (*C.GLenum)(&bufs[0]))
+}
+
 //void glDrawElements (GLenum mode, int count, GLenum type, const GLvoid *indices)
 func DrawElements(mode GLenum, count int, typ GLenum, indices interface{}) {
 	C.glDrawElements(C.GLenum(mode), C.GLsizei(count), C.GLenum(typ),
