@@ -12,12 +12,24 @@ import "C"
 type Framebuffer Object
 
 // void glBindFramebuffer(GLenum target, GLuint framebuffer);
+//
+// To bind a Framebuffer to a specific target, see BindTarget.
 func (fb Framebuffer) Bind() {
 	C.glBindFramebuffer(C.GLenum(FRAMEBUFFER), C.GLuint(fb))
 }
 
+// void glBindFramebuffer(GLenum target, GLuint framebuffer);
+func (fb Framebuffer) BindTarget(target GLenum) {
+	C.glBindFramebuffer(C.GLenum(target), C.GLuint(fb))
+}
+
+// To unbind a Framebuffer from a specific target, see UnbindTarget.
 func (fb Framebuffer) Unbind() {
 	C.glBindFramebuffer(C.GLenum(FRAMEBUFFER), 0)
+}
+
+func (fb Framebuffer) UnbindTarget(target GLenum) {
+	C.glBindFramebuffer(C.GLenum(target), 0)
 }
 
 // void glBlitFramebuffer(GLint srcX0, GLint srcY0, GLint srcX1, GLint srcY1, GLint dstX0, GLint dstY0, GLint dstX1, GLint dstY1, GLbitfield mask, GLenum filter);
