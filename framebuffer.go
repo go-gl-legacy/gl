@@ -12,12 +12,31 @@ import "C"
 type Framebuffer Object
 
 // void glBindFramebuffer(GLenum target, GLuint framebuffer);
+//
+// Binds fb to target FRAMEBUFFER. To bind to a specific target, see BindTarget.
 func (fb Framebuffer) Bind() {
 	C.glBindFramebuffer(C.GLenum(FRAMEBUFFER), C.GLuint(fb))
 }
 
+// Binds fb to the specified target.
+//
+// See issue at github for why this function exists:
+// http://github.com/go-gl/gl/issues/113
+func (fb Framebuffer) BindTarget(target GLenum) {
+	C.glBindFramebuffer(C.GLenum(target), C.GLuint(fb))
+}
+
+// Unbinds target FRAMEBUFFER. To unbind a a specific target, see UnbindTarget.
 func (fb Framebuffer) Unbind() {
 	C.glBindFramebuffer(C.GLenum(FRAMEBUFFER), 0)
+}
+
+// Unbinds the specified target.
+//
+// See issue at github for why this function exists:
+// http://github.com/go-gl/gl/issues/113
+func (fb Framebuffer) UnbindTarget(target GLenum) {
+	C.glBindFramebuffer(C.GLenum(target), 0)
 }
 
 // void glBlitFramebuffer(GLint srcX0, GLint srcY0, GLint srcX1, GLint srcY1, GLint dstX0, GLint dstY0, GLint dstX1, GLint dstY1, GLbitfield mask, GLenum filter);
