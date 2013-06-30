@@ -123,3 +123,19 @@ func (program Program) BindAttribLocation(index AttribLocation, name string) {
 	C.glBindAttribLocation(C.GLuint(program), C.GLuint(index), cname)
 
 }
+
+func (program Program) BindFragDataLocation(colorNumber int, name string) {
+
+	cname := glString(name)
+	defer freeString(cname)
+
+	C.glBindFragDataLocation(C.GLuint(program), C.GLuint(colorNumber), cname)
+}
+
+func (program Program) GetFragDataLocation(name string) int {
+
+	cname := glString(name)
+	defer freeString(cname)
+
+	return int(C.glGetFragDataLocation(C.GLuint(program), cname))
+}
