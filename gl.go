@@ -250,6 +250,12 @@ func DrawElements(mode GLenum, count int, typ GLenum, indices interface{}) {
 		ptr(indices))
 }
 
+//void glDrawElementsBaseVertex(GLenum mode, int count, GLenum type, GLvoid *indices, int basevertex)
+func DrawElementsBaseVertex(mode GLenum, count int, typ GLenum, indices interface{}, basevertex int) {
+	C.glDrawElementsBaseVertex(C.GLenum(mode), C.GLsizei(count),
+		C.GLenum(typ), ptr(indices), C.GLint(basevertex))
+}
+
 //void glDrawPixels (GLsizei width, int height, GLenum format, GLenum type, const GLvoid *pixels)
 func DrawPixels(width int, height int, format, typ GLenum, pixels interface{}) {
 	C.glDrawPixels(C.GLsizei(width), C.GLsizei(height), C.GLenum(format),
