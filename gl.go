@@ -929,6 +929,11 @@ func PopName() {
 	C.glPopName()
 }
 
+//void glPrimitiveRestartIndex(GLuint index)
+func PrimitiveRestartIndex(index GLuint) {
+	C.glPrimitiveRestartIndex(C.GLuint(index))
+}
+
 //void glPushAttrib (GLbitfield mask)
 func PushAttrib(mask GLbitfield) {
 	C.glPushAttrib(C.GLbitfield(mask))
