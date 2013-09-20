@@ -81,6 +81,27 @@ func (program Program) Get(param GLenum) int {
 	return int(rv)
 }
 
+// glGetActiveUniform(GLuint program, GLuint index, GLsizei bufSize, GLsizei *length, GLint *size, GLenum *type, GLchar *name)
+func (program Program) GetActiveUniform(index int) (
+	Size int, Type GLenum, Name string) {
+	// Maximum length of active uniform name in program
+	bufSize := program.Get(ACTIVE_UNIFORM_MAX_LENGTH)
+	nameBuf := C.malloc(C.size_t(bufSize))
+	defer C.free(nameBuf)
+	var size C.GLint
+	C.glGetActiveUniform(
+		C.GLuint(program),
+		C.GLuint(index),
+		C.GLsizei(bufSize),
+		nil, // length == len(Name)
+		&size,
+		(*C.GLenum)(&Type),
+		(*C.GLchar)(nameBuf))
+	Name = C.GoString((*C.char)(nameBuf))
+	Size = int(size)
+	return
+}
+
 func (program Program) GetUniformiv(location UniformLocation, values []int32) {
 	if len(values) == 0 {
 		panic("Invalid values length")
