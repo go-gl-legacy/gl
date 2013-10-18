@@ -128,6 +128,18 @@ func (program Program) GetUniformLocation(name string) UniformLocation {
 	return UniformLocation(C.glGetUniformLocation(C.GLuint(program), cname))
 }
 
+func (program Program) GetUniformBlockIndex(name string) UniformBlockIndex {
+
+	cname := glString(name)
+	defer freeString(cname)
+
+	return UniformBlockIndex(C.glGetUniformBlockIndex(C.GLuint(program), cname))
+}
+
+func (program Program) UniformBlockBinding(index UniformBlockIndex, binding uint) {
+	C.glUniformBlockBinding(C.GLuint(program), C.GLuint(index), C.GLuint(binding))
+}
+
 func (program Program) GetAttribLocation(name string) AttribLocation {
 
 	cname := glString(name)
