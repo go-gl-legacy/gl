@@ -1,7 +1,7 @@
 gl | OpenGL Bindings for golang
 ===============================
 
-You will need [GLEW](http://glew.sourceforge.net/) at least version 1.8.0.
+You will need [GLEW](http://glew.sourceforge.net/) at least version 1.5.4.
 
 Once GLEW is installed, you can install this package with `go get`:
 
