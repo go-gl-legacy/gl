@@ -5,6 +5,9 @@
 package gl
 
 // #include "gl.h"
+// GLuint workaroundGlGetUniformBlockIndex(GLuint program, const GLchar* uniformBlockName) {
+//     return glGetUniformBlockIndex(program, uniformBlockName);
+// }
 import "C"
 import "unsafe"
 
@@ -126,6 +129,24 @@ func (program Program) GetUniformLocation(name string) UniformLocation {
 	defer freeString(cname)
 
 	return UniformLocation(C.glGetUniformLocation(C.GLuint(program), cname))
+}
+
+func (program Program) GetUniformBlockIndex(name string) UniformBlockIndex {
+
+	cname := glString(name)
+	defer freeString(cname)
+
+	// Workaround bug in GLEW < 1.8 where glGetUniformBlockIndex expects
+	// a string of char instead of a string of GLchar.  We could ask everybody
+	// to bump their version of GLEW, or we could add a bit of C code that
+	// will silently cast GLchar into char.
+
+	//return UniformBlockIndex(C.glGetUniformBlockIndex(C.GLuint(program), cname))
+	return UniformBlockIndex(C.workaroundGlGetUniformBlockIndex(C.GLuint(program), cname))
+}
+
+func (program Program) UniformBlockBinding(index UniformBlockIndex, binding uint) {
+	C.glUniformBlockBinding(C.GLuint(program), C.GLuint(index), C.GLuint(binding))
 }
 
 func (program Program) GetAttribLocation(name string) AttribLocation {
