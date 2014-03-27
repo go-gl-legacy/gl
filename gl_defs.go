@@ -58,6 +58,7 @@ const (
 	AND_INVERTED                                  = C.GL_AND_INVERTED
 	AND_REVERSE                                   = C.GL_AND_REVERSE
 	AND                                           = C.GL_AND
+	ANY_SAMPLES_PASSED                            = C.GL_ANY_SAMPLES_PASSED
 	ARRAY_BUFFER_BINDING                          = C.GL_ARRAY_BUFFER_BINDING
 	ARRAY_BUFFER                                  = C.GL_ARRAY_BUFFER
 	ATTACHED_SHADERS                              = C.GL_ATTACHED_SHADERS
@@ -1232,6 +1233,8 @@ const (
 	TEXTURE                                       = C.GL_TEXTURE
 	TIMEOUT_EXPIRED                               = C.GL_TIMEOUT_EXPIRED
 	TIMEOUT_IGNORED                               = C.GL_TIMEOUT_IGNORED
+	TIMESTAMP                                     = C.GL_TIMESTAMP
+	TIME_ELAPSED                                  = C.GL_TIME_ELAPSED
 	TRANSFORM_FEEDBACK                            = C.GL_TRANSFORM_FEEDBACK
 	TRANSFORM_BIT                                 = C.GL_TRANSFORM_BIT
 	TRANSFORM_FEEDBACK_BUFFER_BINDING             = C.GL_TRANSFORM_FEEDBACK_BUFFER_BINDING
