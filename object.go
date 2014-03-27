@@ -15,6 +15,8 @@ func (object Object) IsBuffer() bool { return C.glIsBuffer(C.GLuint(object)) != 
 
 func (object Object) IsProgram() bool { return C.glIsProgram(C.GLuint(object)) != 0 }
 
+func (object Object) IsQuery() bool { return C.glIsQuery(C.GLuint(object)) != 0 }
+
 func (object Object) IsShader() bool { return C.glIsShader(C.GLuint(object)) != 0 }
 
 func (object Object) IsTexture() bool { return C.glIsTexture(C.GLuint(object)) != 0 }
