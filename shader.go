@@ -12,6 +12,7 @@ package gl
 // }
 //
 import "C"
+import "unsafe"
 
 // Shader
 
@@ -53,14 +54,19 @@ func (shader Shader) GetSource() string {
 	return ""
 }
 
-func (shader Shader) Source(source string) {
+func (shader Shader) Source(source ...string) {
+	count := C.GLsizei(len(source))
+	cstrings := make([]*C.GLchar, count)
+	length := make([]C.GLint, count)
 
-	csource := glString(source)
-	defer freeString(csource)
+	for i, s := range source {
+		csource := glString(s)
+		cstrings[i] = csource
+		length[i] = C.GLint(len(s))
+		defer freeString(csource)
+	}
 
-	var one C.GLint = C.GLint(len(source))
-
-	C.glShaderSource(C.GLuint(shader), 1, &csource, &one)
+	C.glShaderSource(C.GLuint(shader), count, (**_Ctype_GLchar)(unsafe.Pointer(&cstrings[0])), (*_Ctype_GLint)(unsafe.Pointer(&length[0])))
 }
 
 func (shader Shader) Compile() { C.glCompileShader(C.GLuint(shader)) }
