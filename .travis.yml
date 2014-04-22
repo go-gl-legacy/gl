@@ -1,7 +1,7 @@
 language: go
 
 install:
-  - wget -q https://raw.github.com/go-gl/testutils/master/travis-helper-functions.sh
+  - wget -q https://raw.github.com/go-gl/testutils/dev/travis-helper-functions.sh
   - source travis-helper-functions.sh
   - initialize
   - subtest-init go-gl/gl go-gl/examples
