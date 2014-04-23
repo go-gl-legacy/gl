@@ -471,6 +471,16 @@ func GetIntegerv(pname GLenum, params []int32) {
 	C.glGetIntegerv(C.GLenum(pname), (*C.GLint)(&params[0]))
 }
 
+// almost all cases where GetIntegerv is called, this function is more convenient
+func Get4Integer(pname GLenum) (v0, v1, v2, v3 int) {
+	var values [4]C.GLint
+	C.glGetIntegerv(C.GLenum(pname), &values[0])
+	v0 = int(values[0])
+	v1 = int(values[1])
+	v2 = int(values[2])
+	v3 = int(values[3])
+}
+
 //void glGetLightfv (GLenum light, GLenum pname, float *params)
 func GetLightfv(light GLenum, pname GLenum, params []float32) {
 	if len(params) == 0 {
