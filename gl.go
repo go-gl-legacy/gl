@@ -437,6 +437,7 @@ func GetBooleanv(pname GLenum, params []bool) {
 	C.glGetBooleanv(C.GLenum(pname), (*C.GLboolean)(unsafe.Pointer(&params[0])))
 }
 
+//convenience functions for GetBooleanv
 func GetBoolean4(pname GLenum) (v0, v1, v2, v3 bool) {
 	var values [4]C.GLboolean
 	C.glGetBooleanv(C.GLenum(pname), &values[0])
@@ -460,6 +461,7 @@ func GetDoublev(pname GLenum, params []float64) {
 	C.glGetDoublev(C.GLenum(pname), (*C.GLdouble)(&params[0]))
 }
 
+//convenience functions for GetDoublev
 func GetDouble4(pname GLenum) (v0, v1, v2, v3 float64) {
 	var values [4]C.GLdouble
 	C.glGetDoublev(C.GLenum(pname), &values[0])
@@ -483,7 +485,7 @@ func GetFloatv(pname GLenum, params []float32) {
 	C.glGetFloatv(C.GLenum(pname), (*C.GLfloat)(&params[0]))
 }
 
-// almost all cases where GetIntegerv is called, this function is more convenient
+//convenience functions for GetFloatv
 func GetFloat4(pname GLenum) (v0, v1, v2, v3 float32) {
 	var values [4]C.GLfloat
 	C.glGetFloatv(C.GLenum(pname), &values[0])
@@ -502,7 +504,7 @@ func GetIntegerv(pname GLenum, params []int32) {
 	C.glGetIntegerv(C.GLenum(pname), (*C.GLint)(&params[0]))
 }
 
-// almost all cases where GetIntegerv is called, this function is more convenient
+//convenience functions for glGetIntegerv
 func GetInteger4(pname GLenum) (v0, v1, v2, v3 int) {
 	var values [4]C.GLint
 	C.glGetIntegerv(C.GLenum(pname), &values[0])
