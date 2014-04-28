@@ -437,6 +437,17 @@ func GetBooleanv(pname GLenum, params []bool) {
 	C.glGetBooleanv(C.GLenum(pname), (*C.GLboolean)(unsafe.Pointer(&params[0])))
 }
 
+// Convenience function for GetBooleanv
+func GetBoolean4(pname GLenum) (v0, v1, v2, v3 bool) {
+	var values [4]C.GLboolean
+	C.glGetBooleanv(C.GLenum(pname), &values[0])
+	v0 = values[0] != 0
+	v1 = values[1] != 0
+	v2 = values[2] != 0
+	v3 = values[3] != 0
+	return
+}
+
 //void glGetClipPlane (GLenum plane, float64 *equation)
 func GetClipPlane(plane GLenum, equation *float64) {
 	C.glGetClipPlane(C.GLenum(plane), (*C.GLdouble)(equation))
@@ -448,6 +459,17 @@ func GetDoublev(pname GLenum, params []float64) {
 		panic("Invalid params length")
 	}
 	C.glGetDoublev(C.GLenum(pname), (*C.GLdouble)(&params[0]))
+}
+
+// Convenience function for GetDoublev
+func GetDouble4(pname GLenum) (v0, v1, v2, v3 float64) {
+	var values [4]C.GLdouble
+	C.glGetDoublev(C.GLenum(pname), &values[0])
+	v0 = float64(values[0])
+	v1 = float64(values[1])
+	v2 = float64(values[2])
+	v3 = float64(values[3])
+	return
 }
 
 //GLenum glGetError (void)
@@ -463,12 +485,34 @@ func GetFloatv(pname GLenum, params []float32) {
 	C.glGetFloatv(C.GLenum(pname), (*C.GLfloat)(&params[0]))
 }
 
+// Convenience function for GetFloatv
+func GetFloat4(pname GLenum) (v0, v1, v2, v3 float32) {
+	var values [4]C.GLfloat
+	C.glGetFloatv(C.GLenum(pname), &values[0])
+	v0 = float32(values[0])
+	v1 = float32(values[1])
+	v2 = float32(values[2])
+	v3 = float32(values[3])
+	return
+}
+
 //void glGetIntegerv (GLenum pname, int *params)
 func GetIntegerv(pname GLenum, params []int32) {
 	if len(params) == 0 {
 		panic("Invalid params length")
 	}
 	C.glGetIntegerv(C.GLenum(pname), (*C.GLint)(&params[0]))
+}
+
+// Convenience function for glGetIntegerv
+func GetInteger4(pname GLenum) (v0, v1, v2, v3 int) {
+	var values [4]C.GLint
+	C.glGetIntegerv(C.GLenum(pname), &values[0])
+	v0 = int(values[0])
+	v1 = int(values[1])
+	v2 = int(values[2])
+	v3 = int(values[3])
+	return
 }
 
 //void glGetLightfv (GLenum light, GLenum pname, float *params)
