@@ -7,6 +7,7 @@ package gl
 // #include "gl.h"
 import "C"
 import "unsafe"
+import "reflect"
 
 // Buffer Objects
 
@@ -79,6 +80,27 @@ func GetBufferSubData(target GLenum, offset int, size int, data interface{}) {
 //  Map a buffer object's data store
 func MapBuffer(target GLenum, access GLenum) unsafe.Pointer {
 	return unsafe.Pointer(C.glMapBuffer(C.GLenum(target), C.GLenum(access)))
+}
+
+// Maps the buffer with MapBuffer() and returns a pointer to the slice pointing
+// to the mapped buffer. See also the MapBuffer<Type> convenience functions.
+func MapBufferSlice(target GLenum, access GLenum, bytesPerElement int) unsafe.Pointer {
+	rawLength := int(GetBufferParameteriv(target, BUFFER_SIZE))
+	return unsafe.Pointer(&reflect.SliceHeader{
+		Data: uintptr(MapBuffer(target, access)),
+		Len:  rawLength / bytesPerElement,
+		Cap:  rawLength / bytesPerElement,
+	})
+}
+
+//  Map a buffer object's data store and return it as a slice
+func MapBufferFloat32(target GLenum, access GLenum) []float32 {
+	return *(*[]float32)(MapBufferSlice(target, access, 4))
+}
+
+//  Map a buffer object's data store and return it as a slice
+func MapBufferUint32(target GLenum, access GLenum) []uint32 {
+	return *(*[]uint32)(MapBufferSlice(target, access, 4))
 }
 
 //  Unmap a buffer object's data store
