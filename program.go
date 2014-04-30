@@ -60,6 +60,9 @@ func (program Program) Validate() { C.glValidateProgram(C.GLuint(program)) }
 
 func (program Program) Use() { C.glUseProgram(C.GLuint(program)) }
 
+func (program Program) Unuse() { C.glUseProgram(C.GLuint(0)) }
+
+// Deprecated, please use program.Unuse()
 func ProgramUnuse() { C.glUseProgram(C.GLuint(0)) }
 
 func (program Program) GetInfoLog() string {
