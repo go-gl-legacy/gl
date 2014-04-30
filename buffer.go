@@ -84,6 +84,9 @@ func MapBuffer(target GLenum, access GLenum) unsafe.Pointer {
 
 // Maps the buffer with MapBuffer() and returns a pointer to the slice pointing
 // to the mapped buffer. See also the MapBuffer<Type> convenience functions.
+// WARNING: This function makes use of reflect.SliceHeader which may reduce
+// portability of your application. See the reflect.SliceHeader documentation
+// for more information.
 func MapBufferSlice(target GLenum, access GLenum, bytesPerElement int) unsafe.Pointer {
 	rawLength := int(GetBufferParameteriv(target, BUFFER_SIZE))
 	return unsafe.Pointer(&reflect.SliceHeader{
