@@ -152,6 +152,27 @@ func (program Program) UniformBlockBinding(index UniformBlockIndex, binding uint
 	C.glUniformBlockBinding(C.GLuint(program), C.GLuint(index), C.GLuint(binding))
 }
 
+// glGetActiveAttrib(GLuint program, GLuint index, GLsizei bufSize, GLsizei *length, GLint *size, GLenum *type, GLchar *name)
+func (program Program) GetActiveAttrib(index int) (
+	Size int, Type GLenum, Name string) {
+	// Maximum length of active uniform name in program
+	bufSize := program.Get(ACTIVE_ATTRIBUTE_MAX_LENGTH)
+	nameBuf := C.malloc(C.size_t(bufSize))
+	defer C.free(nameBuf)
+	var size C.GLint
+	C.glGetActiveAttrib(
+		C.GLuint(program),
+		C.GLuint(index),
+		C.GLsizei(bufSize),
+		nil, // length == len(Name)
+		&size,
+		(*C.GLenum)(&Type),
+		(*C.GLchar)(nameBuf))
+	Name = C.GoString((*C.char)(nameBuf))
+	Size = int(size)
+	return
+}
+
 func (program Program) GetAttribLocation(name string) AttribLocation {
 
 	cname := glString(name)
