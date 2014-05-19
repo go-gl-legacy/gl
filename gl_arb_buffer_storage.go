@@ -16,6 +16,7 @@ const (
 	DYNAMIC_STORAGE_BIT              = C.GL_DYNAMIC_STORAGE_BIT
 	MAP_COHERENT_BIT                 = C.GL_MAP_COHERENT_BIT
 	MAP_PERSISTENT_BIT               = C.GL_MAP_PERSISTENT_BIT
+
 //	MAP_READ_BIT                     = C.GL_MAP_READ_BIT
 //	MAP_WRITE_BIT                    = C.GL_MAP_WRITE_BIT
 )
