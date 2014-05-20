@@ -87,12 +87,19 @@ need a C compiler. If you install the GLEW to your compiler's include and lib
 directories, things should work. If they do not, please
 [contact us](http://go-gl.github.com).
 
+OpenGL 4.*
+----------
+
+The `glew-1.10` branch is available for those that need newer OpenGL 4.* functionality.
+To use it, manually clone the repository and checkout the branch.
+As the branchname implies, it's using GLEW 1.10.
+
 Forward compatibility
 ---------------------
 
 It is the intent of the `go-gl` authors to keep `gl` and related packages
 forward-compatible at both the API/ABI levels _per go release_ so that you can
 continue to import from this github repository. Development requiring breakage
-will occur on the `dev` branch, and will be merged with master when a new go
+will occur on the `glew-1.10` branch, and will be merged with master when a new go
 version is released.
 
