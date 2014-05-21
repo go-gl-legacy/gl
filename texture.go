@@ -345,9 +345,9 @@ func GetTexParameteriv(target GLenum, pname GLenum, params []int32) {
 	C.glGetTexParameteriv(C.GLenum(target), C.GLenum(pname), (*C.GLint)(&params[0]))
 }
 
-func GenerateMipmap(target GLenum) {
-	C.glGenerateMipmap(C.GLenum(target))
-}
+// func GenerateMipmap(target GLenum) {
+// 	C.glGenerateMipmap(C.GLenum(target))
+// }
 
 //void glTexCoord1d (float64 s)
 func TexCoord1d(s float64) {
