@@ -1,0 +1,116 @@
+// Copyright 2012 The go-gl Authors. All rights reserved.
+// Use of this source code is governed by a BSD-style
+// license that can be found in the LICENSE file.
+
+package gl
+
+// #include "gl.h"
+import "C"
+
+const (
+	ALPHA_INTEGER                                 = C.GL_ALPHA_INTEGER
+	BGR_INTEGER                                   = C.GL_BGR_INTEGER
+	BGRA_INTEGER                                  = C.GL_BGRA_INTEGER
+	BLUE_INTEGER                                  = C.GL_BLUE_INTEGER
+	CLAMP_FRAGMENT_COLOR                          = C.GL_CLAMP_FRAGMENT_COLOR
+	CLAMP_READ_COLOR                              = C.GL_CLAMP_READ_COLOR
+	CLAMP_VERTEX_COLOR                            = C.GL_CLAMP_VERTEX_COLOR
+	CLIP_DISTANCE0                                = C.GL_CLIP_DISTANCE0
+	CLIP_DISTANCE1                                = C.GL_CLIP_DISTANCE1
+	CLIP_DISTANCE2                                = C.GL_CLIP_DISTANCE2
+	CLIP_DISTANCE3                                = C.GL_CLIP_DISTANCE3
+	CLIP_DISTANCE4                                = C.GL_CLIP_DISTANCE4
+	CLIP_DISTANCE5                                = C.GL_CLIP_DISTANCE5
+	COMPARE_REF_TO_TEXTURE                        = C.GL_COMPARE_REF_TO_TEXTURE
+	CONTEXT_FLAG_FORWARD_COMPATIBLE_BIT           = C.GL_CONTEXT_FLAG_FORWARD_COMPATIBLE_BIT
+	CONTEXT_FLAGS                                 = C.GL_CONTEXT_FLAGS
+	DEPTH_BUFFER                                  = C.GL_DEPTH_BUFFER
+	FIXED_ONLY                                    = C.GL_FIXED_ONLY
+	GREEN_INTEGER                                 = C.GL_GREEN_INTEGER
+	INT_SAMPLER_1D                                = C.GL_INT_SAMPLER_1D
+	INT_SAMPLER_1D_ARRAY                          = C.GL_INT_SAMPLER_1D_ARRAY
+	INT_SAMPLER_2D                                = C.GL_INT_SAMPLER_2D
+	INT_SAMPLER_2D_ARRAY                          = C.GL_INT_SAMPLER_2D_ARRAY
+	INT_SAMPLER_3D                                = C.GL_INT_SAMPLER_3D
+	INT_SAMPLER_CUBE                              = C.GL_INT_SAMPLER_CUBE
+	INTERLEAVED_ATTRIBS                           = C.GL_INTERLEAVED_ATTRIBS
+	MAJOR_VERSION                                 = C.GL_MAJOR_VERSION
+	MAX_ARRAY_TEXTURE_LAYERS                      = C.GL_MAX_ARRAY_TEXTURE_LAYERS
+	MAX_CLIP_DISTANCES                            = C.GL_MAX_CLIP_DISTANCES
+	MAX_PROGRAM_TEXEL_OFFSET                      = C.GL_MAX_PROGRAM_TEXEL_OFFSET
+	MAX_TRANSFORM_FEEDBACK_INTERLEAVED_COMPONENTS = C.GL_MAX_TRANSFORM_FEEDBACK_INTERLEAVED_COMPONENTS
+	MAX_TRANSFORM_FEEDBACK_SEPARATE_ATTRIBS       = C.GL_MAX_TRANSFORM_FEEDBACK_SEPARATE_ATTRIBS
+	MAX_TRANSFORM_FEEDBACK_SEPARATE_COMPONENTS    = C.GL_MAX_TRANSFORM_FEEDBACK_SEPARATE_COMPONENTS
+	MAX_VARYING_COMPONENTS                        = C.GL_MAX_VARYING_COMPONENTS
+	MIN_PROGRAM_TEXEL_OFFSET                      = C.GL_MIN_PROGRAM_TEXEL_OFFSET
+	MINOR_VERSION                                 = C.GL_MINOR_VERSION
+	NUM_EXTENSIONS                                = C.GL_NUM_EXTENSIONS
+	PRIMITIVES_GENERATED                          = C.GL_PRIMITIVES_GENERATED
+	PROXY_TEXTURE_1D_ARRAY                        = C.GL_PROXY_TEXTURE_1D_ARRAY
+	PROXY_TEXTURE_2D_ARRAY                        = C.GL_PROXY_TEXTURE_2D_ARRAY
+	QUERY_BY_REGION_NO_WAIT                       = C.GL_QUERY_BY_REGION_NO_WAIT
+	QUERY_BY_REGION_WAIT                          = C.GL_QUERY_BY_REGION_WAIT
+	QUERY_NO_WAIT                                 = C.GL_QUERY_NO_WAIT
+	QUERY_WAIT                                    = C.GL_QUERY_WAIT
+	R11F_G11F_B10F                                = C.GL_R11F_G11F_B10F
+	RASTERIZER_DISCARD                            = C.GL_RASTERIZER_DISCARD
+	RED_INTEGER                                   = C.GL_RED_INTEGER
+	RGB16F                                        = C.GL_RGB16F
+	RGB16I                                        = C.GL_RGB16I
+	RGB16UI                                       = C.GL_RGB16UI
+	RGB32F                                        = C.GL_RGB32F
+	RGB32I                                        = C.GL_RGB32I
+	RGB32UI                                       = C.GL_RGB32UI
+	RGB8I                                         = C.GL_RGB8I
+	RGB8UI                                        = C.GL_RGB8UI
+	RGB9_E5                                       = C.GL_RGB9_E5
+	RGB_INTEGER                                   = C.GL_RGB_INTEGER
+	RGBA16F                                       = C.GL_RGBA16F
+	RGBA16I                                       = C.GL_RGBA16I
+	RGBA16UI                                      = C.GL_RGBA16UI
+	RGBA32F                                       = C.GL_RGBA32F
+	RGBA32I                                       = C.GL_RGBA32I
+	RGBA32UI                                      = C.GL_RGBA32UI
+	RGBA8I                                        = C.GL_RGBA8I
+	RGBA8UI                                       = C.GL_RGBA8UI
+	RGBA_INTEGER                                  = C.GL_RGBA_INTEGER
+	SAMPLER_1D_ARRAY                              = C.GL_SAMPLER_1D_ARRAY
+	SAMPLER_1D_ARRAY_SHADOW                       = C.GL_SAMPLER_1D_ARRAY_SHADOW
+	SAMPLER_2D_ARRAY                              = C.GL_SAMPLER_2D_ARRAY
+	SAMPLER_2D_ARRAY_SHADOW                       = C.GL_SAMPLER_2D_ARRAY_SHADOW
+	SAMPLER_CUBE_SHADOW                           = C.GL_SAMPLER_CUBE_SHADOW
+	SEPARATE_ATTRIBS                              = C.GL_SEPARATE_ATTRIBS
+	STENCIL_BUFFER                                = C.GL_STENCIL_BUFFER
+	TEXTURE_1D_ARRAY                              = C.GL_TEXTURE_1D_ARRAY
+	TEXTURE_2D_ARRAY                              = C.GL_TEXTURE_2D_ARRAY
+	TEXTURE_ALPHA_TYPE                            = C.GL_TEXTURE_ALPHA_TYPE
+	TEXTURE_BINDING_1D_ARRAY                      = C.GL_TEXTURE_BINDING_1D_ARRAY
+	TEXTURE_BINDING_2D_ARRAY                      = C.GL_TEXTURE_BINDING_2D_ARRAY
+	TEXTURE_BLUE_TYPE                             = C.GL_TEXTURE_BLUE_TYPE
+	TEXTURE_DEPTH_TYPE                            = C.GL_TEXTURE_DEPTH_TYPE
+	TEXTURE_GREEN_TYPE                            = C.GL_TEXTURE_GREEN_TYPE
+	TEXTURE_INTENSITY_TYPE                        = C.GL_TEXTURE_INTENSITY_TYPE
+	TEXTURE_LUMINANCE_TYPE                        = C.GL_TEXTURE_LUMINANCE_TYPE
+	TEXTURE_RED_TYPE                              = C.GL_TEXTURE_RED_TYPE
+	TEXTURE_SHARED_SIZE                           = C.GL_TEXTURE_SHARED_SIZE
+	TRANSFORM_FEEDBACK_BUFFER                     = C.GL_TRANSFORM_FEEDBACK_BUFFER
+	TRANSFORM_FEEDBACK_BUFFER_BINDING             = C.GL_TRANSFORM_FEEDBACK_BUFFER_BINDING
+	TRANSFORM_FEEDBACK_BUFFER_MODE                = C.GL_TRANSFORM_FEEDBACK_BUFFER_MODE
+	TRANSFORM_FEEDBACK_BUFFER_SIZE                = C.GL_TRANSFORM_FEEDBACK_BUFFER_SIZE
+	TRANSFORM_FEEDBACK_BUFFER_START               = C.GL_TRANSFORM_FEEDBACK_BUFFER_START
+	TRANSFORM_FEEDBACK_PRIMITIVES_WRITTEN         = C.GL_TRANSFORM_FEEDBACK_PRIMITIVES_WRITTEN
+	TRANSFORM_FEEDBACK_VARYING_MAX_LENGTH         = C.GL_TRANSFORM_FEEDBACK_VARYING_MAX_LENGTH
+	TRANSFORM_FEEDBACK_VARYINGS                   = C.GL_TRANSFORM_FEEDBACK_VARYINGS
+	UNSIGNED_INT_10F_11F_11F_REV                  = C.GL_UNSIGNED_INT_10F_11F_11F_REV
+	UNSIGNED_INT_5_9_9_9_REV                      = C.GL_UNSIGNED_INT_5_9_9_9_REV
+	UNSIGNED_INT_SAMPLER_1D                       = C.GL_UNSIGNED_INT_SAMPLER_1D
+	UNSIGNED_INT_SAMPLER_1D_ARRAY                 = C.GL_UNSIGNED_INT_SAMPLER_1D_ARRAY
+	UNSIGNED_INT_SAMPLER_2D                       = C.GL_UNSIGNED_INT_SAMPLER_2D
+	UNSIGNED_INT_SAMPLER_2D_ARRAY                 = C.GL_UNSIGNED_INT_SAMPLER_2D_ARRAY
+	UNSIGNED_INT_SAMPLER_3D                       = C.GL_UNSIGNED_INT_SAMPLER_3D
+	UNSIGNED_INT_SAMPLER_CUBE                     = C.GL_UNSIGNED_INT_SAMPLER_CUBE
+	UNSIGNED_INT_VEC2                             = C.GL_UNSIGNED_INT_VEC2
+	UNSIGNED_INT_VEC3                             = C.GL_UNSIGNED_INT_VEC3
+	UNSIGNED_INT_VEC4                             = C.GL_UNSIGNED_INT_VEC4
+	VERTEX_ATTRIB_ARRAY_INTEGER                   = C.GL_VERTEX_ATTRIB_ARRAY_INTEGER
+)

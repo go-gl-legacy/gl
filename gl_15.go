@@ -1,0 +1,61 @@
+// Copyright 2012 The go-gl Authors. All rights reserved.
+// Use of this source code is governed by a BSD-style
+// license that can be found in the LICENSE file.
+
+package gl
+
+// #include "gl.h"
+import "C"
+
+const (
+	ARRAY_BUFFER                         = C.GL_ARRAY_BUFFER
+	ARRAY_BUFFER_BINDING                 = C.GL_ARRAY_BUFFER_BINDING
+	BUFFER_ACCESS                        = C.GL_BUFFER_ACCESS
+	BUFFER_MAP_POINTER                   = C.GL_BUFFER_MAP_POINTER
+	BUFFER_MAPPED                        = C.GL_BUFFER_MAPPED
+	BUFFER_SIZE                          = C.GL_BUFFER_SIZE
+	BUFFER_USAGE                         = C.GL_BUFFER_USAGE
+	COLOR_ARRAY_BUFFER_BINDING           = C.GL_COLOR_ARRAY_BUFFER_BINDING
+	CURRENT_FOG_COORD                    = C.GL_CURRENT_FOG_COORD
+	CURRENT_QUERY                        = C.GL_CURRENT_QUERY
+	DYNAMIC_COPY                         = C.GL_DYNAMIC_COPY
+	DYNAMIC_DRAW                         = C.GL_DYNAMIC_DRAW
+	DYNAMIC_READ                         = C.GL_DYNAMIC_READ
+	EDGE_FLAG_ARRAY_BUFFER_BINDING       = C.GL_EDGE_FLAG_ARRAY_BUFFER_BINDING
+	ELEMENT_ARRAY_BUFFER                 = C.GL_ELEMENT_ARRAY_BUFFER
+	ELEMENT_ARRAY_BUFFER_BINDING         = C.GL_ELEMENT_ARRAY_BUFFER_BINDING
+	FOG_COORD                            = C.GL_FOG_COORD
+	FOG_COORD_ARRAY                      = C.GL_FOG_COORD_ARRAY
+	FOG_COORD_ARRAY_BUFFER_BINDING       = C.GL_FOG_COORD_ARRAY_BUFFER_BINDING
+	FOG_COORD_ARRAY_POINTER              = C.GL_FOG_COORD_ARRAY_POINTER
+	FOG_COORD_ARRAY_STRIDE               = C.GL_FOG_COORD_ARRAY_STRIDE
+	FOG_COORD_ARRAY_TYPE                 = C.GL_FOG_COORD_ARRAY_TYPE
+	FOG_COORD_SRC                        = C.GL_FOG_COORD_SRC
+	FOG_COORDINATE_ARRAY_BUFFER_BINDING  = C.GL_FOG_COORDINATE_ARRAY_BUFFER_BINDING
+	INDEX_ARRAY_BUFFER_BINDING           = C.GL_INDEX_ARRAY_BUFFER_BINDING
+	NORMAL_ARRAY_BUFFER_BINDING          = C.GL_NORMAL_ARRAY_BUFFER_BINDING
+	QUERY_COUNTER_BITS                   = C.GL_QUERY_COUNTER_BITS
+	QUERY_RESULT                         = C.GL_QUERY_RESULT
+	QUERY_RESULT_AVAILABLE               = C.GL_QUERY_RESULT_AVAILABLE
+	READ_ONLY                            = C.GL_READ_ONLY
+	READ_WRITE                           = C.GL_READ_WRITE
+	SAMPLES_PASSED                       = C.GL_SAMPLES_PASSED
+	SECONDARY_COLOR_ARRAY_BUFFER_BINDING = C.GL_SECONDARY_COLOR_ARRAY_BUFFER_BINDING
+	SRC0_ALPHA                           = C.GL_SRC0_ALPHA
+	SRC0_RGB                             = C.GL_SRC0_RGB
+	SRC1_ALPHA                           = C.GL_SRC1_ALPHA
+	SRC1_RGB                             = C.GL_SRC1_RGB
+	SRC2_ALPHA                           = C.GL_SRC2_ALPHA
+	SRC2_RGB                             = C.GL_SRC2_RGB
+	STATIC_COPY                          = C.GL_STATIC_COPY
+	STATIC_DRAW                          = C.GL_STATIC_DRAW
+	STATIC_READ                          = C.GL_STATIC_READ
+	STREAM_COPY                          = C.GL_STREAM_COPY
+	STREAM_DRAW                          = C.GL_STREAM_DRAW
+	STREAM_READ                          = C.GL_STREAM_READ
+	TEXTURE_COORD_ARRAY_BUFFER_BINDING   = C.GL_TEXTURE_COORD_ARRAY_BUFFER_BINDING
+	VERTEX_ARRAY_BUFFER_BINDING          = C.GL_VERTEX_ARRAY_BUFFER_BINDING
+	VERTEX_ATTRIB_ARRAY_BUFFER_BINDING   = C.GL_VERTEX_ATTRIB_ARRAY_BUFFER_BINDING
+	WEIGHT_ARRAY_BUFFER_BINDING          = C.GL_WEIGHT_ARRAY_BUFFER_BINDING
+	WRITE_ONLY                           = C.GL_WRITE_ONLY
+)
