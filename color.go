@@ -180,5 +180,5 @@ func ColorMaterial(face GLenum, mode GLenum) {
 //void glColorPointer (int size, GLenum type, int stride, const GLvoid *pointer)
 func ColorPointer(size int, typ GLenum, stride int, pointer interface{}) {
 	C.glColorPointer(C.GLint(size), C.GLenum(typ), C.GLsizei(stride),
-		ptr(pointer))
+		glPointer(pointer))
 }

@@ -49,7 +49,7 @@ func DrawArraysInstanced(mode GLenum, first int, count int, primcount int) {
 }
 
 func DrawElementsInstanced(mode GLenum, count GLsizei, typ GLenum, indices interface{}, primcount GLsizei) {
-	C.glDrawElementsInstanced(C.GLenum(mode), C.GLsizei(count), C.GLenum(typ), ptr(indices), C.GLsizei(primcount))
+	C.glDrawElementsInstanced(C.GLenum(mode), C.GLsizei(count), C.GLenum(typ), glPointer(indices), C.GLsizei(primcount))
 }
 
 func PrimitiveRestartIndex(index uint) {

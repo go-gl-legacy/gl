@@ -62,19 +62,19 @@ func (buffer Buffer) BindBufferRange(target GLenum, index uint, offset int, size
 
 // Creates and initializes a buffer object's data store
 func BufferData(target GLenum, size int, data interface{}, usage GLenum) {
-	C.glBufferData(C.GLenum(target), C.GLsizeiptr(size), ptr(data), C.GLenum(usage))
+	C.glBufferData(C.GLenum(target), C.GLsizeiptr(size), glPointer(data), C.GLenum(usage))
 }
 
 //  Update a subset of a buffer object's data store
 func BufferSubData(target GLenum, offset int, size int, data interface{}) {
 	C.glBufferSubData(C.GLenum(target), C.GLintptr(offset), C.GLsizeiptr(size),
-		ptr(data))
+		glPointer(data))
 }
 
 // Returns a subset of a buffer object's data store
 func GetBufferSubData(target GLenum, offset int, size int, data interface{}) {
 	C.glGetBufferSubData(C.GLenum(target), C.GLintptr(offset),
-		C.GLsizeiptr(size), ptr(data))
+		C.GLsizeiptr(size), glPointer(data))
 }
 
 //  Map a buffer object's data store

@@ -129,5 +129,5 @@ func Vertex4sv(v *[4]int16) {
 
 //void glVertexPointer (int size, GLenum type, int stride, const GLvoid *pointer)
 func VertexPointer(size int, typ GLenum, stride int, pointer interface{}) {
-	C.glVertexPointer(C.GLint(size), C.GLenum(typ), C.GLsizei(stride), ptr(pointer))
+	C.glVertexPointer(C.GLint(size), C.GLenum(typ), C.GLsizei(stride), glPointer(pointer))
 }

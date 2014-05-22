@@ -45,7 +45,7 @@ func (indx AttribLocation) Attrib4fv(values *[4]float32) {
 
 func (indx AttribLocation) AttribPointer(size uint, typ GLenum, normalized bool, stride int, pointer interface{}) {
 	C.glVertexAttribPointer(C.GLuint(indx), C.GLint(size), C.GLenum(typ),
-		glBool(normalized), C.GLsizei(stride), ptr(pointer))
+		glBool(normalized), C.GLsizei(stride), glPointer(pointer))
 }
 
 func (indx AttribLocation) EnableArray() {

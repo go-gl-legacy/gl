@@ -10,50 +10,46 @@ package gl
 // #cgo freebsd  CFLAGS: -I/usr/local/include
 // #cgo freebsd LDFLAGS: -L/usr/local/lib -lglfw
 // #include "gl.h"
-// void SetGlewExperimental(GLboolean v) {  glewExperimental = v;  }
 import "C"
-import "unsafe"
 import "reflect"
+import "unsafe"
 
-type GLenum C.GLenum
 type GLbitfield C.GLbitfield
-type GLclampf C.GLclampf
-type GLclampd C.GLclampd
-
-type Pointer unsafe.Pointer
-
-// those types are left for compatibility reasons
 type GLboolean C.GLboolean
 type GLbyte C.GLbyte
-type GLshort C.GLshort
-type GLint C.GLint
-type GLsizei C.GLsizei
-type GLubyte C.GLubyte
-type GLushort C.GLushort
-type GLuint C.GLuint
-type GLfloat C.GLfloat
+type GLclampd C.GLclampd
+type GLclampf C.GLclampf
 type GLdouble C.GLdouble
-
-// helpers
+type GLenum C.GLenum
+type GLfloat C.GLfloat
+type GLint C.GLint
+type GLshort C.GLshort
+type GLsizei C.GLsizei
+type GLsync unsafe.Pointer
+type GLubyte C.GLubyte
+type GLuint C.GLuint
+type GLushort C.GLushort
 
 func glBool(v bool) C.GLboolean {
 	if v {
-		return 1
+		return TRUE
 	}
-
-	return 0
+	return FALSE
 }
 
 func goBool(v C.GLboolean) bool {
-	return v != 0
+	return v == TRUE
 }
 
-func glString(s string) *C.GLchar { return (*C.GLchar)(C.CString(s)) }
+func glString(s string) *C.GLchar {
+	return (*C.GLchar)(C.CString(s))
+}
 
-func freeString(ptr *C.GLchar) { C.free(unsafe.Pointer(ptr)) }
+func freeString(ptr *C.GLchar) {
+	C.free(unsafe.Pointer(ptr))
+}
 
-func ptr(v interface{}) unsafe.Pointer {
-
+func glPointer(v interface{}) unsafe.Pointer {
 	if v == nil {
 		return unsafe.Pointer(nil)
 	}
@@ -74,15 +70,6 @@ func ptr(v interface{}) unsafe.Pointer {
 
 	return unsafe.Pointer(et.UnsafeAddr())
 }
-
-/*
-uniformMatrix2fv
-uniformMatrix2fv
-uniformMatrix3fv
-uniformMatrix3fv
-uniformMatrix4fv
-uniformMatrix4fv
-*/
 
 // Main
 
@@ -153,7 +140,7 @@ func CallList(list uint) {
 
 //void glCallLists (GLsizei n, GLenum type, const GLvoid *lists)
 func CallLists(n int, typ GLenum, lists interface{}) {
-	C.glCallLists(C.GLsizei(n), C.GLenum(typ), ptr(lists))
+	C.glCallLists(C.GLsizei(n), C.GLenum(typ), glPointer(lists))
 }
 
 //void glClear (GLbitfield mask)
@@ -249,19 +236,19 @@ func DrawBuffers(n int, bufs []GLenum) {
 //void glDrawElements (GLenum mode, int count, GLenum type, const GLvoid *indices)
 func DrawElements(mode GLenum, count int, typ GLenum, indices interface{}) {
 	C.glDrawElements(C.GLenum(mode), C.GLsizei(count), C.GLenum(typ),
-		ptr(indices))
+		glPointer(indices))
 }
 
 //void glDrawElementsBaseVertex(GLenum mode, int count, GLenum type, GLvoid *indices, int basevertex)
 func DrawElementsBaseVertex(mode GLenum, count int, typ GLenum, indices interface{}, basevertex int) {
 	C.glDrawElementsBaseVertex(C.GLenum(mode), C.GLsizei(count),
-		C.GLenum(typ), ptr(indices), C.GLint(basevertex))
+		C.GLenum(typ), glPointer(indices), C.GLint(basevertex))
 }
 
 //void glDrawPixels (GLsizei width, int height, GLenum format, GLenum type, const GLvoid *pixels)
 func DrawPixels(width int, height int, format, typ GLenum, pixels interface{}) {
 	C.glDrawPixels(C.GLsizei(width), C.GLsizei(height), C.GLenum(format),
-		C.GLenum(typ), ptr(pixels))
+		C.GLenum(typ), glPointer(pixels))
 }
 
 //void glEdgeFlag (bool flag)
@@ -603,7 +590,7 @@ func IndexMask(mask uint) {
 
 //void glIndexPointer (GLenum type, int stride, const GLvoid *pointer)
 func IndexPointer(typ GLenum, stride int, pointer interface{}) {
-	C.glIndexPointer(C.GLenum(typ), C.GLsizei(stride), ptr(pointer))
+	C.glIndexPointer(C.GLenum(typ), C.GLsizei(stride), glPointer(pointer))
 }
 
 //void glIndexd (float64 c)
@@ -894,7 +881,7 @@ func Normal3sv(v *[3]int16) {
 
 //void glNormalPointer (GLenum type, int stride, const GLvoid *pointer)
 func NormalPointer(typ GLenum, stride int, pointer interface{}) {
-	C.glNormalPointer(C.GLenum(typ), C.GLsizei(stride), ptr(pointer))
+	C.glNormalPointer(C.GLenum(typ), C.GLsizei(stride), glPointer(pointer))
 }
 
 //void glPassThrough (float32 token)
@@ -1105,7 +1092,7 @@ func ReadBuffer(mode GLenum) {
 //void glReadPixels (int x, int y, int width, int height, GLenum format, GLenum type, GLvoid *pixels)
 func ReadPixels(x int, y int, width int, height int, format, typ GLenum, pixels interface{}) {
 	C.glReadPixels(C.GLint(x), C.GLint(y), C.GLsizei(width), C.GLsizei(height),
-		C.GLenum(format), C.GLenum(typ), ptr(pixels))
+		C.GLenum(format), C.GLenum(typ), glPointer(pixels))
 }
 
 //void glRectd (float64 x1, float64 y1, float64 x2, float64 y2)
@@ -1200,6 +1187,6 @@ func Viewport(x int, y int, width int, height int) {
 //}
 
 func Init() GLenum {
-	C.SetGlewExperimental(C.GLboolean(1))
+	C.glewExperimental = glBool(true)
 	return GLenum(C.glewInit())
 }

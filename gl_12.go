@@ -60,7 +60,7 @@ func CopyTexSubImage3D(target GLenum, level int, xoffset int, yoffset int,
 func DrawRangeElements(mode GLenum, start uint, end uint, count GLsizei,
 	typ GLenum, indices interface{}) {
 	C.glDrawRangeElements(C.GLenum(mode), C.GLuint(start), C.GLuint(end),
-		C.GLsizei(count), C.GLenum(typ), ptr(indices))
+		C.GLsizei(count), C.GLenum(typ), glPointer(indices))
 }
 
 func TexImage3D(target GLenum, level int, internalFormat int, width int,
@@ -68,12 +68,12 @@ func TexImage3D(target GLenum, level int, internalFormat int, width int,
 	pixels interface{}) {
 	C.glTexImage3D(C.GLenum(target), C.GLint(level), C.GLint(internalFormat),
 		C.GLsizei(width), C.GLsizei(height), C.GLsizei(depth), C.GLint(border),
-		C.GLenum(format), C.GLenum(typ), ptr(pixels))
+		C.GLenum(format), C.GLenum(typ), glPointer(pixels))
 }
 
 func TexSubImage3D(target GLenum, level int, xoffset, yoffset, zoffset, width,
 	height, depth int, format, typ GLenum, pixels interface{}) {
 	C.glTexSubImage3D(C.GLenum(target), C.GLint(level), C.GLint(xoffset),
 		C.GLint(yoffset), C.GLint(zoffset), C.GLsizei(width), C.GLsizei(height),
-		C.GLsizei(depth),	C.GLenum(format), C.GLenum(typ), ptr(pixels))
+		C.GLsizei(depth), C.GLenum(format), C.GLenum(typ), glPointer(pixels))
 }

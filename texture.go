@@ -19,17 +19,11 @@ func AreTexturesResident(textures []uint, residences []bool) bool {
 		panic("Residences slice must be equal in length to textures slice.")
 	}
 
-	ret := C.glAreTexturesResident(
+	return goBool(C.glAreTexturesResident(
 		C.GLsizei(sz),
 		(*C.GLuint)(unsafe.Pointer(&textures[0])),
 		(*C.GLboolean)(unsafe.Pointer(&residences[0])),
-	)
-
-	if ret == TRUE {
-		return true
-	}
-
-	return false
+	))
 }
 
 func ActiveTexture(texture GLenum) { C.glActiveTexture(C.GLenum(texture)) }
@@ -79,26 +73,26 @@ func (texture Texture) Unbind(target GLenum) {
 func TexImage1D(target GLenum, level int, internalformat int, width int, border int, format, typ GLenum, pixels interface{}) {
 	C.glTexImage1D(C.GLenum(target), C.GLint(level), C.GLint(internalformat),
 		C.GLsizei(width), C.GLint(border), C.GLenum(format), C.GLenum(typ),
-		ptr(pixels))
+		glPointer(pixels))
 }
 
 //void glTexImage2D (GLenum target, int level, int internalformat, int width, int height, int border, GLenum format, GLenum type, const GLvoid *pixels)
 func TexImage2D(target GLenum, level int, internalformat int, width int, height int, border int, format, typ GLenum, pixels interface{}) {
 	C.glTexImage2D(C.GLenum(target), C.GLint(level), C.GLint(internalformat),
 		C.GLsizei(width), C.GLsizei(height), C.GLint(border), C.GLenum(format),
-		C.GLenum(typ), ptr(pixels))
+		C.GLenum(typ), glPointer(pixels))
 }
 
 //void glCompressedTexImage2D(	GLenum  target, GLint  level, GLenum internalformat, GLsizei width,
 // GLsizei height, GLint border, GLsizei imagesize, const GLvoid * data )
 func CompressedTexImage2D(target GLenum, level int, internalformat GLenum, width int, height int, border int, imagesize int, data interface{}) {
 	C.glCompressedTexImage2D(C.GLenum(target), C.GLint(level), C.GLenum(internalformat),
-		C.GLsizei(width), C.GLsizei(height), C.GLint(border), C.GLsizei(imagesize), ptr(data))
+		C.GLsizei(width), C.GLsizei(height), C.GLint(border), C.GLsizei(imagesize), glPointer(data))
 }
 
 //void glGetCompressedTexImage( GLenum target, GLint lod, GLvoid *img )
 func GetCompressedTexImage(target GLenum, lod int, data interface{}) {
-	C.glGetCompressedTexImage(C.GLenum(target), C.GLint(lod), ptr(data))
+	C.glGetCompressedTexImage(C.GLenum(target), C.GLint(lod), glPointer(data))
 }
 
 //void glTexBuffer (GLenum target, GLenum internalformat, GLuint buffer)
@@ -124,14 +118,14 @@ func PixelMapusv(map_ GLenum, mapsize int, values *uint16) {
 //void glTexSubImage1D (GLenum target, int level, int xoffset, int width, GLenum format, GLenum type, const GLvoid *pixels)
 func TexSubImage1D(target GLenum, level int, xoffset int, width int, format, typ GLenum, pixels interface{}) {
 	C.glTexSubImage1D(C.GLenum(target), C.GLint(level), C.GLint(xoffset),
-		C.GLsizei(width), C.GLenum(format), C.GLenum(typ), ptr(pixels))
+		C.GLsizei(width), C.GLenum(format), C.GLenum(typ), glPointer(pixels))
 }
 
 //void glTexSubImage2D (GLenum target, int level, int xoffset, int yoffset, int width, int height, GLenum format, GLenum type, const GLvoid *pixels)
 func TexSubImage2D(target GLenum, level int, xoffset int, yoffset int, width int, height int, format, typ GLenum, pixels interface{}) {
 	C.glTexSubImage2D(C.GLenum(target), C.GLint(level), C.GLint(xoffset),
 		C.GLint(yoffset), C.GLsizei(width), C.GLsizei(height), C.GLenum(format),
-		C.GLenum(typ), ptr(pixels))
+		C.GLenum(typ), glPointer(pixels))
 }
 
 //void glCopyTexImage1D (GLenum target, int level, GLenum internalFormat, int x, int y, int width, int border)
@@ -295,7 +289,7 @@ func GetTexGeniv(coord GLenum, pname GLenum, params []int32) {
 //void glGetTexImage (GLenum target, int level, GLenum format, GLenum type, GLvoid *pixels)
 func GetTexImage(target GLenum, level int, format, typ GLenum, pixels interface{}) {
 	C.glGetTexImage(C.GLenum(target), C.GLint(level), C.GLenum(format),
-		C.GLenum(typ), ptr(pixels))
+		C.GLenum(typ), glPointer(pixels))
 }
 
 //void glGetTexLevelParameterfv (GLenum target, int level, GLenum pname, float *params)
@@ -497,5 +491,5 @@ func TexCoord4sv(v *[4]int16) {
 //void glTexCoordPointer (int size, GLenum type, int stride, const GLvoid *pointer)
 func TexCoordPointer(size int, typ GLenum, stride int, pointer interface{}) {
 	C.glTexCoordPointer(C.GLint(size), C.GLenum(typ), C.GLsizei(stride),
-		ptr(pointer))
+		glPointer(pointer))
 }
