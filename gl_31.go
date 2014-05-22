@@ -43,3 +43,19 @@ const (
 	UNSIGNED_INT_SAMPLER_2D_RECT      = C.GL_UNSIGNED_INT_SAMPLER_2D_RECT
 	UNSIGNED_INT_SAMPLER_BUFFER       = C.GL_UNSIGNED_INT_SAMPLER_BUFFER
 )
+
+func DrawArraysInstanced(mode GLenum, first int, count int, primcount int) {
+	C.glDrawArraysInstanced(C.GLenum(mode), C.GLint(first), C.GLsizei(count), C.GLsizei(primcount))
+}
+
+func DrawElementsInstanced(mode GLenum, count GLsizei, typ GLenum, indices interface{}, primcount GLsizei) {
+	C.glDrawElementsInstanced(C.GLenum(mode), C.GLsizei(count), C.GLenum(typ), ptr(indices), C.GLsizei(primcount))
+}
+
+func PrimitiveRestartIndex(index uint) {
+	C.glPrimitiveRestartIndex(C.GLuint(index))
+}
+
+func (buf Buffer) TexBuffer(target GLenum, internalFormat GLenum) {
+	C.glTexBuffer(C.GLenum(target), C.GLenum(internalFormat), C.GLuint(buf))
+}

@@ -236,11 +236,6 @@ func DrawArrays(mode GLenum, first int, count int) {
 	C.glDrawArrays(C.GLenum(mode), C.GLint(first), C.GLsizei(count))
 }
 
-//void glDrawArraysInstanced(GLenum mode,  GLint first,  GLsizei count,  GLsizei primcount)
-func DrawArraysInstanced(mode GLenum, first int, count, primcount int) {
-	C.glDrawArraysInstanced(C.GLenum(mode), C.GLint(first), C.GLsizei(count), C.GLsizei(primcount))
-}
-
 //void glDrawBuffer (GLenum mode)
 func DrawBuffer(mode GLenum) {
 	C.glDrawBuffer(C.GLenum(mode))
@@ -255,12 +250,6 @@ func DrawBuffers(n int, bufs []GLenum) {
 func DrawElements(mode GLenum, count int, typ GLenum, indices interface{}) {
 	C.glDrawElements(C.GLenum(mode), C.GLsizei(count), C.GLenum(typ),
 		ptr(indices))
-}
-
-//void glDrawElementsInstanced(GLenum  mode,  GLsizei  count,  GLenum  type,  const void *  indices,  GLsizei  primcount)
-func DrawElementsInstanced(mode GLenum, count int, typ GLenum, indices interface{}, primcount int) {
-	C.glDrawElementsInstanced(C.GLenum(mode), C.GLsizei(count), C.GLenum(typ),
-		ptr(indices), C.GLsizei(primcount))
 }
 
 //void glDrawElementsBaseVertex(GLenum mode, int count, GLenum type, GLvoid *indices, int basevertex)
@@ -971,11 +960,6 @@ func PopClientAttrib() {
 //void glPopName (void)
 func PopName() {
 	C.glPopName()
-}
-
-//void glPrimitiveRestartIndex(GLuint index)
-func PrimitiveRestartIndex(index GLuint) {
-	C.glPrimitiveRestartIndex(C.GLuint(index))
 }
 
 //void glPushAttrib (GLbitfield mask)

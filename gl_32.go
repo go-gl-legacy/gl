@@ -31,3 +31,15 @@ const (
 	TRIANGLE_STRIP_ADJACENCY             = C.GL_TRIANGLE_STRIP_ADJACENCY
 	TRIANGLES_ADJACENCY                  = C.GL_TRIANGLES_ADJACENCY
 )
+
+func FramebufferTexture(target GLenum, attachment GLenum, texture uint, level int) {
+	C.glFramebufferTexture(C.GLenum(target), C.GLenum(attachment), C.GLuint(texture), C.GLint(level))
+}
+
+func GetBufferParameteri64v(target GLenum, value GLenum, data []int64) {
+	C.glGetBufferParameteri64v(C.GLenum(target), C.GLenum(value), (*C.GLint64)(&data[0]))
+}
+
+func GetInteger64i_v(pname GLenum, index uint, data []int64) {
+	C.glGetInteger64i_v(C.GLenum(pname), C.GLuint(index), (*C.GLint64)(&data[0]))
+}

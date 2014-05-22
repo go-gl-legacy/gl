@@ -11,3 +11,7 @@ const (
 	RGB10_A2UI                  = C.GL_RGB10_A2UI
 	VERTEX_ATTRIB_ARRAY_DIVISOR = C.GL_VERTEX_ATTRIB_ARRAY_DIVISOR
 )
+
+func glVertexAttribDivisor(index uint, divisor uint) {
+	C.glVertexAttribDivisor(C.GLuint(index), C.GLuint(divisor))
+}
