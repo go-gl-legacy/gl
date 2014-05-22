@@ -21,3 +21,25 @@ const (
 	TEXTURE_CUBE_MAP_ARRAY                = C.GL_TEXTURE_CUBE_MAP_ARRAY
 	UNSIGNED_INT_SAMPLER_CUBE_MAP_ARRAY   = C.GL_UNSIGNED_INT_SAMPLER_CUBE_MAP_ARRAY
 )
+
+func BlendEquationSeparatei(buf uint, modeRGB GLenum, modeAlpha GLenum) {
+	C.glBlendEquationSeparatei(C.GLuint(buf), C.GLenum(modeRGB), C.GLenum(modeAlpha))
+}
+
+func BlendEquationi(buf uint, mode GLenum) {
+	C.glBlendEquationi(C.GLuint(buf), C.GLenum(mode))
+}
+
+func BlendFuncSeparatei(buf uint, srcRGB GLenum, dstRGB GLenum, srcAlpha GLenum,
+	dstAlpha GLenum) {
+	C.glBlendFuncSeparatei(C.GLuint(buf), C.GLenum(srcRGB), C.GLenum(dstRGB),
+		C.GLenum(srcAlpha), C.GLenum(dstAlpha))
+}
+
+func BlendFunci(buf uint, src GLenum, dst GLenum) {
+	C.glBlendFunci(C.GLuint(buf), C.GLenum(src), C.GLenum(dst))
+}
+
+func MinSampleShading(value float32) {
+	C.glMinSampleShading(C.GLclampf(value))
+}

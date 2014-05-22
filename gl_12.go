@@ -49,3 +49,31 @@ const (
 	UNSIGNED_SHORT_5_6_5          = C.GL_UNSIGNED_SHORT_5_6_5
 	UNSIGNED_SHORT_5_6_5_REV      = C.GL_UNSIGNED_SHORT_5_6_5_REV
 )
+
+func CopyTexSubImage3D(target GLenum, level int, xoffset int, yoffset int,
+	zoffset int, x int, y int, width int, height int) {
+	C.glCopyTexSubImage3D(C.GLenum(target), C.GLint(level), C.GLint(xoffset),
+		C.GLint(yoffset), C.GLint(zoffset), C.GLint(x), C.GLint(y),
+		C.GLsizei(width), C.GLsizei(height))
+}
+
+func DrawRangeElements(mode GLenum, start uint, end uint, count GLsizei,
+	typ GLenum, indices interface{}) {
+	C.glDrawRangeElements(C.GLenum(mode), C.GLuint(start), C.GLuint(end),
+		C.GLsizei(count), C.GLenum(typ), ptr(indices))
+}
+
+func TexImage3D(target GLenum, level int, internalFormat int, width int,
+	height int, depth int, border int, format GLenum, typ GLenum,
+	pixels interface{}) {
+	C.glTexImage3D(C.GLenum(target), C.GLint(level), C.GLint(internalFormat),
+		C.GLsizei(width), C.GLsizei(height), C.GLsizei(depth), C.GLint(border),
+		C.GLenum(format), C.GLenum(typ), ptr(pixels))
+}
+
+func TexSubImage3D(target GLenum, level int, xoffset, yoffset, zoffset, width,
+	height, depth int, format, typ GLenum, pixels interface{}) {
+	C.glTexSubImage3D(C.GLenum(target), C.GLint(level), C.GLint(xoffset),
+		C.GLint(yoffset), C.GLint(zoffset), C.GLsizei(width), C.GLsizei(height),
+		C.GLsizei(depth),	C.GLenum(format), C.GLenum(typ), ptr(pixels))
+}

@@ -101,13 +101,6 @@ func GetCompressedTexImage(target GLenum, lod int, data interface{}) {
 	C.glGetCompressedTexImage(C.GLenum(target), C.GLint(lod), ptr(data))
 }
 
-//void glTexImage3D (GLenum target, int level, int internalformat, int width, int height, int depth, int border, GLenum format, GLenum type, const GLvoid *pixels)
-func TexImage3D(target GLenum, level int, internalformat int, width, height, depth int, border int, format, typ GLenum, pixels interface{}) {
-	C.glTexImage3D(C.GLenum(target), C.GLint(level), C.GLint(internalformat),
-		C.GLsizei(width), C.GLsizei(height), C.GLsizei(depth), C.GLint(border),
-		C.GLenum(format), C.GLenum(typ), ptr(pixels))
-}
-
 //void glTexBuffer (GLenum target, GLenum internalformat, GLuint buffer)
 func TexBuffer(target, internalformat GLenum, buffer Buffer) {
 	C.glTexBuffer(C.GLenum(target), C.GLenum(internalformat), C.GLuint(buffer))
@@ -139,14 +132,6 @@ func TexSubImage2D(target GLenum, level int, xoffset int, yoffset int, width int
 	C.glTexSubImage2D(C.GLenum(target), C.GLint(level), C.GLint(xoffset),
 		C.GLint(yoffset), C.GLsizei(width), C.GLsizei(height), C.GLenum(format),
 		C.GLenum(typ), ptr(pixels))
-}
-
-//void glTexImage3D (GLenum target, int level, int xoffset, int yoffset, int zoffset, int width, int height, int depth, GLenum format, GLenum type, const GLvoid *pixels)
-func TexSubImage3D(target GLenum, level int, xoffset, yoffset, zoffset, width, height, depth int, format, typ GLenum, pixels interface{}) {
-	C.glTexSubImage3D(C.GLenum(target), C.GLint(level),
-		C.GLint(xoffset), C.GLint(yoffset), C.GLint(zoffset),
-		C.GLsizei(width), C.GLsizei(height), C.GLsizei(depth),
-		C.GLenum(format), C.GLenum(typ), ptr(pixels))
 }
 
 //void glCopyTexImage1D (GLenum target, int level, GLenum internalFormat, int x, int y, int width, int border)

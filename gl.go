@@ -257,12 +257,6 @@ func DrawElements(mode GLenum, count int, typ GLenum, indices interface{}) {
 		ptr(indices))
 }
 
-//void glDrawRangeElements (GLenum mode, int start, int end, int count, GLenum type, const GLvoid *indices)
-func DrawRangeElements(mode GLenum, start, end uint, count int, typ GLenum, indices interface{}) {
-	C.glDrawRangeElements(C.GLenum(mode), C.GLuint(start), C.GLuint(end), C.GLsizei(count), C.GLenum(typ),
-		ptr(indices))
-}
-
 //void glDrawElementsInstanced(GLenum  mode,  GLsizei  count,  GLenum  type,  const void *  indices,  GLsizei  primcount)
 func DrawElementsInstanced(mode GLenum, count int, typ GLenum, indices interface{}, primcount int) {
 	C.glDrawElementsInstanced(C.GLenum(mode), C.GLsizei(count), C.GLenum(typ),
