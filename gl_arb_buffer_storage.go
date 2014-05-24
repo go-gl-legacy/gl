@@ -22,6 +22,6 @@ func BufferStorage(target GLenum, size uint32, data unsafe.Pointer, flags uint32
 	C.glBufferStorage(C.GLenum(target), C.GLsizeiptr(size), data, C.GLbitfield(flags))
 }
 
-func NamedBufferStorage(buffer Buffer, size uint32, data unsafe.Pointer, flags uint32) {
+func (buffer Buffer) NamedBufferStorage(size uint32, data unsafe.Pointer, flags uint32) {
 	C.glNamedBufferStorageEXT(C.GLuint(buffer), C.GLsizeiptr(size), data, C.GLbitfield(flags))
 }
