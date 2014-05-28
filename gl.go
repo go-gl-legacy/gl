@@ -71,6 +71,50 @@ func glPointer(v interface{}) unsafe.Pointer {
 	return unsafe.Pointer(et.UnsafeAddr())
 }
 
+// Creates a slice from a raw buffer address. The pointer returned points to a slice.
+// Convert it like this: *(*[]TYPE)(gl.Slice(buf, len))
+// Length is the total amount of elements in the slice.
+// WARNING: This function makes use of reflect.SliceHeader which may reduce
+// portability of your application. See the reflect.SliceHeader documentation
+// for more information.
+func Slice(buffer unsafe.Pointer, length int) unsafe.Pointer {
+	return unsafe.Pointer(&reflect.SliceHeader{
+		Data: uintptr(buffer),
+		Len:  length,
+		Cap:  length,
+	})
+}
+
+// Convenience function for Slice converting the raw slice to []int8
+func SliceInt8(buffer unsafe.Pointer, length int) []int8 {
+	return *(*[]int8)(Slice(buffer, length))
+}
+
+// Convenience function for Slice converting the raw slice to []uint8
+func SliceUint8(buffer unsafe.Pointer, length int) []uint8 {
+	return *(*[]uint8)(Slice(buffer, length))
+}
+
+// Convenience function for Slice converting the raw slice to []int32
+func SliceInt32(buffer unsafe.Pointer, length int) []int32 {
+	return *(*[]int32)(Slice(buffer, length))
+}
+
+// Convenience function for Slice converting the raw slice to []uint32
+func SliceUint32(buffer unsafe.Pointer, length int) []uint32 {
+	return *(*[]uint32)(Slice(buffer, length))
+}
+
+// Convenience function for Slice converting the raw slice to []float32
+func SliceFloat32(buffer unsafe.Pointer, length int) []float32 {
+	return *(*[]float32)(Slice(buffer, length))
+}
+
+// Convenience function for Slice converting the raw slice to []float64
+func SliceFloat64(buffer unsafe.Pointer, length int) []float64 {
+	return *(*[]float64)(Slice(buffer, length))
+}
+
 // Main
 
 func BlendColor(red GLclampf, green GLclampf, blue GLclampf, alpha GLclampf) {
