@@ -9,8 +9,6 @@ import "C"
 
 // Object
 
-type Object C.GLuint
-
 func (object Object) IsBuffer() bool { return C.glIsBuffer(C.GLuint(object)) != 0 }
 
 func (object Object) IsProgram() bool { return C.glIsProgram(C.GLuint(object)) != 0 }
