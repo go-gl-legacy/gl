@@ -397,150 +397,150 @@ func (program Program) Validate() {
 	C.glValidateProgram(C.GLuint(program))
 }
 
-func VertexAttrib1d(index uint, x float64) {
+func (index AttribLocation) Attrib1d(x float64) {
 	C.glVertexAttrib1d(C.GLuint(index), C.GLdouble(x))
 }
 
-func VertexAttrib1dv(index uint, v []float64) {
+func (index AttribLocation) Attrib1dv(v []float64) {
 	C.glVertexAttrib1dv(C.GLuint(index), (*C.GLdouble)(&v[0]))
 }
 
-func VertexAttrib1f(index uint, x float32) {
+func (index AttribLocation) Attrib1f(x float32) {
 	C.glVertexAttrib1f(C.GLuint(index), C.GLfloat(x))
 }
 
-func VertexAttrib1fv(index uint, v []float32) {
+func (index AttribLocation) Attrib1fv(v []float32) {
 	C.glVertexAttrib1fv(C.GLuint(index), (*C.GLfloat)(&v[0]))
 }
 
-func VertexAttrib1s(index uint, x int16) {
+func (index AttribLocation) Attrib1s(x int16) {
 	C.glVertexAttrib1s(C.GLuint(index), C.GLshort(x))
 }
 
-func VertexAttrib1sv(index uint, v []int16) {
+func (index AttribLocation) Attrib1sv(v []int16) {
 	C.glVertexAttrib1sv(C.GLuint(index), (*C.GLshort)(&v[0]))
 }
 
-func VertexAttrib2d(index uint, x float64, y float64) {
+func (index AttribLocation) Attrib2d(x float64, y float64) {
 	C.glVertexAttrib2d(C.GLuint(index), C.GLdouble(x), C.GLdouble(y))
 }
 
-func VertexAttrib2dv(index uint, v []float64) {
+func (index AttribLocation) Attrib2dv(v []float64) {
 	C.glVertexAttrib2dv(C.GLuint(index), (*C.GLdouble)(&v[0]))
 }
 
-func VertexAttrib2f(index uint, x float32, y float32) {
+func (index AttribLocation) Attrib2f(x float32, y float32) {
 	C.glVertexAttrib2f(C.GLuint(index), C.GLfloat(x), C.GLfloat(y))
 }
 
-func VertexAttrib2fv(index uint, v []float32) {
+func (index AttribLocation) Attrib2fv(v []float32) {
 	C.glVertexAttrib2fv(C.GLuint(index), (*C.GLfloat)(&v[0]))
 }
 
-func VertexAttrib2s(index uint, x int16, y int16) {
+func (index AttribLocation) Attrib2s(x int16, y int16) {
 	C.glVertexAttrib2s(C.GLuint(index), C.GLshort(x), C.GLshort(y))
 }
 
-func VertexAttrib2sv(index uint, v []int16) {
+func (index AttribLocation) Attrib2sv(v []int16) {
 	C.glVertexAttrib2sv(C.GLuint(index), (*C.GLshort)(&v[0]))
 }
 
-func VertexAttrib3d(index uint, x float64, y float64, z float64) {
+func (index AttribLocation) Attrib3d(x float64, y float64, z float64) {
 	C.glVertexAttrib3d(C.GLuint(index), C.GLdouble(x), C.GLdouble(y), C.GLdouble(z))
 }
 
-func VertexAttrib3dv(index uint, v []float64) {
+func (index AttribLocation) Attrib3dv(v []float64) {
 	C.glVertexAttrib3dv(C.GLuint(index), (*C.GLdouble)(&v[0]))
 }
 
-func VertexAttrib3f(index uint, x float32, y float32, z float32) {
+func (index AttribLocation) Attrib3f(x float32, y float32, z float32) {
 	C.glVertexAttrib3f(C.GLuint(index), C.GLfloat(x), C.GLfloat(y), C.GLfloat(z))
 }
 
-func VertexAttrib3fv(index uint, v []float32) {
+func (index AttribLocation) Attrib3fv(v []float32) {
 	C.glVertexAttrib3fv(C.GLuint(index), (*C.GLfloat)(&v[0]))
 }
 
-func VertexAttrib3s(index uint, x int16, y int16, z int16) {
+func (index AttribLocation) Attrib3s(x int16, y int16, z int16) {
 	C.glVertexAttrib3s(C.GLuint(index), C.GLshort(x), C.GLshort(y), C.GLshort(z))
 }
 
-func VertexAttrib3sv(index uint, v []int16) {
+func (index AttribLocation) Attrib3sv(v []int16) {
 	C.glVertexAttrib3sv(C.GLuint(index), (*C.GLshort)(&v[0]))
 }
 
-func VertexAttrib4Nbv(index uint, v []int8) {
+func (index AttribLocation) Attrib4Nbv(v []int8) {
 	C.glVertexAttrib4Nbv(C.GLuint(index), (*C.GLbyte)(&v[0]))
 }
 
-func VertexAttrib4Niv(index uint, v []int32) {
+func (index AttribLocation) Attrib4Niv(v []int32) {
 	C.glVertexAttrib4Niv(C.GLuint(index), (*C.GLint)(&v[0]))
 }
 
-func VertexAttrib4Nsv(index uint, v []int16) {
+func (index AttribLocation) Attrib4Nsv(v []int16) {
 	C.glVertexAttrib4Nsv(C.GLuint(index), (*C.GLshort)(&v[0]))
 }
 
-func VertexAttrib4Nub(index uint, x uint8, y uint8, z uint8, w uint8) {
+func (index AttribLocation) Attrib4Nub(x uint8, y uint8, z uint8, w uint8) {
 	C.glVertexAttrib4Nub(C.GLuint(index), C.GLubyte(x), C.GLubyte(y), C.GLubyte(z), C.GLubyte(w))
 }
 
-func VertexAttrib4Nubv(index uint, v []uint8) {
+func (index AttribLocation) Attrib4Nubv(v []uint8) {
 	C.glVertexAttrib4Nubv(C.GLuint(index), (*C.GLubyte)(&v[0]))
 }
 
-func VertexAttrib4Nuiv(index uint, v []uint32) {
+func (index AttribLocation) Attrib4Nuiv(v []uint32) {
 	C.glVertexAttrib4Nuiv(C.GLuint(index), (*C.GLuint)(&v[0]))
 }
 
-func VertexAttrib4Nusv(index uint, v []uint16) {
+func (index AttribLocation) Attrib4Nusv(v []uint16) {
 	C.glVertexAttrib4Nusv(C.GLuint(index), (*C.GLushort)(&v[0]))
 }
 
-func VertexAttrib4bv(index uint, v []int8) {
+func (index AttribLocation) Attrib4bv(v []int8) {
 	C.glVertexAttrib4bv(C.GLuint(index), (*C.GLbyte)(&v[0]))
 }
 
-func VertexAttrib4d(index uint, x float64, y float64, z float64, w float64) {
+func (index AttribLocation) Attrib4d(x float64, y float64, z float64, w float64) {
 	C.glVertexAttrib4d(C.GLuint(index), C.GLdouble(x), C.GLdouble(y), C.GLdouble(z), C.GLdouble(w))
 }
 
-func VertexAttrib4dv(index uint, v []float64) {
+func (index AttribLocation) Attrib4dv(v []float64) {
 	C.glVertexAttrib4dv(C.GLuint(index), (*C.GLdouble)(&v[0]))
 }
 
-func VertexAttrib4f(index uint, x float32, y float32, z float32, w float32) {
+func (index AttribLocation) Attrib4f(x float32, y float32, z float32, w float32) {
 	C.glVertexAttrib4f(C.GLuint(index), C.GLfloat(x), C.GLfloat(y), C.GLfloat(z), C.GLfloat(w))
 }
 
-func VertexAttrib4fv(index uint, v []float32) {
+func (index AttribLocation) Attrib4fv(v []float32) {
 	C.glVertexAttrib4fv(C.GLuint(index), (*C.GLfloat)(&v[0]))
 }
 
-func VertexAttrib4iv(index uint, v []int32) {
+func (index AttribLocation) Attrib4iv(v []int32) {
 	C.glVertexAttrib4iv(C.GLuint(index), (*C.GLint)(&v[0]))
 }
 
-func VertexAttrib4s(index uint, x int16, y int16, z int16, w int16) {
+func (index AttribLocation) Attrib4s(x int16, y int16, z int16, w int16) {
 	C.glVertexAttrib4s(C.GLuint(index), C.GLshort(x), C.GLshort(y), C.GLshort(z), C.GLshort(w))
 }
 
-func VertexAttrib4sv(index uint, v []int16) {
+func (index AttribLocation) Attrib4sv(v []int16) {
 	C.glVertexAttrib4sv(C.GLuint(index), (*C.GLshort)(&v[0]))
 }
 
-func VertexAttrib4ubv(index uint, v []uint8) {
+func (index AttribLocation) Attrib4ubv(v []uint8) {
 	C.glVertexAttrib4ubv(C.GLuint(index), (*C.GLubyte)(&v[0]))
 }
 
-func VertexAttrib4uiv(index uint, v []uint32) {
+func (index AttribLocation) Attrib4uiv(v []uint32) {
 	C.glVertexAttrib4uiv(C.GLuint(index), (*C.GLuint)(&v[0]))
 }
 
-func VertexAttrib4usv(index uint, v []uint16) {
+func (index AttribLocation) Attrib4usv(v []uint16) {
 	C.glVertexAttrib4usv(C.GLuint(index), (*C.GLushort)(&v[0]))
 }
 
-func VertexAttribPointer(index uint, size int, typ GLenum, normalized bool, stride int, pointer interface{}) {
+func (index AttribLocation) AttribPointer(size int, typ GLenum, normalized bool, stride int, pointer interface{}) {
 	C.glVertexAttribPointer(C.GLuint(index), C.GLint(size), C.GLenum(typ), glBool(normalized), C.GLsizei(stride), glPointer(pointer))
 }
