@@ -31,7 +31,9 @@ type GLuint C.GLuint
 type GLushort C.GLushort
 
 type Object C.GLuint
+type Buffer Object
 type List Object
+type Query Object
 type Texture Object
 
 func glBool(v bool) C.GLboolean {
