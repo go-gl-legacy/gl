@@ -13,7 +13,6 @@ import "unsafe"
 
 // Program
 
-type Program Object
 
 func CreateProgram() Program { return Program(C.glCreateProgram()) }
 

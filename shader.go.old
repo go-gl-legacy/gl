@@ -16,8 +16,6 @@ import "unsafe"
 
 // Shader
 
-type Shader Object
-
 func CreateShader(type_ GLenum) Shader { return Shader(C.glCreateShader(C.GLenum(type_))) }
 
 func (shader Shader) Delete() { C.glDeleteShader(C.GLuint(shader)) }

@@ -30,12 +30,15 @@ type GLubyte C.GLubyte
 type GLuint C.GLuint
 type GLushort C.GLushort
 
+type AttribLocation C.GLint
 type UniformLocation C.GLint
 
 type Object C.GLuint
 type Buffer Object
 type List Object
+type Program Object
 type Query Object
+type Shader Object
 type Texture Object
 
 func glBool(v bool) C.GLboolean {

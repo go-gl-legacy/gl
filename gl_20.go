@@ -5,7 +5,13 @@
 package gl
 
 // #include "gl.h"
+//
+// // Workaround for https://github.com/go-gl/gl/issues/104
+// void gogl_glGetShaderSource(GLuint shader, GLsizei bufsize, GLsizei* len, GLchar* source) {
+//     glGetShaderSource(shader, bufsize, len, source);
+// }
 import "C"
+import "unsafe"
 
 const (
 	ACTIVE_ATTRIBUTE_MAX_LENGTH      = C.GL_ACTIVE_ATTRIBUTE_MAX_LENGTH
@@ -93,3 +99,448 @@ const (
 	VERTEX_PROGRAM_TWO_SIDE          = C.GL_VERTEX_PROGRAM_TWO_SIDE
 	VERTEX_SHADER                    = C.GL_VERTEX_SHADER
 )
+
+func (program Program) AttachShader(shader Shader) {
+	C.glAttachShader(C.GLuint(program), C.GLuint(shader))
+}
+
+func (program Program) BindAttribLocation(index AttribLocation, name string) {
+	cname := glString(name)
+	defer freeString(cname)
+	C.glBindAttribLocation(C.GLuint(program), C.GLuint(index), cname)
+}
+
+func BlendEquationSeparate(modeRGB GLenum, modeAlpha GLenum) {
+	C.glBlendEquationSeparate(C.GLenum(modeRGB), C.GLenum(modeAlpha))
+}
+
+func (shader Shader) Compile() {
+	C.glCompileShader(C.GLuint(shader))
+}
+
+func CreateProgram() Program {
+	return Program(C.glCreateProgram())
+}
+
+func CreateShader(typ GLenum) Shader {
+	return Shader(C.glCreateShader(C.GLenum(typ)))
+}
+
+func (program Program) Delete() {
+	C.glDeleteProgram(C.GLuint(program))
+}
+
+func (shader Shader) Delete() {
+	C.glDeleteShader(C.GLuint(shader))
+}
+
+func (program Program) DetachShader(shader Shader) {
+	C.glDetachShader(C.GLuint(program), C.GLuint(shader))
+}
+
+func DisableVertexAttribArray(index uint) {
+	C.glDisableVertexAttribArray(C.GLuint(index))
+}
+
+func DrawBuffers(bufs []GLenum) {
+	C.glDrawBuffers(C.GLsizei(len(bufs)), (*C.GLenum)(&bufs[0]))
+}
+
+func EnableVertexAttribArray(index uint) {
+	C.glEnableVertexAttribArray(C.GLuint(index))
+}
+
+func (program Program) GetActiveAttrib(index uint, length []int32, size []int32, typ []GLenum, name string) {
+	cname := glString(name)
+	defer freeString(cname)
+	C.glGetActiveAttrib(C.GLuint(program), C.GLuint(index), C.GLsizei(len(typ)), (*C.GLsizei)(&length[0]), (*C.GLint)(&size[0]), (*C.GLenum)(&typ[0]), cname)
+}
+
+func (program Program) GetActiveUniform(index uint, length []int32, size []int32, typ []GLenum, name string) {
+	cname := glString(name)
+	defer freeString(cname)
+	C.glGetActiveUniform(C.GLuint(program), C.GLuint(index), C.GLsizei(len(typ)), (*C.GLsizei)(&length[0]), (*C.GLint)(&size[0]), (*C.GLenum)(&typ[0]), cname)
+}
+
+func (program Program) GetAttachedShaders(count []int32, shaders []Shader) {
+	C.glGetAttachedShaders(C.GLuint(program), C.GLsizei(len(shaders)), (*C.GLsizei)(&count[0]), (*C.GLuint)(&shaders[0]))
+}
+
+func (program Program) GetAttribLocation(name string) AttribLocation {
+	cname := glString(name)
+	defer freeString(cname)
+	return AttribLocation(C.glGetAttribLocation(C.GLuint(program), cname))
+}
+
+func (program Program) GetInfoLog() string {
+	var length C.GLint
+	C.glGetProgramiv(C.GLuint(program), C.GLenum(INFO_LOG_LENGTH), &length)
+
+	if length > 1 {
+		log := C.malloc(C.size_t(length))
+		defer C.free(log)
+		C.glGetProgramInfoLog(C.GLuint(program), C.GLsizei(length), nil, (*C.GLchar)(log))
+		return C.GoString((*C.char)(log))
+	}
+	return ""
+}
+
+func (program Program) Get(param GLenum) int {
+	var rv C.GLint
+	C.glGetProgramiv(C.GLuint(program), C.GLenum(param), &rv)
+	return int(rv)
+}
+
+func (shader Shader) GetInfoLog() string {
+	var length C.GLint
+	C.glGetShaderiv(C.GLuint(shader), C.GLenum(INFO_LOG_LENGTH), &length)
+
+	if length > 1 {
+		log := C.malloc(C.size_t(length))
+		defer C.free(log)
+		C.glGetShaderInfoLog(C.GLuint(shader), C.GLsizei(length), nil, (*C.GLchar)(log))
+		return C.GoString((*C.char)(log))
+	}
+	return ""
+}
+
+func (shader Shader) GetSource() string {
+	var length C.GLint
+	C.glGetShaderiv(C.GLuint(shader), C.GLenum(SHADER_SOURCE_LENGTH), &length)
+
+	log := C.malloc(C.size_t(length + 1))
+	C.gogl_glGetShaderSource(C.GLuint(shader), C.GLsizei(length), nil, (*C.GLchar)(log))
+	defer C.free(log)
+
+	if length > 1 {
+		log := C.malloc(C.size_t(length + 1))
+		defer C.free(log)
+		C.gogl_glGetShaderSource(C.GLuint(shader), C.GLsizei(length), nil, (*C.GLchar)(log))
+		return C.GoString((*C.char)(log))
+	}
+	return ""
+}
+
+func (shader Shader) Get(param GLenum) int {
+	var rv C.GLint
+	C.glGetShaderiv(C.GLuint(shader), C.GLenum(param), &rv)
+	return int(rv)
+}
+
+func (program Program) GetUniformLocation(name string) UniformLocation {
+	cname := glString(name)
+	defer freeString(cname)
+	return UniformLocation(C.glGetUniformLocation(C.GLuint(program), cname))
+}
+
+func (program Program) GetUniformfv(location UniformLocation, params []float32) {
+	C.glGetUniformfv(C.GLuint(program), C.GLint(location), (*C.GLfloat)(&params[0]))
+}
+
+func (program Program) GetUniformiv(location UniformLocation, params []int32) {
+	C.glGetUniformiv(C.GLuint(program), C.GLint(location), (*C.GLint)(&params[0]))
+}
+
+func GetVertexAttribPointerv(index uint, pname GLenum) (ptr unsafe.Pointer) {
+	C.glGetVertexAttribPointerv(C.GLuint(index), C.GLenum(pname), &ptr)
+	return
+}
+
+func GetVertexAttribdv(index uint, pname GLenum, params []float64) {
+	C.glGetVertexAttribdv(C.GLuint(index), C.GLenum(pname), (*C.GLdouble)(&params[0]))
+}
+
+func GetVertexAttribfv(index uint, pname GLenum, params []float32) {
+	C.glGetVertexAttribfv(C.GLuint(index), C.GLenum(pname), (*C.GLfloat)(&params[0]))
+}
+
+func GetVertexAttribiv(index uint, pname GLenum, params []int32) {
+	C.glGetVertexAttribiv(C.GLuint(index), C.GLenum(pname), (*C.GLint)(&params[0]))
+}
+
+func (object Object) IsProgram() bool {
+	return goBool(C.glIsProgram(C.GLuint(object)))
+}
+
+func (object Object) IsShader() bool {
+	return goBool(C.glIsShader(C.GLuint(object)))
+}
+
+func (program Program) Link() {
+	C.glLinkProgram(C.GLuint(program))
+}
+
+func (shader Shader) Source(source ...string) {
+	count := C.GLsizei(len(source))
+	cstrings := make([]*C.GLchar, count)
+	length := make([]C.GLint, count)
+
+	for i, s := range source {
+		csource := glString(s)
+		cstrings[i] = csource
+		length[i] = C.GLint(len(s))
+		defer freeString(csource)
+	}
+
+	C.glShaderSource(C.GLuint(shader), count, (**_Ctype_GLchar)(unsafe.Pointer(&cstrings[0])), (*_Ctype_GLint)(unsafe.Pointer(&length[0])))
+}
+
+func StencilFuncSeparate(frontfunc GLenum, backfunc GLenum, ref int, mask uint32) {
+	C.glStencilFuncSeparate(C.GLenum(frontfunc), C.GLenum(backfunc), C.GLint(ref), C.GLuint(mask))
+}
+
+func StencilMaskSeparate(face GLenum, mask uint32) {
+	C.glStencilMaskSeparate(C.GLenum(face), C.GLuint(mask))
+}
+
+func StencilOpSeparate(face GLenum, sfail GLenum, dpfail GLenum, dppass GLenum) {
+	C.glStencilOpSeparate(C.GLenum(face), C.GLenum(sfail), C.GLenum(dpfail), C.GLenum(dppass))
+}
+
+func (location UniformLocation) Uniform1f(x float32) {
+	C.glUniform1f(C.GLint(location), C.GLfloat(x))
+}
+
+func (location UniformLocation) Uniform2f(x float32, y float32) {
+	C.glUniform2f(C.GLint(location), C.GLfloat(x), C.GLfloat(y))
+}
+
+func (location UniformLocation) Uniform3f(x float32, y float32, z float32) {
+	C.glUniform3f(C.GLint(location), C.GLfloat(x), C.GLfloat(y), C.GLfloat(z))
+}
+
+func (location UniformLocation) Uniform1fv(count int, v []float32) {
+	C.glUniform1fv(C.GLint(location), C.GLsizei(count), (*C.GLfloat)(&v[0]))
+}
+
+func (location UniformLocation) Uniform1i(x int) {
+	C.glUniform1i(C.GLint(location), C.GLint(x))
+}
+
+func (location UniformLocation) Uniform1iv(count int, v []int32) {
+	C.glUniform1iv(C.GLint(location), C.GLsizei(count), (*C.GLint)(&v[0]))
+}
+
+func (location UniformLocation) Uniform2fv(count int, v []float32) {
+	C.glUniform2fv(C.GLint(location), C.GLsizei(count), (*C.GLfloat)(&v[0]))
+}
+
+func (location UniformLocation) Uniform2i(x int, y int) {
+	C.glUniform2i(C.GLint(location), C.GLint(x), C.GLint(y))
+}
+
+func (location UniformLocation) Uniform2iv(count int, v []int32) {
+	C.glUniform2iv(C.GLint(location), C.GLsizei(count), (*C.GLint)(&v[0]))
+}
+
+func (location UniformLocation) Uniform3fv(count int, v []float32) {
+	C.glUniform3fv(C.GLint(location), C.GLsizei(count), (*C.GLfloat)(&v[0]))
+}
+
+func (location UniformLocation) Uniform3i(x int, y int, z int) {
+	C.glUniform3i(C.GLint(location), C.GLint(x), C.GLint(y), C.GLint(z))
+}
+
+func (location UniformLocation) Uniform3iv(count int, v []int32) {
+	C.glUniform3iv(C.GLint(location), C.GLsizei(count), (*C.GLint)(&v[0]))
+}
+
+func (location UniformLocation) Uniform4f(x float32, y float32, z float32, w float32) {
+	C.glUniform4f(C.GLint(location), C.GLfloat(x), C.GLfloat(y), C.GLfloat(z), C.GLfloat(w))
+}
+
+func (location UniformLocation) Uniform4fv(count int, v []float32) {
+	C.glUniform4fv(C.GLint(location), C.GLsizei(count), (*C.GLfloat)(&v[0]))
+}
+
+func (location UniformLocation) Uniform4i(x int, y int, z int, w int) {
+	C.glUniform4i(C.GLint(location), C.GLint(x), C.GLint(y), C.GLint(z), C.GLint(w))
+}
+
+func (location UniformLocation) Uniform4iv(count int, v []int32) {
+	C.glUniform4iv(C.GLint(location), C.GLsizei(count), (*C.GLint)(&v[0]))
+}
+
+func (location UniformLocation) UniformMatrix2fv(transpose bool, list ...[4]float32) {
+	C.glUniformMatrix2fv(C.GLint(location), C.GLsizei(len(list)), glBool(transpose), ((*C.GLfloat)((unsafe.Pointer)(&list[0]))))
+}
+
+func (location UniformLocation) UniformMatrix2f(transpose bool, matrix *[4]float32) {
+	C.glUniformMatrix2fv(C.GLint(location), 1, glBool(transpose), ((*C.GLfloat)((unsafe.Pointer)(&matrix[0]))))
+}
+
+func (location UniformLocation) UniformMatrix3fv(transpose bool, list ...[9]float32) {
+	C.glUniformMatrix3fv(C.GLint(location), C.GLsizei(len(list)), glBool(transpose), ((*C.GLfloat)((unsafe.Pointer)(&list[0]))))
+}
+
+func (location UniformLocation) UniformMatrix3f(transpose bool, matrix *[9]float32) {
+	C.glUniformMatrix3fv(C.GLint(location), 1, glBool(transpose), ((*C.GLfloat)((unsafe.Pointer)(&matrix[0]))))
+}
+
+func (location UniformLocation) UniformMatrix4fv(transpose bool, list ...[16]float32) {
+	C.glUniformMatrix4fv(C.GLint(location), C.GLsizei(len(list)), glBool(transpose), ((*C.GLfloat)((unsafe.Pointer)(&list[0]))))
+}
+
+func (location UniformLocation) UniformMatrix4f(transpose bool, matrix *[16]float32) {
+	C.glUniformMatrix4fv(C.GLint(location), 1, glBool(transpose), ((*C.GLfloat)((unsafe.Pointer)(&matrix[0]))))
+}
+
+func (program Program) Use() {
+	C.glUseProgram(C.GLuint(program))
+}
+
+func (program Program) Unuse() {
+	C.glUseProgram(C.GLuint(0))
+}
+
+func (program Program) Validate() {
+	C.glValidateProgram(C.GLuint(program))
+}
+
+func VertexAttrib1d(index uint, x float64) {
+	C.glVertexAttrib1d(C.GLuint(index), C.GLdouble(x))
+}
+
+func VertexAttrib1dv(index uint, v []float64) {
+	C.glVertexAttrib1dv(C.GLuint(index), (*C.GLdouble)(&v[0]))
+}
+
+func VertexAttrib1f(index uint, x float32) {
+	C.glVertexAttrib1f(C.GLuint(index), C.GLfloat(x))
+}
+
+func VertexAttrib1fv(index uint, v []float32) {
+	C.glVertexAttrib1fv(C.GLuint(index), (*C.GLfloat)(&v[0]))
+}
+
+func VertexAttrib1s(index uint, x int16) {
+	C.glVertexAttrib1s(C.GLuint(index), C.GLshort(x))
+}
+
+func VertexAttrib1sv(index uint, v []int16) {
+	C.glVertexAttrib1sv(C.GLuint(index), (*C.GLshort)(&v[0]))
+}
+
+func VertexAttrib2d(index uint, x float64, y float64) {
+	C.glVertexAttrib2d(C.GLuint(index), C.GLdouble(x), C.GLdouble(y))
+}
+
+func VertexAttrib2dv(index uint, v []float64) {
+	C.glVertexAttrib2dv(C.GLuint(index), (*C.GLdouble)(&v[0]))
+}
+
+func VertexAttrib2f(index uint, x float32, y float32) {
+	C.glVertexAttrib2f(C.GLuint(index), C.GLfloat(x), C.GLfloat(y))
+}
+
+func VertexAttrib2fv(index uint, v []float32) {
+	C.glVertexAttrib2fv(C.GLuint(index), (*C.GLfloat)(&v[0]))
+}
+
+func VertexAttrib2s(index uint, x int16, y int16) {
+	C.glVertexAttrib2s(C.GLuint(index), C.GLshort(x), C.GLshort(y))
+}
+
+func VertexAttrib2sv(index uint, v []int16) {
+	C.glVertexAttrib2sv(C.GLuint(index), (*C.GLshort)(&v[0]))
+}
+
+func VertexAttrib3d(index uint, x float64, y float64, z float64) {
+	C.glVertexAttrib3d(C.GLuint(index), C.GLdouble(x), C.GLdouble(y), C.GLdouble(z))
+}
+
+func VertexAttrib3dv(index uint, v []float64) {
+	C.glVertexAttrib3dv(C.GLuint(index), (*C.GLdouble)(&v[0]))
+}
+
+func VertexAttrib3f(index uint, x float32, y float32, z float32) {
+	C.glVertexAttrib3f(C.GLuint(index), C.GLfloat(x), C.GLfloat(y), C.GLfloat(z))
+}
+
+func VertexAttrib3fv(index uint, v []float32) {
+	C.glVertexAttrib3fv(C.GLuint(index), (*C.GLfloat)(&v[0]))
+}
+
+func VertexAttrib3s(index uint, x int16, y int16, z int16) {
+	C.glVertexAttrib3s(C.GLuint(index), C.GLshort(x), C.GLshort(y), C.GLshort(z))
+}
+
+func VertexAttrib3sv(index uint, v []int16) {
+	C.glVertexAttrib3sv(C.GLuint(index), (*C.GLshort)(&v[0]))
+}
+
+func VertexAttrib4Nbv(index uint, v []int8) {
+	C.glVertexAttrib4Nbv(C.GLuint(index), (*C.GLbyte)(&v[0]))
+}
+
+func VertexAttrib4Niv(index uint, v []int32) {
+	C.glVertexAttrib4Niv(C.GLuint(index), (*C.GLint)(&v[0]))
+}
+
+func VertexAttrib4Nsv(index uint, v []int16) {
+	C.glVertexAttrib4Nsv(C.GLuint(index), (*C.GLshort)(&v[0]))
+}
+
+func VertexAttrib4Nub(index uint, x uint8, y uint8, z uint8, w uint8) {
+	C.glVertexAttrib4Nub(C.GLuint(index), C.GLubyte(x), C.GLubyte(y), C.GLubyte(z), C.GLubyte(w))
+}
+
+func VertexAttrib4Nubv(index uint, v []uint8) {
+	C.glVertexAttrib4Nubv(C.GLuint(index), (*C.GLubyte)(&v[0]))
+}
+
+func VertexAttrib4Nuiv(index uint, v []uint32) {
+	C.glVertexAttrib4Nuiv(C.GLuint(index), (*C.GLuint)(&v[0]))
+}
+
+func VertexAttrib4Nusv(index uint, v []uint16) {
+	C.glVertexAttrib4Nusv(C.GLuint(index), (*C.GLushort)(&v[0]))
+}
+
+func VertexAttrib4bv(index uint, v []int8) {
+	C.glVertexAttrib4bv(C.GLuint(index), (*C.GLbyte)(&v[0]))
+}
+
+func VertexAttrib4d(index uint, x float64, y float64, z float64, w float64) {
+	C.glVertexAttrib4d(C.GLuint(index), C.GLdouble(x), C.GLdouble(y), C.GLdouble(z), C.GLdouble(w))
+}
+
+func VertexAttrib4dv(index uint, v []float64) {
+	C.glVertexAttrib4dv(C.GLuint(index), (*C.GLdouble)(&v[0]))
+}
+
+func VertexAttrib4f(index uint, x float32, y float32, z float32, w float32) {
+	C.glVertexAttrib4f(C.GLuint(index), C.GLfloat(x), C.GLfloat(y), C.GLfloat(z), C.GLfloat(w))
+}
+
+func VertexAttrib4fv(index uint, v []float32) {
+	C.glVertexAttrib4fv(C.GLuint(index), (*C.GLfloat)(&v[0]))
+}
+
+func VertexAttrib4iv(index uint, v []int32) {
+	C.glVertexAttrib4iv(C.GLuint(index), (*C.GLint)(&v[0]))
+}
+
+func VertexAttrib4s(index uint, x int16, y int16, z int16, w int16) {
+	C.glVertexAttrib4s(C.GLuint(index), C.GLshort(x), C.GLshort(y), C.GLshort(z), C.GLshort(w))
+}
+
+func VertexAttrib4sv(index uint, v []int16) {
+	C.glVertexAttrib4sv(C.GLuint(index), (*C.GLshort)(&v[0]))
+}
+
+func VertexAttrib4ubv(index uint, v []uint8) {
+	C.glVertexAttrib4ubv(C.GLuint(index), (*C.GLubyte)(&v[0]))
+}
+
+func VertexAttrib4uiv(index uint, v []uint32) {
+	C.glVertexAttrib4uiv(C.GLuint(index), (*C.GLuint)(&v[0]))
+}
+
+func VertexAttrib4usv(index uint, v []uint16) {
+	C.glVertexAttrib4usv(C.GLuint(index), (*C.GLushort)(&v[0]))
+}
+
+func VertexAttribPointer(index uint, size int, typ GLenum, normalized bool, stride int, pointer interface{}) {
+	C.glVertexAttribPointer(C.GLuint(index), C.GLint(size), C.GLenum(typ), glBool(normalized), C.GLsizei(stride), glPointer(pointer))
+}
