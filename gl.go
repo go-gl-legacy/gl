@@ -30,6 +30,8 @@ type GLubyte C.GLubyte
 type GLuint C.GLuint
 type GLushort C.GLushort
 
+type UniformLocation C.GLint
+
 type Object C.GLuint
 type Buffer Object
 type List Object

@@ -32,3 +32,27 @@ const (
 	SRGB8_ALPHA8                   = C.GL_SRGB8_ALPHA8
 	SRGB_ALPHA                     = C.GL_SRGB_ALPHA
 )
+
+func (location UniformLocation) UniformMatrix2x3fv(transpose bool, value ...[]float32) {
+	C.glUniformMatrix2x3fv(C.GLint(location), C.GLsizei(len(value)), glBool(transpose), (*C.GLfloat)(&value[0][0]))
+}
+
+func (location UniformLocation) UniformMatrix2x4fv(transpose bool, value ...[]float32) {
+	C.glUniformMatrix2x4fv(C.GLint(location), C.GLsizei(len(value)), glBool(transpose), (*C.GLfloat)(&value[0][0]))
+}
+
+func (location UniformLocation) UniformMatrix3x2fv(transpose bool, value ...[]float32) {
+	C.glUniformMatrix3x2fv(C.GLint(location), C.GLsizei(len(value)), glBool(transpose), (*C.GLfloat)(&value[0][0]))
+}
+
+func (location UniformLocation) UniformMatrix3x4fv(transpose bool, value ...[]float32) {
+	C.glUniformMatrix3x4fv(C.GLint(location), C.GLsizei(len(value)), glBool(transpose), (*C.GLfloat)(&value[0][0]))
+}
+
+func (location UniformLocation) UniformMatrix4x2fv(transpose bool, value ...[]float32) {
+	C.glUniformMatrix4x2fv(C.GLint(location), C.GLsizei(len(value)), glBool(transpose), (*C.GLfloat)(&value[0][0]))
+}
+
+func (location UniformLocation) UniformMatrix4x3fv(transpose bool, value ...[]float32) {
+	C.glUniformMatrix4x3fv(C.GLint(location), C.GLsizei(len(value)), glBool(transpose), (*C.GLfloat)(&value[0][0]))
+}

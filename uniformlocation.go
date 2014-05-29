@@ -11,8 +11,6 @@ import "unsafe"
 // UniformLocation
 //TODO
 
-type UniformLocation int
-
 func (location UniformLocation) Uniform1f(x float32) {
 	C.glUniform1f(C.GLint(location), C.GLfloat(x))
 }
@@ -141,88 +139,4 @@ func (location UniformLocation) UniformMatrix4f(transpose bool, matrix *[16]floa
 		panic("Matrix is nil")
 	}
 	C.glUniformMatrix4fv(C.GLint(location), 1, glBool(transpose), ((*C.GLfloat)((unsafe.Pointer)(&matrix[0]))))
-}
-
-func (location UniformLocation) UniformMatrix2x3fv(transpose bool, list ...[6]float32) {
-	if len(list) < 1 {
-		panic("Invalid array length - must be at least 1")
-	}
-	C.glUniformMatrix2x3fv(C.GLint(location), C.GLsizei(len(list)), glBool(transpose), ((*C.GLfloat)((unsafe.Pointer)(&list[0]))))
-}
-
-func (location UniformLocation) UniformMatrix2x3f(transpose bool, matrix *[6]float32) {
-	if matrix == nil {
-		panic("Matrix is nil")
-	}
-	C.glUniformMatrix2x3fv(C.GLint(location), 1, glBool(transpose), ((*C.GLfloat)((unsafe.Pointer)(&matrix[0]))))
-}
-
-func (location UniformLocation) UniformMatrix3x2fv(transpose bool, list ...[6]float32) {
-	if len(list) < 1 {
-		panic("Invalid array length - must be at least 1")
-	}
-	C.glUniformMatrix3x2fv(C.GLint(location), C.GLsizei(len(list)), glBool(transpose), ((*C.GLfloat)((unsafe.Pointer)(&list[0]))))
-}
-
-func (location UniformLocation) UniformMatrix3x2f(transpose bool, matrix *[6]float32) {
-	if matrix == nil {
-		panic("Matrix is nil")
-	}
-	C.glUniformMatrix3x2fv(C.GLint(location), 1, glBool(transpose), ((*C.GLfloat)((unsafe.Pointer)(&matrix[0]))))
-}
-
-func (location UniformLocation) UniformMatrix2x4fv(transpose bool, list ...[8]float32) {
-	if len(list) < 1 {
-		panic("Invalid array length - must be at least 1")
-	}
-	C.glUniformMatrix2x4fv(C.GLint(location), C.GLsizei(len(list)), glBool(transpose), ((*C.GLfloat)((unsafe.Pointer)(&list[0]))))
-}
-
-func (location UniformLocation) UniformMatrix2x4f(transpose bool, matrix *[8]float32) {
-	if matrix == nil {
-		panic("Matrix is nil")
-	}
-	C.glUniformMatrix2x4fv(C.GLint(location), 1, glBool(transpose), ((*C.GLfloat)((unsafe.Pointer)(&matrix[0]))))
-}
-
-func (location UniformLocation) UniformMatrix4x2fv(transpose bool, list ...[8]float32) {
-	if len(list) < 1 {
-		panic("Invalid array length - must be at least 1")
-	}
-	C.glUniformMatrix4x2fv(C.GLint(location), C.GLsizei(len(list)), glBool(transpose), ((*C.GLfloat)((unsafe.Pointer)(&list[0]))))
-}
-
-func (location UniformLocation) UniformMatrix4x2f(transpose bool, matrix *[8]float32) {
-	if matrix == nil {
-		panic("Matrix is nil")
-	}
-	C.glUniformMatrix4x2fv(C.GLint(location), 1, glBool(transpose), ((*C.GLfloat)((unsafe.Pointer)(&matrix[0]))))
-}
-
-func (location UniformLocation) UniformMatrix3x4fv(transpose bool, list ...[12]float32) {
-	if len(list) < 1 {
-		panic("Invalid array length - must be at least 1")
-	}
-	C.glUniformMatrix3x4fv(C.GLint(location), C.GLsizei(len(list)), glBool(transpose), ((*C.GLfloat)((unsafe.Pointer)(&list[0]))))
-}
-
-func (location UniformLocation) UniformMatrix3x4f(transpose bool, matrix *[12]float32) {
-	if matrix == nil {
-		panic("Matrix is nil")
-	}
-	C.glUniformMatrix3x4fv(C.GLint(location), 1, glBool(transpose), ((*C.GLfloat)((unsafe.Pointer)(&matrix[0]))))
-}
-
-func (location UniformLocation) UniformMatrix4x3fv(transpose bool, list ...[12]float32) {
-	if len(list) < 1 {
-		panic("Invalid array length - must be at least 1")
-	}
-	C.glUniformMatrix4x3fv(C.GLint(location), C.GLsizei(len(list)), glBool(transpose), ((*C.GLfloat)((unsafe.Pointer)(&list[0]))))
-}
-
-func (location UniformLocation) UniformMatrix4x3f(transpose bool, matrix *[12]float32) {
-	if matrix == nil {
-		panic("Matrix is nil")
-	}
-	C.glUniformMatrix4x3fv(C.GLint(location), 1, glBool(transpose), ((*C.GLfloat)((unsafe.Pointer)(&matrix[0]))))
 }
