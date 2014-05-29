@@ -553,7 +553,7 @@ func AlphaFunc(funcion GLenum, ref float32) {
 	C.glAlphaFunc(C.GLenum(funcion), C.GLclampf(ref))
 }
 
-func AreTexturesResident(textures []uint, residences []bool) bool {
+func AreTexturesResident(textures []Texture, residences []bool) bool {
 	sz := len(textures)
 	if sz == 0 {
 		return false
@@ -570,6 +570,11 @@ func AreTexturesResident(textures []uint, residences []bool) bool {
 	))
 }
 
+func (texture Texture) IsResident() bool {
+	var b C.GLboolean
+	return goBool(C.glAreTexturesResident(C.GLsizei(1), (*C.GLuint)(&texture), &b))
+}
+
 func ArrayElement(i int) {
 	C.glArrayElement(C.GLint(i))
 }
@@ -578,8 +583,12 @@ func Begin(mode GLenum) {
 	C.glBegin(C.GLenum(mode))
 }
 
-func BindTexture(target GLenum, texture uint) {
+func (texture Texture) Bind(target GLenum) {
 	C.glBindTexture(C.GLenum(target), C.GLuint(texture))
+}
+
+func (_ Texture) Unbind(target GLenum) {
+	C.glBindTexture(C.GLenum(target), C.GLuint(0))
 }
 
 func Bitmap(width int, height int, xorig float32, yorig float32, xmove float32, ymove float32, bitmap []uint8) {
@@ -590,11 +599,11 @@ func BlendFunc(sfactor GLenum, dfactor GLenum) {
 	C.glBlendFunc(C.GLenum(sfactor), C.GLenum(dfactor))
 }
 
-func CallList(list uint) {
+func (list List) Call() {
 	C.glCallList(C.GLuint(list))
 }
 
-func CallLists(n int, typ GLenum, lists interface{}) {
+func CallLists(n int, typ GLenum, lists []List) {
 	C.glCallLists(C.GLsizei(n), C.GLenum(typ), glPointer(lists))
 }
 
@@ -790,12 +799,16 @@ func CullFace(mode GLenum) {
 	C.glCullFace(C.GLenum(mode))
 }
 
-func DeleteLists(list uint, rang int) {
+func (list List) Delete(rang int) {
 	C.glDeleteLists(C.GLuint(list), C.GLsizei(rang))
 }
 
-func DeleteTextures(n int, textures []uint32) {
-	C.glDeleteTextures(C.GLsizei(n), (*C.GLuint)(&textures[0]))
+func DeleteTextures(textures []Texture) {
+	C.glDeleteTextures(C.GLsizei(len(textures)), (*C.GLuint)(&textures[0]))
+}
+
+func (texture Texture) Delete() {
+	C.glDeleteTextures(C.GLsizei(1), (*C.GLuint)(&texture))
 }
 
 func DepthFunc(function GLenum) {
@@ -946,17 +959,21 @@ func Frustum(left float64, right float64, bottom float64, top float64, zNear flo
 	C.glFrustum(C.GLdouble(left), C.GLdouble(right), C.GLdouble(bottom), C.GLdouble(top), C.GLdouble(zNear), C.GLdouble(zFar))
 }
 
-func GenLists(rang int32) uint {
-	return uint(C.glGenLists(C.GLsizei(rang)))
+func GenLists(rang int32) List {
+	return List(C.glGenLists(C.GLsizei(rang)))
 }
 
-func GenTextures(n int, textures []uint32) {
-	C.glGenTextures(C.GLsizei(n), (*C.GLuint)(&textures[0]))
+func GenTextures(textures []Texture) {
+	C.glGenTextures(C.GLsizei(len(textures)), (*C.GLuint)(&textures[0]))
+}
+
+func GenTexture() (texture Texture) {
+	C.glGenTextures(C.GLsizei(1), (*C.GLuint)(&texture))
+	return
 }
 
 func GetBooleanv(pname GLenum, params []bool) {
 	C.glGetBooleanv(C.GLenum(pname), (*C.GLboolean)(unsafe.Pointer(&params[0])))
-	// C.glGetBooleanv(C.GLenum(pname), (*C.GLboolean)(&params[0]))
 }
 
 func GetClipPlane(plane GLenum, equation []float64) {
@@ -1136,12 +1153,12 @@ func IsEnabled(cap GLenum) bool {
 	return goBool(C.glIsEnabled(C.GLenum(cap)))
 }
 
-func IsList(list uint) bool {
-	return goBool(C.glIsList(C.GLuint(list)))
+func (object Object) IsList() bool {
+	return goBool(C.glIsList(C.GLuint(object)))
 }
 
-func IsTexture(texture uint) bool {
-	return goBool(C.glIsTexture(C.GLuint(texture)))
+func (object Object) IsTexture() bool {
+	return goBool(C.glIsTexture(C.GLuint(object)))
 }
 
 func LightModelf(pname GLenum, param float32) {
@@ -1184,8 +1201,8 @@ func LineWidth(width float32) {
 	C.glLineWidth(C.GLfloat(width))
 }
 
-func ListBase(base uint) {
-	C.glListBase(C.GLuint(base))
+func (list List) Base() {
+	C.glListBase(C.GLuint(list))
 }
 
 func LoadIdentity() {
@@ -1268,7 +1285,7 @@ func MultMatrixf(m []float32) {
 	C.glMultMatrixf((*C.GLfloat)(&m[0]))
 }
 
-func NewList(list uint, mode GLenum) {
+func (list List) New(mode GLenum) {
 	C.glNewList(C.GLuint(list), C.GLenum(mode))
 }
 
@@ -1388,8 +1405,8 @@ func PopName() {
 	C.glPopName()
 }
 
-func PrioritizeTextures(n int, textures *uint32, priorities *float32) {
-	C.glPrioritizeTextures(C.GLsizei(n), (*C.GLuint)(textures), (*C.GLclampf)(priorities))
+func PrioritizeTextures(textures []Texture, priorities []float32) {
+	C.glPrioritizeTextures(C.GLsizei(len(textures)), (*C.GLuint)(&textures[0]), (*C.GLclampf)(&priorities[0]))
 }
 
 func PushAttrib(mask uint32) {

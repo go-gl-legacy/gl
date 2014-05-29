@@ -31,6 +31,7 @@ type GLuint C.GLuint
 type GLushort C.GLushort
 
 type Object C.GLuint
+type List Object
 type Texture Object
 
 func glBool(v bool) C.GLboolean {
@@ -77,6 +78,10 @@ func glPointer(v interface{}) unsafe.Pointer {
 func Init() GLenum {
 	C.glewExperimental = glBool(true)
 	return GLenum(C.glewInit())
+}
+
+func IsExtensionSupported(name string) bool {
+	return goBool(C.glewGetExtension(C.CString(name)))
 }
 
 // Creates a slice from a raw buffer address. The pointer returned points to a slice.
