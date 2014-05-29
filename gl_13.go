@@ -105,3 +105,199 @@ const (
 	TRANSPOSE_PROJECTION_MATRIX    = C.GL_TRANSPOSE_PROJECTION_MATRIX
 	TRANSPOSE_TEXTURE_MATRIX       = C.GL_TRANSPOSE_TEXTURE_MATRIX
 )
+
+func ActiveTexture(texture GLenum) {
+	C.glActiveTexture(C.GLenum(texture))
+}
+
+func ClientActiveTexture(texture GLenum) {
+	C.glClientActiveTexture(C.GLenum(texture))
+}
+
+func CompressedTexImage1D(target GLenum, level int, internalformat GLenum, width int, border int, imageSize int, data interface{}) {
+	C.glCompressedTexImage1D(C.GLenum(target), C.GLint(level), C.GLenum(internalformat), C.GLsizei(width), C.GLint(border), C.GLsizei(imageSize), glPointer(data))
+}
+
+func CompressedTexImage2D(target GLenum, level int, internalformat GLenum, width int, height int, border int, imageSize int, data interface{}) {
+	C.glCompressedTexImage2D(C.GLenum(target), C.GLint(level), C.GLenum(internalformat), C.GLsizei(width), C.GLsizei(height), C.GLint(border), C.GLsizei(imageSize), glPointer(data))
+}
+
+func CompressedTexImage3D(target GLenum, level int, internalformat GLenum, width int, height int, depth int, border int, imageSize int, data interface{}) {
+	C.glCompressedTexImage3D(C.GLenum(target), C.GLint(level), C.GLenum(internalformat), C.GLsizei(width), C.GLsizei(height), C.GLsizei(depth), C.GLint(border), C.GLsizei(imageSize), glPointer(data))
+}
+
+func CompressedTexSubImage1D(target GLenum, level int, xoffset int, width int, format GLenum, imageSize int, data interface{}) {
+	C.glCompressedTexSubImage1D(C.GLenum(target), C.GLint(level), C.GLint(xoffset), C.GLsizei(width), C.GLenum(format), C.GLsizei(imageSize), glPointer(data))
+}
+
+func CompressedTexSubImage2D(target GLenum, level int, xoffset int, yoffset int, width int, height int, format GLenum, imageSize int, data interface{}) {
+	C.glCompressedTexSubImage2D(C.GLenum(target), C.GLint(level), C.GLint(xoffset), C.GLint(yoffset), C.GLsizei(width), C.GLsizei(height), C.GLenum(format), C.GLsizei(imageSize), glPointer(data))
+}
+
+func CompressedTexSubImage3D(target GLenum, level int, xoffset int, yoffset int, zoffset int, width int, height int, depth int, format GLenum, imageSize int, data interface{}) {
+	C.glCompressedTexSubImage3D(C.GLenum(target), C.GLint(level), C.GLint(xoffset), C.GLint(yoffset), C.GLint(zoffset), C.GLsizei(width), C.GLsizei(height), C.GLsizei(depth), C.GLenum(format), C.GLsizei(imageSize), glPointer(data))
+}
+
+func GetCompressedTexImage(target GLenum, lod int, img interface{}) {
+	C.glGetCompressedTexImage(C.GLenum(target), C.GLint(lod), glPointer(img))
+}
+
+func LoadTransposeMatrixd(m []float64) {
+	if len(m) != 16 {
+		panic("Matrix must contain 16 elements")
+	}
+	C.glLoadTransposeMatrixd((*C.GLdouble)(&m[0]))
+}
+
+func LoadTransposeMatrixf(m []float32) {
+	if len(m) != 16 {
+		panic("Matrix must contain 16 elements")
+	}
+	C.glLoadTransposeMatrixf((*C.GLfloat)(&m[0]))
+}
+
+func MultTransposeMatrixd(m []float64) {
+	if len(m) != 16 {
+		panic("Matrix must contain 16 elements")
+	}
+	C.glMultTransposeMatrixd((*C.GLdouble)(&m[0]))
+}
+
+func MultTransposeMatrixf(m []float32) {
+	if len(m) != 16 {
+		panic("Matrix must contain 16 elements")
+	}
+	C.glMultTransposeMatrixf((*C.GLfloat)(&m[0]))
+}
+
+func MultiTexCoord1d(target GLenum, s float64) {
+	C.glMultiTexCoord1d(C.GLenum(target), C.GLdouble(s))
+}
+
+func MultiTexCoord1dv(target GLenum, v []float64) {
+	C.glMultiTexCoord1dv(C.GLenum(target), (*C.GLdouble)(&v[0]))
+}
+
+func MultiTexCoord1f(target GLenum, s float32) {
+	C.glMultiTexCoord1f(C.GLenum(target), C.GLfloat(s))
+}
+
+func MultiTexCoord1fv(target GLenum, v []float32) {
+	C.glMultiTexCoord1fv(C.GLenum(target), (*C.GLfloat)(&v[0]))
+}
+
+func MultiTexCoord1i(target GLenum, s int) {
+	C.glMultiTexCoord1i(C.GLenum(target), C.GLint(s))
+}
+
+func MultiTexCoord1iv(target GLenum, v []int32) {
+	C.glMultiTexCoord1iv(C.GLenum(target), (*C.GLint)(&v[0]))
+}
+
+func MultiTexCoord1s(target GLenum, s int16) {
+	C.glMultiTexCoord1s(C.GLenum(target), C.GLshort(s))
+}
+
+func MultiTexCoord1sv(target GLenum, v []int16) {
+	C.glMultiTexCoord1sv(C.GLenum(target), (*C.GLshort)(&v[0]))
+}
+
+func MultiTexCoord2d(target GLenum, s float64, t float64) {
+	C.glMultiTexCoord2d(C.GLenum(target), C.GLdouble(s), C.GLdouble(t))
+}
+
+func MultiTexCoord2dv(target GLenum, v []float64) {
+	C.glMultiTexCoord2dv(C.GLenum(target), (*C.GLdouble)(&v[0]))
+}
+
+func MultiTexCoord2f(target GLenum, s float32, t float32) {
+	C.glMultiTexCoord2f(C.GLenum(target), C.GLfloat(s), C.GLfloat(t))
+}
+
+func MultiTexCoord2fv(target GLenum, v []float32) {
+	C.glMultiTexCoord2fv(C.GLenum(target), (*C.GLfloat)(&v[0]))
+}
+
+func MultiTexCoord2i(target GLenum, s int, t int) {
+	C.glMultiTexCoord2i(C.GLenum(target), C.GLint(s), C.GLint(t))
+}
+
+func MultiTexCoord2iv(target GLenum, v []int32) {
+	C.glMultiTexCoord2iv(C.GLenum(target), (*C.GLint)(&v[0]))
+}
+
+func MultiTexCoord2s(target GLenum, s int16, t int16) {
+	C.glMultiTexCoord2s(C.GLenum(target), C.GLshort(s), C.GLshort(t))
+}
+
+func MultiTexCoord2sv(target GLenum, v []int16) {
+	C.glMultiTexCoord2sv(C.GLenum(target), (*C.GLshort)(&v[0]))
+}
+
+func MultiTexCoord3d(target GLenum, s float64, t float64, r float64) {
+	C.glMultiTexCoord3d(C.GLenum(target), C.GLdouble(s), C.GLdouble(t), C.GLdouble(r))
+}
+
+func MultiTexCoord3dv(target GLenum, v []float64) {
+	C.glMultiTexCoord3dv(C.GLenum(target), (*C.GLdouble)(&v[0]))
+}
+
+func MultiTexCoord3f(target GLenum, s float32, t float32, r float32) {
+	C.glMultiTexCoord3f(C.GLenum(target), C.GLfloat(s), C.GLfloat(t), C.GLfloat(r))
+}
+
+func MultiTexCoord3fv(target GLenum, v []float32) {
+	C.glMultiTexCoord3fv(C.GLenum(target), (*C.GLfloat)(&v[0]))
+}
+
+func MultiTexCoord3i(target GLenum, s int, t int, r int) {
+	C.glMultiTexCoord3i(C.GLenum(target), C.GLint(s), C.GLint(t), C.GLint(r))
+}
+
+func MultiTexCoord3iv(target GLenum, v []int32) {
+	C.glMultiTexCoord3iv(C.GLenum(target), (*C.GLint)(&v[0]))
+}
+
+func MultiTexCoord3s(target GLenum, s int16, t int16, r int16) {
+	C.glMultiTexCoord3s(C.GLenum(target), C.GLshort(s), C.GLshort(t), C.GLshort(r))
+}
+
+func MultiTexCoord3sv(target GLenum, v []int16) {
+	C.glMultiTexCoord3sv(C.GLenum(target), (*C.GLshort)(&v[0]))
+}
+
+func MultiTexCoord4d(target GLenum, s float64, t float64, r float64, q float64) {
+	C.glMultiTexCoord4d(C.GLenum(target), C.GLdouble(s), C.GLdouble(t), C.GLdouble(r), C.GLdouble(q))
+}
+
+func MultiTexCoord4dv(target GLenum, v []float64) {
+	C.glMultiTexCoord4dv(C.GLenum(target), (*C.GLdouble)(&v[0]))
+}
+
+func MultiTexCoord4f(target GLenum, s float32, t float32, r float32, q float32) {
+	C.glMultiTexCoord4f(C.GLenum(target), C.GLfloat(s), C.GLfloat(t), C.GLfloat(r), C.GLfloat(q))
+}
+
+func MultiTexCoord4fv(target GLenum, v []float32) {
+	C.glMultiTexCoord4fv(C.GLenum(target), (*C.GLfloat)(&v[0]))
+}
+
+func MultiTexCoord4i(target GLenum, s int, t int, r int, q int) {
+	C.glMultiTexCoord4i(C.GLenum(target), C.GLint(s), C.GLint(t), C.GLint(r), C.GLint(q))
+}
+
+func MultiTexCoord4iv(target GLenum, v []int32) {
+	C.glMultiTexCoord4iv(C.GLenum(target), (*C.GLint)(&v[0]))
+}
+
+func MultiTexCoord4s(target GLenum, s int16, t int16, r int16, q int16) {
+	C.glMultiTexCoord4s(C.GLenum(target), C.GLshort(s), C.GLshort(t), C.GLshort(r), C.GLshort(q))
+}
+
+func MultiTexCoord4sv(target GLenum, v []int16) {
+	C.glMultiTexCoord4sv(C.GLenum(target), (*C.GLshort)(&v[0]))
+}
+
+func SampleCoverage(value float32, invert bool) {
+	C.glSampleCoverage(C.GLclampf(value), glBool(invert))
+}
