@@ -9,8 +9,6 @@ import "C"
 
 // Transform Feedback Objects
 
-type TransformFeedback Object
-
 // Create a single transform feedback object
 func GenTransformFeedback() TransformFeedback {
 	var t C.GLuint

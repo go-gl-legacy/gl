@@ -123,8 +123,9 @@ func GetBufferParameteriv(target GLenum, pname GLenum, params []int32) {
 	C.glGetBufferParameteriv(C.GLenum(target), C.GLenum(pname), (*C.GLint)(&params[0]))
 }
 
-func GetBufferPointerv(target GLenum, pname GLenum, params []unsafe.Pointer) {
-	C.glGetBufferPointerv(C.GLenum(target), C.GLenum(pname), &params[0])
+func GetBufferPointerv(target GLenum, pname GLenum) (ptr unsafe.Pointer) {
+	C.glGetBufferPointerv(C.GLenum(target), C.GLenum(pname), &ptr)
+	return
 }
 
 func GetBufferSubData(target GLenum, offset int, size int, data interface{}) {

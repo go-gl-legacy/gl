@@ -622,10 +622,11 @@ func (program Program) NamedLocalParametersI4uiv(target GLenum, index uint, coun
 	C.glNamedProgramLocalParametersI4uivEXT(C.GLuint(program), C.GLenum(target), C.GLuint(index), C.GLsizei(count), (*C.GLuint)(&params[0]))
 }
 
-// TODO
-// func (program Program) NamedProgramString(target GLenum, format GLenum, len int, GLvoid const *string) {
-// 	C.glNamedProgramStringEXT(C.GLuint(program), C.GLenum(target), C.GLenum(format), C.GLsizei(len), C.const(GLvoid) *string)
-// }
+func (program Program) NamedProgramString(target GLenum, format GLenum, len int, str string) {
+	cstring := glString(str)
+	defer freeString(cstring)
+	C.glNamedProgramStringEXT(C.GLuint(program), C.GLenum(target), C.GLenum(format), C.GLsizei(len), unsafe.Pointer(cstring))
+}
 
 func (renderbuffer Renderbuffer) NamedStorage(internalformat GLenum, width int, height int) {
 	C.glNamedRenderbufferStorageEXT(C.GLuint(renderbuffer), C.GLenum(internalformat), C.GLsizei(width), C.GLsizei(height))

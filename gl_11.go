@@ -1036,8 +1036,9 @@ func GetPixelMapusv(mp GLenum, values []uint16) {
 	C.glGetPixelMapusv(C.GLenum(mp), (*C.GLushort)(&values[0]))
 }
 
-func GetPointerv(pname GLenum, params []unsafe.Pointer) {
-	C.glGetPointerv(C.GLenum(pname), &params[0])
+func GetPointerv(pname GLenum) (ptr unsafe.Pointer) {
+	C.glGetPointerv(C.GLenum(pname), &ptr)
+	return
 }
 
 func GetPolygonStipple(mask []uint8) {

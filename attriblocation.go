@@ -9,8 +9,6 @@ import "C"
 
 // AttribLocation
 
-
-
 func (indx AttribLocation) Attrib1f(x float32) {
 	C.glVertexAttrib1f(C.GLuint(indx), C.GLfloat(x))
 }
