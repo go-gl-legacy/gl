@@ -138,7 +138,7 @@ func (program Program) DetachShader(shader Shader) {
 	C.glDetachShader(C.GLuint(program), C.GLuint(shader))
 }
 
-func DisableVertexAttribArray(index uint) {
+func (index AttribLocation) DisableArray() {
 	C.glDisableVertexAttribArray(C.GLuint(index))
 }
 
@@ -146,7 +146,7 @@ func DrawBuffers(bufs []GLenum) {
 	C.glDrawBuffers(C.GLsizei(len(bufs)), (*C.GLenum)(&bufs[0]))
 }
 
-func EnableVertexAttribArray(index uint) {
+func (index AttribLocation) EnableArray() {
 	C.glEnableVertexAttribArray(C.GLuint(index))
 }
 
