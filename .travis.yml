@@ -4,6 +4,14 @@ install:
   - wget -q https://raw.github.com/go-gl/testutils/master/travis-helper-functions.sh
   - source travis-helper-functions.sh
   - initialize
+  - erl sudo eatmydata apt-get remove -qq libglew* || die "Failed to remove libglew-dev"
+  - erl sudo eatmydata apt-get install -qq libgl1-mesa-dev libxrandr-dev libglu1-mesa-dev libx11-dev libxi-dev libxmu-dev || die "Failed to install dependencies"
+  - wget -q "https://sourceforge.net/projects/glew/files/glew/1.10.0/glew-1.10.0.tgz/download" -O glew-1.10.0.tgz
+  - tar xf glew-1.10.0.tgz
+  - pushd glew-1.10.0
+  - make
+  - sudo make install
+  - popd
   - subtest-init go-gl/gl go-gl/examples
 
 script:
@@ -24,4 +32,3 @@ notifications:
       - jimteeuwen@gmail.com
     on_success: change
     on_failure: always
-

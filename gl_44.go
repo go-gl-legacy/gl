@@ -4,4 +4,9 @@
 
 package gl
 
-type UniformBlockIndex uint
+// #include "gl.h"
+import "C"
+
+const (
+	MAX_VERTEX_ATTRIB_STRIDE = C.GL_MAX_VERTEX_ATTRIB_STRIDE
+)

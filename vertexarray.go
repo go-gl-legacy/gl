@@ -8,7 +8,6 @@ package gl
 import "C"
 
 // Vertex Arrays
-type VertexArray Object
 
 func GenVertexArray() VertexArray {
 	var a C.GLuint
