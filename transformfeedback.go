@@ -45,17 +45,7 @@ func (feedback TransformFeedback) Bind(target GLenum) {
 	C.glBindTransformFeedback(C.GLenum(target), C.GLuint(feedback))
 }
 
-// Begin transform feedback with primitive type 'mode'
-func BeginTransformFeedback(mode GLenum) {
-	C.glBeginTransformFeedback(C.GLenum(mode))
-}
-
 // Pause transform feedback
 func PauseTransformFeedback() {
 	C.glPauseTransformFeedback()
-}
-
-// End transform feedback
-func EndTransformFeedback() {
-	C.glEndTransformFeedback()
 }

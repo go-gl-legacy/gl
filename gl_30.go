@@ -6,6 +6,7 @@ package gl
 
 // #include "gl.h"
 import "C"
+import "unsafe"
 
 const (
 	ALPHA_INTEGER                                 = C.GL_ALPHA_INTEGER
@@ -114,3 +115,240 @@ const (
 	UNSIGNED_INT_VEC4                             = C.GL_UNSIGNED_INT_VEC4
 	VERTEX_ATTRIB_ARRAY_INTEGER                   = C.GL_VERTEX_ATTRIB_ARRAY_INTEGER
 )
+
+func (query Query) BeginConditionalRender(mode GLenum) {
+	C.glBeginConditionalRender(C.GLuint(query), C.GLenum(mode))
+}
+
+func BeginTransformFeedback(primitiveMode GLenum) {
+	C.glBeginTransformFeedback(C.GLenum(primitiveMode))
+}
+
+func (program Program) BindFragDataLocation(colorNumber uint, name string) {
+	cname := glString(name)
+	defer freeString(cname)
+	C.glBindFragDataLocation(C.GLuint(program), C.GLuint(colorNumber), cname)
+}
+
+func ClampColor(target GLenum, clamp GLenum) {
+	C.glClampColor(C.GLenum(target), C.GLenum(clamp))
+}
+
+func ClearBufferfi(buffer GLenum, drawBuffer int, depth float32, stencil int) {
+	C.glClearBufferfi(C.GLenum(buffer), C.GLint(drawBuffer), C.GLfloat(depth), C.GLint(stencil))
+}
+
+func ClearBufferfv(buffer GLenum, drawBuffer int, value []float32) {
+	C.glClearBufferfv(C.GLenum(buffer), C.GLint(drawBuffer), (*C.GLfloat)(&value[0]))
+}
+
+func ClearBufferiv(buffer GLenum, drawBuffer int, value []int32) {
+	C.glClearBufferiv(C.GLenum(buffer), C.GLint(drawBuffer), (*C.GLint)(&value[0]))
+}
+
+func ClearBufferuiv(buffer GLenum, drawBuffer int, value []uint32) {
+	C.glClearBufferuiv(C.GLenum(buffer), C.GLint(drawBuffer), (*C.GLuint)(&value[0]))
+}
+
+func ColorMaski(buf uint, red bool, green bool, blue bool, alpha bool) {
+	C.glColorMaski(C.GLuint(buf), glBool(red), glBool(green), glBool(blue), glBool(alpha))
+}
+
+func Disablei(cap GLenum, index uint) {
+	C.glDisablei(C.GLenum(cap), C.GLuint(index))
+}
+
+func Enablei(cap GLenum, index uint) {
+	C.glEnablei(C.GLenum(cap), C.GLuint(index))
+}
+
+func (_ Query) EndConditionalRender() {
+	C.glEndConditionalRender()
+}
+
+func EndTransformFeedback() {
+	C.glEndTransformFeedback()
+}
+
+func GetBooleani_v(pname GLenum, index uint, data []bool) {
+	C.glGetBooleani_v(C.GLenum(pname), C.GLuint(index), (*C.GLboolean)(unsafe.Pointer(&data[0])))
+}
+
+// TODO type?
+func (program Program) GetFragDataLocation(name string) Object {
+	cname := glString(name)
+	defer freeString(cname)
+	return Object(C.glGetFragDataLocation(C.GLuint(program), cname))
+}
+
+func GetStringi(name GLenum, index uint) string {
+	s := unsafe.Pointer(C.glGetStringi(C.GLenum(name), C.GLuint(index)))
+	return C.GoString((*C.char)(s))
+}
+
+func GetTexParameterIiv(target GLenum, pname GLenum, params []int32) {
+	C.glGetTexParameterIiv(C.GLenum(target), C.GLenum(pname), (*C.GLint)(&params[0]))
+}
+
+func GetTexParameterIuiv(target GLenum, pname GLenum, params []uint32) {
+	C.glGetTexParameterIuiv(C.GLenum(target), C.GLenum(pname), (*C.GLuint)(&params[0]))
+}
+
+func (program Program) GetTransformFeedbackVarying(index uint) (int, GLenum, string) {
+	var typ C.GLenum
+	var recvLen C.GLsizei
+	var varyingLength C.GLsizei
+	length := program.Get(TRANSFORM_FEEDBACK_VARYING_MAX_LENGTH)
+	buf := make([]C.GLchar, length)
+	C.glGetTransformFeedbackVarying(C.GLuint(program), C.GLuint(index), C.GLsizei(length), &recvLen, &varyingLength, (*C.GLenum)(&typ), &buf[0])
+	return int(varyingLength), GLenum(typ), C.GoString((*C.char)(&buf[0]))
+}
+
+func (program Program) GetUniformuiv(location UniformLocation, params []uint32) {
+	C.glGetUniformuiv(C.GLuint(program), C.GLint(location), (*C.GLuint)(&params[0]))
+}
+
+func GetVertexAttribIiv(index uint, pname GLenum, params []int32) {
+	C.glGetVertexAttribIiv(C.GLuint(index), C.GLenum(pname), (*C.GLint)(&params[0]))
+}
+
+func GetVertexAttribIuiv(index uint, pname GLenum, params []uint32) {
+	C.glGetVertexAttribIuiv(C.GLuint(index), C.GLenum(pname), (*C.GLuint)(&params[0]))
+}
+
+func IsEnabledi(cap GLenum, index uint) bool {
+	return goBool(C.glIsEnabledi(C.GLenum(cap), C.GLuint(index)))
+}
+
+func TexParameterIiv(target GLenum, pname GLenum, params []int32) {
+	C.glTexParameterIiv(C.GLenum(target), C.GLenum(pname), (*C.GLint)(&params[0]))
+}
+
+func TexParameterIuiv(target GLenum, pname GLenum, params []uint32) {
+	C.glTexParameterIuiv(C.GLenum(target), C.GLenum(pname), (*C.GLuint)(&params[0]))
+}
+
+func (program Program) TransformFeedbackVaryings(varyings []string, bufferMode GLenum) {
+	cvaryings := make([]*C.GLchar, len(varyings))
+	for i := range varyings {
+		cvaryings[i] = glString(varyings[i])
+		defer freeString(cvaryings[i])
+	}
+	C.glTransformFeedbackVaryings(C.GLuint(program), C.GLsizei(len(varyings)), (**C.GLchar)(&cvaryings[0]), C.GLenum(bufferMode))
+}
+
+func (location UniformLocation) Uniform1ui(v0 uint) {
+	C.glUniform1ui(C.GLint(location), C.GLuint(v0))
+}
+
+func (location UniformLocation) Uniform1uiv(values []uint32) {
+	C.glUniform1uiv(C.GLint(location), C.GLsizei(len(values)), (*C.GLuint)(&values[0]))
+}
+
+func (location UniformLocation) Uniform2ui(v0 uint, v1 uint) {
+	C.glUniform2ui(C.GLint(location), C.GLuint(v0), C.GLuint(v1))
+}
+
+func (location UniformLocation) Uniform2uiv(values []uint32) {
+	C.glUniform2uiv(C.GLint(location), C.GLsizei(len(values)), (*C.GLuint)(&values[0]))
+}
+
+func (location UniformLocation) Uniform3ui(v0 uint, v1 uint, v2 uint) {
+	C.glUniform3ui(C.GLint(location), C.GLuint(v0), C.GLuint(v1), C.GLuint(v2))
+}
+
+func (location UniformLocation) Uniform3uiv(values []uint32) {
+	C.glUniform3uiv(C.GLint(location), C.GLsizei(len(values)), (*C.GLuint)(&values[0]))
+}
+
+func (location UniformLocation) Uniform4ui(v0 uint, v1 uint, v2 uint, v3 uint) {
+	C.glUniform4ui(C.GLint(location), C.GLuint(v0), C.GLuint(v1), C.GLuint(v2), C.GLuint(v3))
+}
+
+func (location UniformLocation) Uniform4uiv(values []uint32) {
+	C.glUniform4uiv(C.GLint(location), C.GLsizei(len(values)), (*C.GLuint)(&values[0]))
+}
+
+func (location AttribLocation) AttribI1i(v0 int) {
+	C.glVertexAttribI1i(C.GLuint(location), C.GLint(v0))
+}
+
+func (location AttribLocation) AttribI1iv(v []int32) {
+	C.glVertexAttribI1iv(C.GLuint(location), (*C.GLint)(&v[0]))
+}
+
+func (location AttribLocation) AttribI1ui(v0 uint) {
+	C.glVertexAttribI1ui(C.GLuint(location), C.GLuint(v0))
+}
+
+func (location AttribLocation) AttribI1uiv(v []uint32) {
+	C.glVertexAttribI1uiv(C.GLuint(location), (*C.GLuint)(&v[0]))
+}
+
+func (location AttribLocation) AttribI2i(v0 int, v1 int) {
+	C.glVertexAttribI2i(C.GLuint(location), C.GLint(v0), C.GLint(v1))
+}
+
+func (location AttribLocation) AttribI2iv(v []int32) {
+	C.glVertexAttribI2iv(C.GLuint(location), (*C.GLint)(&v[0]))
+}
+
+func (location AttribLocation) AttribI2ui(v0 uint, v1 uint) {
+	C.glVertexAttribI2ui(C.GLuint(location), C.GLuint(v0), C.GLuint(v1))
+}
+
+func (location AttribLocation) AttribI2uiv(v []uint32) {
+	C.glVertexAttribI2uiv(C.GLuint(location), (*C.GLuint)(&v[0]))
+}
+
+func (location AttribLocation) AttribI3i(v0 int, v1 int, v2 int) {
+	C.glVertexAttribI3i(C.GLuint(location), C.GLint(v0), C.GLint(v1), C.GLint(v2))
+}
+
+func (location AttribLocation) AttribI3iv(v []int32) {
+	C.glVertexAttribI3iv(C.GLuint(location), (*C.GLint)(&v[0]))
+}
+
+func (location AttribLocation) AttribI3ui(v0 uint, v1 uint, v2 uint) {
+	C.glVertexAttribI3ui(C.GLuint(location), C.GLuint(v0), C.GLuint(v1), C.GLuint(v2))
+}
+
+func (location AttribLocation) AttribI3uiv(v []uint32) {
+	C.glVertexAttribI3uiv(C.GLuint(location), (*C.GLuint)(&v[0]))
+}
+
+func (location AttribLocation) AttribI4bv(v []int8) {
+	C.glVertexAttribI4bv(C.GLuint(location), (*C.GLbyte)(&v[0]))
+}
+
+func (location AttribLocation) AttribI4i(v0 int, v1 int, v2 int, v3 int) {
+	C.glVertexAttribI4i(C.GLuint(location), C.GLint(v0), C.GLint(v1), C.GLint(v2), C.GLint(v3))
+}
+
+func (location AttribLocation) AttribI4iv(v []int32) {
+	C.glVertexAttribI4iv(C.GLuint(location), (*C.GLint)(&v[0]))
+}
+
+func (location AttribLocation) AttribI4sv(v []int16) {
+	C.glVertexAttribI4sv(C.GLuint(location), (*C.GLshort)(&v[0]))
+}
+
+func (location AttribLocation) AttribI4ubv(v []uint8) {
+	C.glVertexAttribI4ubv(C.GLuint(location), (*C.GLubyte)(&v[0]))
+}
+
+func (location AttribLocation) AttribI4ui(v0 uint, v1 uint, v2 uint, v3 uint) {
+	C.glVertexAttribI4ui(C.GLuint(location), C.GLuint(v0), C.GLuint(v1), C.GLuint(v2), C.GLuint(v3))
+}
+
+func (location AttribLocation) AttribI4uiv(v []uint32) {
+	C.glVertexAttribI4uiv(C.GLuint(location), (*C.GLuint)(&v[0]))
+}
+
+func (location AttribLocation) AttribI4usv(v []uint16) {
+	C.glVertexAttribI4usv(C.GLuint(location), (*C.GLushort)(&v[0]))
+}
+
+func (location AttribLocation) AttribIPointer(size int, typ GLenum, stride int, pointer interface{}) {
+	C.glVertexAttribIPointer(C.GLuint(location), C.GLint(size), C.GLenum(typ), C.GLsizei(stride), glPointer(pointer))
+}
