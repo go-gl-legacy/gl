@@ -10,9 +10,14 @@ package gl
 // #cgo freebsd  CFLAGS: -I/usr/local/include
 // #cgo freebsd LDFLAGS: -L/usr/local/lib -lglfw
 // #include "gl.h"
+//
+// const char *gogl_glewGetErrorString(GLenum name) {
+//     return glewGetErrorString(name);
+// }
 import "C"
 import "reflect"
 import "unsafe"
+import "fmt"
 
 type GLbitfield C.GLbitfield
 type GLboolean C.GLboolean
@@ -43,6 +48,8 @@ type Shader Object
 type Texture Object
 type TransformFeedback Object
 type VertexArray Object
+
+var extensions = map[string]*bool{}
 
 func glBool(v bool) C.GLboolean {
 	if v {
@@ -85,13 +92,25 @@ func glPointer(v interface{}) unsafe.Pointer {
 	return unsafe.Pointer(et.UnsafeAddr())
 }
 
-func Init() GLenum {
+func Init() error {
 	C.glewExperimental = glBool(true)
-	return GLenum(C.glewInit())
+
+	err := C.glewInit()
+	if err != C.GLEW_OK {
+		errStr := C.GoString(C.gogl_glewGetErrorString(err))
+		return fmt.Errorf(errStr)
+	}
+
+	for name, val := range extensions {
+		*val = IsSupported(name)
+	}
+	extensions = nil
+
+	return nil
 }
 
-func IsExtensionSupported(name string) bool {
-	return goBool(C.glewGetExtension(C.CString(name)))
+func IsSupported(name string) bool {
+	return goBool(C.glewIsSupported(C.CString(name)))
 }
 
 // Creates a slice from a raw buffer address. The pointer returned points to a slice.

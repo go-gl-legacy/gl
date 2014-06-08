@@ -62,6 +62,12 @@ const (
 	MAX_DEBUG_MESSAGE_LENGTH         = C.GL_MAX_DEBUG_MESSAGE_LENGTH_ARB
 )
 
+var ARB_debug_output = false
+
+func init() {
+	extensions["GL_ARB_debug_output"] = &ARB_debug_output
+}
+
 type debugProc func(source GLenum, typ GLenum, id uint, severity GLenum, message string)
 
 var debugCB debugProc

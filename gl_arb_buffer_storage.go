@@ -18,6 +18,12 @@ const (
 	MAP_PERSISTENT_BIT               = C.GL_MAP_PERSISTENT_BIT
 )
 
+var ARB_buffer_storage = false
+
+func init() {
+	extensions["GL_ARB_buffer_storage"] = &ARB_buffer_storage
+}
+
 func BufferStorage(target GLenum, size uint32, data unsafe.Pointer, flags uint32) {
 	C.glBufferStorage(C.GLenum(target), C.GLsizeiptr(size), data, C.GLbitfield(flags))
 }

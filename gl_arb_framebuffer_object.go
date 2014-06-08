@@ -83,6 +83,12 @@ const (
 	UNSIGNED_NORMALIZED                          = C.GL_UNSIGNED_NORMALIZED
 )
 
+var ARB_framebuffer_object = false
+
+func init() {
+	extensions["GL_ARB_framebuffer_object"] = &ARB_framebuffer_object
+}
+
 func GenerateMipmap(target GLenum) {
 	C.glGenerateMipmap(C.GLenum(target))
 }

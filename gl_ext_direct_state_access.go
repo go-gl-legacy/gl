@@ -14,6 +14,12 @@ const (
 	TRANSPOSE_PROGRAM_MATRIX   = C.GL_TRANSPOSE_PROGRAM_MATRIX_EXT
 )
 
+var EXT_direct_state_access = false
+
+func init() {
+	extensions["GL_EXT_direct_state_access"] = &EXT_direct_state_access
+}
+
 func BindMultiTexture(texunit GLenum, target GLenum, texture uint) {
 	C.glBindMultiTextureEXT(C.GLenum(texunit), C.GLenum(target), C.GLuint(texture))
 }

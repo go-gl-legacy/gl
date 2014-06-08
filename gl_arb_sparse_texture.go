@@ -21,6 +21,12 @@ const (
 	GL_VIRTUAL_PAGE_SIZE_Z                    = C.GL_VIRTUAL_PAGE_SIZE_Z_ARB
 )
 
+var ARB_sparse_texture = false
+
+func init() {
+	extensions["GL_ARB_sparse_texture"] = &ARB_sparse_texture
+}
+
 func TexPageCommitment(target GLenum, level int, xoffset int, yoffset int, zoffset int,
 	width uint, height uint, depth uint, commit bool) {
 	C.glTexPageCommitmentARB(C.GLenum(target), C.GLint(level), C.GLint(xoffset),
