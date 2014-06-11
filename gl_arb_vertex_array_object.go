@@ -7,7 +7,15 @@ package gl
 // #include "gl.h"
 import "C"
 
-// Vertex Arrays
+const (
+	VERTEX_ARRAY_BINDING = C.GL_VERTEX_ARRAY_BINDING
+)
+
+var ARB_vertex_array_object = false
+
+func init() {
+	extensions["GL_ARB_vertex_array_object"] = &ARB_vertex_array_object
+}
 
 func GenVertexArray() VertexArray {
 	var a C.GLuint
@@ -37,4 +45,8 @@ func (array VertexArray) Bind() {
 
 func (array VertexArray) Unbind() {
 	C.glBindVertexArray(C.GLuint(0))
+}
+
+func (obj Object) IsVertexArray() bool {
+	return goBool(C.glIsVertexArray(C.GLuint(obj)))
 }
