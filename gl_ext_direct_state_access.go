@@ -152,7 +152,7 @@ func (vaobj VertexArray) Enable(array GLenum) {
 	C.glEnableVertexArrayEXT(C.GLuint(vaobj), C.GLenum(array))
 }
 
-func (buffer Buffer) FlushMappedNamedBufferRange(offset uintptr, length uintptr) {
+func (buffer Buffer) FlushMappedNamedBufferRange(offset int, length int) {
 	C.glFlushMappedNamedBufferRangeEXT(C.GLuint(buffer), C.GLintptr(offset), C.GLsizeiptr(length))
 }
 
@@ -261,7 +261,7 @@ func (buffer Buffer) GetNamedPointerv(pname GLenum) (ptr unsafe.Pointer) {
 	return
 }
 
-func (buffer Buffer) GetNamedSubData(offset uintptr, size uintptr, data unsafe.Pointer) {
+func (buffer Buffer) GetNamedSubData(offset int, size int, data unsafe.Pointer) {
 	C.glGetNamedBufferSubDataEXT(C.GLuint(buffer), C.GLintptr(offset), C.GLsizeiptr(size), data)
 }
 
@@ -298,13 +298,11 @@ func (renderbuffer Renderbuffer) GetNamedParameteriv(pname GLenum, params []int3
 	C.glGetNamedRenderbufferParameterivEXT(C.GLuint(renderbuffer), C.GLenum(pname), (*C.GLint)(&params[0]))
 }
 
-// Slice?
 func GetPointerIndexedv(target GLenum, index uint) (ptr unsafe.Pointer) {
 	C.glGetPointerIndexedvEXT(C.GLenum(target), C.GLuint(index), &ptr)
 	return
 }
 
-// Slice?
 func GetPointeri_v(pname GLenum, index uint) (ptr unsafe.Pointer) {
 	C.glGetPointeri_vEXT(C.GLenum(pname), C.GLuint(index), &ptr)
 	return
@@ -346,25 +344,21 @@ func (vaobj VertexArray) GetIntegerv(pname GLenum, param []int32) {
 	C.glGetVertexArrayIntegervEXT(C.GLuint(vaobj), C.GLenum(pname), (*C.GLint)(&param[0]))
 }
 
-// Slice?
 func (vaobj VertexArray) GetPointeri_v(index uint, pname GLenum) (ptr unsafe.Pointer) {
 	C.glGetVertexArrayPointeri_vEXT(C.GLuint(vaobj), C.GLuint(index), C.GLenum(pname), &ptr)
 	return
 }
 
-// Slice?
 func (vaobj VertexArray) GetPointerv(pname GLenum) (ptr unsafe.Pointer) {
 	C.glGetVertexArrayPointervEXT(C.GLuint(vaobj), C.GLenum(pname), &ptr)
 	return
 }
 
-// Slice?
 func (buffer Buffer) MapNamed(access GLenum) unsafe.Pointer {
 	return C.glMapNamedBufferEXT(C.GLuint(buffer), C.GLenum(access))
 }
 
-// Slice?
-func (buffer Buffer) MapNamedRange(offset uintptr, length uintptr, access uint32) unsafe.Pointer {
+func (buffer Buffer) MapNamedRange(offset int, length int, access uint32) unsafe.Pointer {
 	return C.glMapNamedBufferRangeEXT(C.GLuint(buffer), C.GLintptr(offset), C.GLsizeiptr(length), C.GLbitfield(access))
 }
 
@@ -544,15 +538,15 @@ func MultiTexSubImage3D(texunit GLenum, target GLenum, level int, xoffset int, y
 	C.glMultiTexSubImage3DEXT(C.GLenum(texunit), C.GLenum(target), C.GLint(level), C.GLint(xoffset), C.GLint(yoffset), C.GLint(zoffset), C.GLsizei(width), C.GLsizei(height), C.GLsizei(depth), C.GLenum(format), C.GLenum(typ), glPointer(pixels))
 }
 
-func (buffer Buffer) NamedData(size uintptr, data interface{}, usage GLenum) {
+func (buffer Buffer) NamedData(size int, data interface{}, usage GLenum) {
 	C.glNamedBufferDataEXT(C.GLuint(buffer), C.GLsizeiptr(size), glPointer(data), C.GLenum(usage))
 }
 
-func (buffer Buffer) NamedSubData(offset uintptr, size uintptr, data interface{}) {
+func (buffer Buffer) NamedSubData(offset int, size int, data interface{}) {
 	C.glNamedBufferSubDataEXT(C.GLuint(buffer), C.GLintptr(offset), C.GLsizeiptr(size), glPointer(data))
 }
 
-func NamedCopyBufferSubData(readBuffer Buffer, writeBuffer Buffer, readOffset uintptr, writeOffset uintptr, size uintptr) {
+func NamedCopyBufferSubData(readBuffer Buffer, writeBuffer Buffer, readOffset int, writeOffset int, size int) {
 	C.glNamedCopyBufferSubDataEXT(C.GLuint(readBuffer), C.GLuint(writeBuffer), C.GLintptr(readOffset), C.GLintptr(writeOffset), C.GLsizeiptr(size))
 }
 
@@ -842,46 +836,46 @@ func (buffer Buffer) UnmapNamed() bool {
 	return goBool(C.glUnmapNamedBufferEXT(C.GLuint(buffer)))
 }
 
-func (vaobj VertexArray) ColorOffset(buffer Buffer, size int, typ GLenum, stride int, offset uintptr) {
+func (vaobj VertexArray) ColorOffset(buffer Buffer, size int, typ GLenum, stride int, offset int) {
 	C.glVertexArrayColorOffsetEXT(C.GLuint(vaobj), C.GLuint(buffer), C.GLint(size), C.GLenum(typ), C.GLsizei(stride), C.GLintptr(offset))
 }
 
-func (vaobj VertexArray) EdgeFlagOffset(buffer Buffer, stride int, offset uintptr) {
+func (vaobj VertexArray) EdgeFlagOffset(buffer Buffer, stride int, offset int) {
 	C.glVertexArrayEdgeFlagOffsetEXT(C.GLuint(vaobj), C.GLuint(buffer), C.GLsizei(stride), C.GLintptr(offset))
 }
 
-func (vaobj VertexArray) FogCoordOffset(buffer Buffer, typ GLenum, stride int, offset uintptr) {
+func (vaobj VertexArray) FogCoordOffset(buffer Buffer, typ GLenum, stride int, offset int) {
 	C.glVertexArrayFogCoordOffsetEXT(C.GLuint(vaobj), C.GLuint(buffer), C.GLenum(typ), C.GLsizei(stride), C.GLintptr(offset))
 }
 
-func (vaobj VertexArray) IndexOffset(buffer Buffer, typ GLenum, stride int, offset uintptr) {
+func (vaobj VertexArray) IndexOffset(buffer Buffer, typ GLenum, stride int, offset int) {
 	C.glVertexArrayIndexOffsetEXT(C.GLuint(vaobj), C.GLuint(buffer), C.GLenum(typ), C.GLsizei(stride), C.GLintptr(offset))
 }
 
-func (vaobj VertexArray) MultiTexCoordOffset(buffer Buffer, texunit GLenum, size int, typ GLenum, stride int, offset uintptr) {
+func (vaobj VertexArray) MultiTexCoordOffset(buffer Buffer, texunit GLenum, size int, typ GLenum, stride int, offset int) {
 	C.glVertexArrayMultiTexCoordOffsetEXT(C.GLuint(vaobj), C.GLuint(buffer), C.GLenum(texunit), C.GLint(size), C.GLenum(typ), C.GLsizei(stride), C.GLintptr(offset))
 }
 
-func (vaobj VertexArray) NormalOffset(buffer Buffer, typ GLenum, stride int, offset uintptr) {
+func (vaobj VertexArray) NormalOffset(buffer Buffer, typ GLenum, stride int, offset int) {
 	C.glVertexArrayNormalOffsetEXT(C.GLuint(vaobj), C.GLuint(buffer), C.GLenum(typ), C.GLsizei(stride), C.GLintptr(offset))
 }
 
-func (vaobj VertexArray) SecondaryColorOffset(buffer Buffer, size int, typ GLenum, stride int, offset uintptr) {
+func (vaobj VertexArray) SecondaryColorOffset(buffer Buffer, size int, typ GLenum, stride int, offset int) {
 	C.glVertexArraySecondaryColorOffsetEXT(C.GLuint(vaobj), C.GLuint(buffer), C.GLint(size), C.GLenum(typ), C.GLsizei(stride), C.GLintptr(offset))
 }
 
-func (vaobj VertexArray) TexCoordOffset(buffer Buffer, size int, typ GLenum, stride int, offset uintptr) {
+func (vaobj VertexArray) TexCoordOffset(buffer Buffer, size int, typ GLenum, stride int, offset int) {
 	C.glVertexArrayTexCoordOffsetEXT(C.GLuint(vaobj), C.GLuint(buffer), C.GLint(size), C.GLenum(typ), C.GLsizei(stride), C.GLintptr(offset))
 }
 
-func (vaobj VertexArray) VertexAttribIOffset(buffer Buffer, index uint, size int, typ GLenum, stride int, offset uintptr) {
+func (vaobj VertexArray) VertexAttribIOffset(buffer Buffer, index uint, size int, typ GLenum, stride int, offset int) {
 	C.glVertexArrayVertexAttribIOffsetEXT(C.GLuint(vaobj), C.GLuint(buffer), C.GLuint(index), C.GLint(size), C.GLenum(typ), C.GLsizei(stride), C.GLintptr(offset))
 }
 
-func (vaobj VertexArray) VertexAttribOffset(buffer Buffer, index uint, size int, typ GLenum, normalized bool, stride int, offset uintptr) {
+func (vaobj VertexArray) VertexAttribOffset(buffer Buffer, index uint, size int, typ GLenum, normalized bool, stride int, offset int) {
 	C.glVertexArrayVertexAttribOffsetEXT(C.GLuint(vaobj), C.GLuint(buffer), C.GLuint(index), C.GLint(size), C.GLenum(typ), glBool(normalized), C.GLsizei(stride), C.GLintptr(offset))
 }
 
-func (vaobj VertexArray) VertexOffset(buffer Buffer, size int, typ GLenum, stride int, offset uintptr) {
+func (vaobj VertexArray) VertexOffset(buffer Buffer, size int, typ GLenum, stride int, offset int) {
 	C.glVertexArrayVertexOffsetEXT(C.GLuint(vaobj), C.GLuint(buffer), C.GLint(size), C.GLenum(typ), C.GLsizei(stride), C.GLintptr(offset))
 }
