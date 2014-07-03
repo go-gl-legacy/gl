@@ -188,7 +188,7 @@ func ClearStencil(s int) {
 
 //void glClipPlane (GLenum plane, const float64 *equation)
 func ClipPlane(plane GLenum, equation []float64) {
-    C.glClipPlane(C.GLenum(plane), (*C.GLdouble)(&equation[0])
+	C.glClipPlane(C.GLenum(plane), (*C.GLdouble)(&equation[0]))
 }
 
 //void glCopyPixels (int x, int y, int width, int height, GLenum type)
