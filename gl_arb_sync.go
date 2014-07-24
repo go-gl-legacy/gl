@@ -25,6 +25,12 @@ const (
 	WAIT_FAILED                = C.GL_WAIT_FAILED
 )
 
+var ARB_sync = false
+
+func init() {
+	extensions["GL_ARB_sync"] = &ARB_sync
+}
+
 func ClientWaitSync(glSync GLsync, flags uint32, timeout uint64) {
 	C.glClientWaitSync(C.GLsync(glSync), C.GLbitfield(flags), C.GLuint64(timeout))
 }

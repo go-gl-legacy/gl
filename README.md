@@ -102,4 +102,3 @@ forward-compatible at both the API/ABI levels _per go release_ so that you can
 continue to import from this github repository. Development requiring breakage
 will occur on the `glew-1.10` branch, and will be merged with master when a new go
 version is released.
-

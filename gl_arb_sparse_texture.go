@@ -8,11 +8,11 @@ package gl
 import "C"
 
 const (
-	GL_NUM_SPARSE_LEVELS                      = C.GL_NUM_SPARSE_LEVELS_ARB
-	GL_NUM_VIRTUAL_PAGE_SIZES                 = C.GL_NUM_VIRTUAL_PAGE_SIZES_ARB
 	GL_MAX_SPARSE_3D_TEXTURE_SIZE             = C.GL_MAX_SPARSE_3D_TEXTURE_SIZE_ARB
 	GL_MAX_SPARSE_ARRAY_TEXTURE_LAYERS        = C.GL_MAX_SPARSE_ARRAY_TEXTURE_LAYERS_ARB
 	GL_MAX_SPARSE_TEXTURE_SIZE                = C.GL_MAX_SPARSE_TEXTURE_SIZE_ARB
+	GL_NUM_SPARSE_LEVELS                      = C.GL_NUM_SPARSE_LEVELS_ARB
+	GL_NUM_VIRTUAL_PAGE_SIZES                 = C.GL_NUM_VIRTUAL_PAGE_SIZES_ARB
 	GL_SPARSE_TEXTURE_FULL_ARRAY_CUBE_MIPMAPS = C.GL_SPARSE_TEXTURE_FULL_ARRAY_CUBE_MIPMAPS_ARB
 	GL_TEXTURE_SPARSE                         = C.GL_TEXTURE_SPARSE_ARB
 	GL_VIRTUAL_PAGE_SIZE_INDEX                = C.GL_VIRTUAL_PAGE_SIZE_INDEX_ARB
@@ -20,6 +20,12 @@ const (
 	GL_VIRTUAL_PAGE_SIZE_Y                    = C.GL_VIRTUAL_PAGE_SIZE_Y_ARB
 	GL_VIRTUAL_PAGE_SIZE_Z                    = C.GL_VIRTUAL_PAGE_SIZE_Z_ARB
 )
+
+var ARB_sparse_texture = false
+
+func init() {
+	extensions["GL_ARB_sparse_texture"] = &ARB_sparse_texture
+}
 
 func TexPageCommitment(target GLenum, level int, xoffset int, yoffset int, zoffset int,
 	width uint, height uint, depth uint, commit bool) {

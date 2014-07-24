@@ -6,6 +6,7 @@ package gl
 
 // #include "gl.h"
 import "C"
-import "unsafe"
 
-type GLsync unsafe.Pointer
+const (
+	MAX_VERTEX_ATTRIB_STRIDE = C.GL_MAX_VERTEX_ATTRIB_STRIDE
+)
