@@ -4,7 +4,7 @@
 
 package gl
 
-// #cgo darwin LDFLAGS: -framework OpenGL -lGLEW
+// #cgo darwin LDFLAGS: -framework OpenGL -lGLEW -L/usr/local/lib
 // #cgo windows LDFLAGS: -lglew32 -lopengl32
 // #cgo linux LDFLAGS: -lGLEW -lGL
 // #cgo freebsd  CFLAGS: -I/usr/local/include
