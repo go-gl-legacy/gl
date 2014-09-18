@@ -30,7 +30,6 @@ func (program Program) Parameteri(pname GLenum, value int) {
 func (program Program) GetBinary(binary []byte) (length int, format GLenum) {
 	var glformat C.GLenum
 	var gllength C.GLsizei
-
 	C.glGetProgramBinary(C.GLuint(program), C.GLsizei(len(binary)), &gllength, &glformat, unsafe.Pointer(&binary[0]))
 	length, format = int(gllength), GLenum(glformat)
 	return
