@@ -17,7 +17,11 @@ const (
 
 // Binary loads a program object with a binary previously returned from GetBinary.
 func (program Program) Binary(format GLenum, binary []byte) {
-	C.glProgramBinary(C.GLuint(program), C.GLenum(format), unsafe.Pointer(&binary[0]), C.GLsizei(len(binary)))
+	var pbinary unsafe.Pointer
+	if len(binary) > 0 {
+		pbinary = unsafe.Pointer(&binary[0])
+	}
+	C.glProgramBinary(C.GLuint(program), C.GLenum(format), pbinary, C.GLsizei(len(binary)))
 }
 
 // Parameteri sets an integer program parameter to the specified value.
@@ -26,11 +30,16 @@ func (program Program) Parameteri(pname GLenum, value int) {
 }
 
 // GetBinary retrieves a program's binary, it returns the actual program length
-// (which may be different than len(binary)) and its binary encoding format.
+// (which may be less than len(binary)) and its binary encoding format.
+// OpenGL generates an error on invalid buffer size.
 func (program Program) GetBinary(binary []byte) (length int, format GLenum) {
 	var glformat C.GLenum
 	var gllength C.GLsizei
-	C.glGetProgramBinary(C.GLuint(program), C.GLsizei(len(binary)), &gllength, &glformat, unsafe.Pointer(&binary[0]))
+	var pbinary unsafe.Pointer // for 0 length slices we still want OpenGL to generate an error
+	if len(binary) > 0 {
+		pbinary = unsafe.Pointer(&binary[0])
+	}
+	C.glGetProgramBinary(C.GLuint(program), C.GLsizei(len(binary)), &gllength, &glformat, pbinary)
 	length, format = int(gllength), GLenum(glformat)
 	return
 }
