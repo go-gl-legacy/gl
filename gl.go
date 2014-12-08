@@ -54,7 +54,7 @@ func freeString(ptr *C.GLchar) { C.free(unsafe.Pointer(ptr)) }
 
 func ptr(v interface{}) unsafe.Pointer {
 
-	if v == nil {
+	if v == nil || reflect.ValueOf(v).IsNil() {
 		return unsafe.Pointer(nil)
 	}
 
