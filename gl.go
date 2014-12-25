@@ -54,7 +54,7 @@ func freeString(ptr *C.GLchar) { C.free(unsafe.Pointer(ptr)) }
 
 func ptr(v interface{}) unsafe.Pointer {
 
-	if v == nil || reflect.ValueOf(v).IsNil() {
+	if v == nil {
 		return unsafe.Pointer(nil)
 	}
 
@@ -65,8 +65,14 @@ func ptr(v interface{}) unsafe.Pointer {
 		offset, _ := v.(uintptr)
 		return unsafe.Pointer(offset)
 	case reflect.Ptr:
+		if rv.IsNil() {
+			return unsafe.Pointer(nil)
+		}
 		et = rv.Elem()
 	case reflect.Slice:
+		if rv.IsNil() || rv.Len() == 0 {
+			return unsafe.Pointer(nil)
+		}
 		et = rv.Index(0)
 	default:
 		panic("type must be a pointer, a slice, uintptr or nil")
