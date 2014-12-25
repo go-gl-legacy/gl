@@ -16,7 +16,7 @@ import "unsafe"
 //	GLenum severity,
 //	GLsizei length,
 //	const GLchar* message,
-//	void* userParam)
+//	const void* userParam)
 // {
 //	goDebugCB(source, type, id, severity, length, (char *)message);
 // }
