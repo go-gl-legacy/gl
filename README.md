@@ -24,7 +24,7 @@ Examples can be found in our [examples repository](https://github.com/go-gl/exam
 
 # More libraries: Easy windowing, meshes, text rendering, etc:
 
-* [GLFW bindings](https://github.com/go-gl/glfw) for easy windowing, input etc.
+* [GLFW bindings](https://github.com/go-gl/glfw3) for easy windowing, input etc.
 * [gltext](https://github.com/go-gl/gltext) a native go library for glyph packing and text rendering
 * [glu](https://github.com/go-gl/glu) GLU bindings
 * [glchart](https://github.com/go-gl/glchart) a [go chart](https://github.com/vdobler/chart) OpenGL backend
