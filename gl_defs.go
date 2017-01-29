@@ -51,7 +51,6 @@ const (
 	ALPHA_TEST_REF                                = C.GL_ALPHA_TEST_REF
 	ALPHA_TEST                                    = C.GL_ALPHA_TEST
 	ALPHA                                         = C.GL_ALPHA
-	ALREADY_SIGNALED                              = C.GL_ALREADY_SIGNALED
 	ALWAYS                                        = C.GL_ALWAYS
 	AMBIENT_AND_DIFFUSE                           = C.GL_AMBIENT_AND_DIFFUSE
 	AMBIENT                                       = C.GL_AMBIENT
@@ -212,7 +211,6 @@ const (
 	COMPRESSED_SRGB_ALPHA                         = C.GL_COMPRESSED_SRGB_ALPHA
 	COMPRESSED_SRGB                               = C.GL_COMPRESSED_SRGB
 	COMPRESSED_TEXTURE_FORMATS                    = C.GL_COMPRESSED_TEXTURE_FORMATS
-	CONDITION_SATISFIED                           = C.GL_CONDITION_SATISFIED
 	CONSTANT_ALPHA                                = C.GL_CONSTANT_ALPHA
 	CONSTANT_ATTENUATION                          = C.GL_CONSTANT_ATTENUATION
 	CONSTANT_BORDER                               = C.GL_CONSTANT_BORDER
@@ -660,7 +658,6 @@ const (
 	MAX_RENDERBUFFER_SIZE                         = C.GL_MAX_RENDERBUFFER_SIZE
 	MAX_SAMPLE_MASK_WORDS                         = C.GL_MAX_SAMPLE_MASK_WORDS
 	MAX_SAMPLES                                   = C.GL_MAX_SAMPLES
-	MAX_SERVER_WAIT_TIMEOUT                       = C.GL_MAX_SERVER_WAIT_TIMEOUT
 	MAX_TEXTURE_BUFFER_SIZE                       = C.GL_MAX_TEXTURE_BUFFER_SIZE
 	MAX_TEXTURE_COORDS                            = C.GL_MAX_TEXTURE_COORDS
 	MAX_TEXTURE_IMAGE_UNITS                       = C.GL_MAX_TEXTURE_IMAGE_UNITS
@@ -721,7 +718,6 @@ const (
 	NUM_COMPRESSED_TEXTURE_FORMATS                = C.GL_NUM_COMPRESSED_TEXTURE_FORMATS
 	OBJECT_LINEAR                                 = C.GL_OBJECT_LINEAR
 	OBJECT_PLANE                                  = C.GL_OBJECT_PLANE
-	OBJECT_TYPE                                   = C.GL_OBJECT_TYPE
 	ONE_MINUS_CONSTANT_ALPHA                      = C.GL_ONE_MINUS_CONSTANT_ALPHA
 	ONE_MINUS_CONSTANT_COLOR                      = C.GL_ONE_MINUS_CONSTANT_COLOR
 	ONE_MINUS_DST_ALPHA                           = C.GL_ONE_MINUS_DST_ALPHA
@@ -1019,7 +1015,6 @@ const (
 	SHADING_LANGUAGE_VERSION                      = C.GL_SHADING_LANGUAGE_VERSION
 	SHININESS                                     = C.GL_SHININESS
 	SHORT                                         = C.GL_SHORT
-	SIGNALED                                      = C.GL_SIGNALED
 	SIGNED_NORMALIZED                             = C.GL_SIGNED_NORMALIZED
 	SINGLE_COLOR                                  = C.GL_SINGLE_COLOR
 	SLUMINANCE8_ALPHA8                            = C.GL_SLUMINANCE8_ALPHA8
@@ -1092,12 +1087,6 @@ const (
 	STREAM_READ                                   = C.GL_STREAM_READ
 	SUBPIXEL_BITS                                 = C.GL_SUBPIXEL_BITS
 	SUBTRACT                                      = C.GL_SUBTRACT
-	SYNC_CONDITION                                = C.GL_SYNC_CONDITION
-	SYNC_FENCE                                    = C.GL_SYNC_FENCE
-	SYNC_FLAGS                                    = C.GL_SYNC_FLAGS
-	SYNC_FLUSH_COMMANDS_BIT                       = C.GL_SYNC_FLUSH_COMMANDS_BIT
-	SYNC_GPU_COMMANDS_COMPLETE                    = C.GL_SYNC_GPU_COMMANDS_COMPLETE
-	SYNC_STATUS                                   = C.GL_SYNC_STATUS
 	S                                             = C.GL_S
 	T2F_C3F_V3F                                   = C.GL_T2F_C3F_V3F
 	T2F_C4F_N3F_V3F                               = C.GL_T2F_C4F_N3F_V3F
@@ -1231,8 +1220,6 @@ const (
 	TEXTURE_WRAP_S                                = C.GL_TEXTURE_WRAP_S
 	TEXTURE_WRAP_T                                = C.GL_TEXTURE_WRAP_T
 	TEXTURE                                       = C.GL_TEXTURE
-	TIMEOUT_EXPIRED                               = C.GL_TIMEOUT_EXPIRED
-	TIMEOUT_IGNORED                               = C.GL_TIMEOUT_IGNORED
 	TIMESTAMP                                     = C.GL_TIMESTAMP
 	TIME_ELAPSED                                  = C.GL_TIME_ELAPSED
 	TRANSFORM_FEEDBACK                            = C.GL_TRANSFORM_FEEDBACK
@@ -1285,7 +1272,6 @@ const (
 	UNPACK_SKIP_PIXELS                            = C.GL_UNPACK_SKIP_PIXELS
 	UNPACK_SKIP_ROWS                              = C.GL_UNPACK_SKIP_ROWS
 	UNPACK_SWAP_BYTES                             = C.GL_UNPACK_SWAP_BYTES
-	UNSIGNALED                                    = C.GL_UNSIGNALED
 	UNSIGNED_BYTE_2_3_3_REV                       = C.GL_UNSIGNED_BYTE_2_3_3_REV
 	UNSIGNED_BYTE_3_3_2                           = C.GL_UNSIGNED_BYTE_3_3_2
 	UNSIGNED_BYTE                                 = C.GL_UNSIGNED_BYTE
@@ -1355,7 +1341,6 @@ const (
 	VERTEX_SHADER                                 = C.GL_VERTEX_SHADER
 	VIEWPORT_BIT                                  = C.GL_VIEWPORT_BIT
 	VIEWPORT                                      = C.GL_VIEWPORT
-	WAIT_FAILED                                   = C.GL_WAIT_FAILED
 	WEIGHT_ARRAY_BUFFER_BINDING                   = C.GL_WEIGHT_ARRAY_BUFFER_BINDING
 	WRITE_ONLY                                    = C.GL_WRITE_ONLY
 	XOR                                           = C.GL_XOR
