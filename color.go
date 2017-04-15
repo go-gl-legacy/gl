@@ -13,7 +13,10 @@ func Color3b(red int8, green int8, blue int8) {
 }
 
 //void glColor3bv (const int8 *v)
-func Color3bv(v *[3]int8) {
+func Color3bv(v []int8) {
+	if len(v) != 3 {
+		panic(ErrorInputSize)
+	}
 	C.glColor3bv((*C.GLbyte)(&v[0]))
 }
 
@@ -23,7 +26,10 @@ func Color3d(red float64, green float64, blue float64) {
 }
 
 //void glColor3dv (const float64 *v)
-func Color3dv(v *[3]float64) {
+func Color3dv(v []float64) {
+	if len(v) != 3 {
+		panic(ErrorInputSize)
+	}
 	C.glColor3dv((*C.GLdouble)(&v[0]))
 }
 
@@ -33,7 +39,10 @@ func Color3f(red float32, green float32, blue float32) {
 }
 
 //void glColor3fv (const float *v)
-func Color3fv(v *[3]float32) {
+func Color3fv(v []float32) {
+	if len(v) != 3 {
+		panic(ErrorInputSize)
+	}
 	C.glColor3fv((*C.GLfloat)(&v[0]))
 }
 
@@ -43,7 +52,10 @@ func Color3i(red int, green int, blue int) {
 }
 
 //void glColor3iv (const int *v)
-func Color3iv(v *[3]int32) {
+func Color3iv(v []int32) {
+	if len(v) != 3 {
+		panic(ErrorInputSize)
+	}
 	C.glColor3iv((*C.GLint)(&v[0]))
 }
 
@@ -53,7 +65,10 @@ func Color3s(red int16, green int16, blue int16) {
 }
 
 //void glColor3sv (const int16 *v)
-func Color3sv(v *[3]int16) {
+func Color3sv(v []int16) {
+	if len(v) != 3 {
+		panic(ErrorInputSize)
+	}
 	C.glColor3sv((*C.GLshort)(&v[0]))
 }
 
@@ -63,7 +78,10 @@ func Color3ub(red uint8, green uint8, blue uint8) {
 }
 
 //void glColor3ubv (const uint8 *v)
-func Color3ubv(v *[3]uint8) {
+func Color3ubv(v []uint8) {
+	if len(v) != 3 {
+		panic(ErrorInputSize)
+	}
 	C.glColor3ubv((*C.GLubyte)(&v[0]))
 }
 
@@ -73,7 +91,10 @@ func Color3ui(red uint, green uint, blue uint) {
 }
 
 //void glColor3uiv (const uint *v)
-func Color3uiv(v *[3]uint32) {
+func Color3uiv(v []uint32) {
+	if len(v) != 3 {
+		panic(ErrorInputSize)
+	}
 	C.glColor3uiv((*C.GLuint)(&v[0]))
 }
 
@@ -83,7 +104,10 @@ func Color3us(red uint16, green uint16, blue uint16) {
 }
 
 //void glColor3usv (const uint16 *v)
-func Color3usv(v *[3]uint16) {
+func Color3usv(v []uint16) {
+	if len(v) != 3 {
+		panic(ErrorInputSize)
+	}
 	C.glColor3usv((*C.GLushort)(&v[0]))
 }
 
@@ -93,7 +117,10 @@ func Color4b(red int8, green int8, blue int8, alpha int8) {
 }
 
 //void glColor4bv (const int8 *v)
-func Color4bv(v *[4]int8) {
+func Color4bv(v []int8) {
+	if len(v) != 4 {
+		panic(ErrorInputSize)
+	}
 	C.glColor4bv((*C.GLbyte)(&v[0]))
 }
 
@@ -103,7 +130,10 @@ func Color4d(red float64, green float64, blue float64, alpha float64) {
 }
 
 //void glColor4dv (const float64 *v)
-func Color4dv(v *[4]float64) {
+func Color4dv(v []float64) {
+	if len(v) != 4 {
+		panic(ErrorInputSize)
+	}
 	C.glColor4dv((*C.GLdouble)(&v[0]))
 }
 
@@ -113,7 +143,10 @@ func Color4f(red float32, green float32, blue float32, alpha float32) {
 }
 
 //void glColor4fv (const float *v)
-func Color4fv(v *[4]float32) {
+func Color4fv(v []float32) {
+	if len(v) != 4 {
+		panic(ErrorInputSize)
+	}
 	C.glColor4fv((*C.GLfloat)(&v[0]))
 }
 
@@ -123,7 +156,10 @@ func Color4i(red int, green int, blue int, alpha int) {
 }
 
 //void glColor4iv (const int *v)
-func Color4iv(v *[4]int32) {
+func Color4iv(v []int32) {
+	if len(v) != 4 {
+		panic(ErrorInputSize)
+	}
 	C.glColor4iv((*C.GLint)(&v[0]))
 }
 
@@ -133,7 +169,10 @@ func Color4s(red int16, green int16, blue int16, alpha int16) {
 }
 
 //void glColor4sv (const int16 *v)
-func Color4sv(v *[4]int16) {
+func Color4sv(v []int16) {
+	if len(v) != 4 {
+		panic(ErrorInputSize)
+	}
 	C.glColor4sv((*C.GLshort)(&v[0]))
 }
 
@@ -143,7 +182,10 @@ func Color4ub(red uint8, green uint8, blue uint8, alpha uint8) {
 }
 
 //void glColor4ubv (const uint8 *v)
-func Color4ubv(v *[4]uint8) {
+func Color4ubv(v []uint8) {
+	if len(v) != 4 {
+		panic(ErrorInputSize)
+	}
 	C.glColor4ubv((*C.GLubyte)(&v[0]))
 }
 
@@ -153,7 +195,10 @@ func Color4ui(red uint, green uint, blue uint, alpha uint) {
 }
 
 //void glColor4uiv (const uint *v)
-func Color4uiv(v *[4]uint32) {
+func Color4uiv(v []uint32) {
+	if len(v) != 4 {
+		panic(ErrorInputSize)
+	}
 	C.glColor4uiv((*C.GLuint)(&v[0]))
 }
 
@@ -163,7 +208,10 @@ func Color4us(red uint16, green uint16, blue uint16, alpha uint16) {
 }
 
 //void glColor4usv (const uint16 *v)
-func Color4usv(v *[4]uint16) {
+func Color4usv(v []uint16) {
+	if len(v) != 4 {
+		panic(ErrorInputSize)
+	}
 	C.glColor4usv((*C.GLushort)(&v[0]))
 }
 

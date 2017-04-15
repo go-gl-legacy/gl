@@ -75,7 +75,7 @@ func ptr(v interface{}) unsafe.Pointer {
 		}
 		et = rv.Index(0)
 	default:
-		panic("type must be a pointer, a slice, uintptr or nil")
+		panic(ErrorPointerType)
 	}
 
 	return unsafe.Pointer(et.UnsafeAddr())
@@ -340,7 +340,10 @@ func EvalCoord1f(u float32) {
 }
 
 //void glEvalCoord1fv (const float *u)
-func EvalCoord1fv(u *[1]float32) {
+func EvalCoord1fv(u []float32) {
+	if len(u) != 1 {
+		panic(ErrorInputSize)
+	}
 	C.glEvalCoord1fv((*C.GLfloat)(&u[0]))
 }
 
@@ -360,7 +363,10 @@ func EvalCoord2f(u float32, v float32) {
 }
 
 //void glEvalCoord2fv (const float *u)
-func EvalCoord2fv(u *[2]float32) {
+func EvalCoord2fv(u []float32) {
+	if len(u) != 2 {
+		panic(ErrorInputSize)
+	}
 	C.glEvalCoord2fv((*C.GLfloat)(&u[0]))
 }
 
@@ -407,7 +413,7 @@ func Fogf(pname GLenum, param float32) {
 //void glFogfv (GLenum pname, const float *params)
 func Fogfv(pname GLenum, params []float32) {
 	if len(params) == 0 {
-		panic("Invalid params length")
+		panic(ErrorInputSize)
 	}
 	C.glFogfv(C.GLenum(pname), (*C.GLfloat)(&params[0]))
 }
@@ -420,7 +426,7 @@ func Fogi(pname GLenum, param int) {
 //void glFogiv (GLenum pname, const int *params)
 func Fogiv(pname GLenum, params []int32) {
 	if len(params) == 0 {
-		panic("Invalid params length")
+		panic(ErrorInputSize)
 	}
 	C.glFogiv(C.GLenum(pname), (*C.GLint)(&params[0]))
 }
@@ -438,7 +444,7 @@ func GenLists(range_ int) uint {
 //void glGetBooleanv (GLenum pname, bool *params)
 func GetBooleanv(pname GLenum, params []bool) {
 	if len(params) == 0 {
-		panic("Invalid params length")
+		panic(ErrorInputSize)
 	}
 	C.glGetBooleanv(C.GLenum(pname), (*C.GLboolean)(unsafe.Pointer(&params[0])))
 }
@@ -462,7 +468,7 @@ func GetClipPlane(plane GLenum, equation *float64) {
 //void glGetDoublev (GLenum pname, float64 *params)
 func GetDoublev(pname GLenum, params []float64) {
 	if len(params) == 0 {
-		panic("Invalid params length")
+		panic(ErrorInputSize)
 	}
 	C.glGetDoublev(C.GLenum(pname), (*C.GLdouble)(&params[0]))
 }
@@ -486,7 +492,7 @@ func GetError() GLenum {
 //void glGetFloatv (GLenum pname, float *params)
 func GetFloatv(pname GLenum, params []float32) {
 	if len(params) == 0 {
-		panic("Invalid params length")
+		panic(ErrorInputSize)
 	}
 	C.glGetFloatv(C.GLenum(pname), (*C.GLfloat)(&params[0]))
 }
@@ -505,7 +511,7 @@ func GetFloat4(pname GLenum) (v0, v1, v2, v3 float32) {
 //void glGetIntegerv (GLenum pname, int *params)
 func GetIntegerv(pname GLenum, params []int32) {
 	if len(params) == 0 {
-		panic("Invalid params length")
+		panic(ErrorInputSize)
 	}
 	C.glGetIntegerv(C.GLenum(pname), (*C.GLint)(&params[0]))
 }
@@ -524,7 +530,7 @@ func GetInteger4(pname GLenum) (v0, v1, v2, v3 int) {
 //void glGetLightfv (GLenum light, GLenum pname, float *params)
 func GetLightfv(light GLenum, pname GLenum, params []float32) {
 	if len(params) == 0 {
-		panic("Invalid params length")
+		panic(ErrorInputSize)
 	}
 	C.glGetLightfv(C.GLenum(light), C.GLenum(pname), (*C.GLfloat)(&params[0]))
 }
@@ -532,7 +538,7 @@ func GetLightfv(light GLenum, pname GLenum, params []float32) {
 //void glGetLightiv (GLenum light, GLenum pname, int *params)
 func GetLightiv(light GLenum, pname GLenum, params []int32) {
 	if len(params) == 0 {
-		panic("Invalid params length")
+		panic(ErrorInputSize)
 	}
 	C.glGetLightiv(C.GLenum(light), C.GLenum(pname), (*C.GLint)(&params[0]))
 }
@@ -540,7 +546,7 @@ func GetLightiv(light GLenum, pname GLenum, params []int32) {
 //void glGetMapdv (GLenum target, GLenum query, float64 *v)
 func GetMapdv(target GLenum, query GLenum, v []float64) {
 	if len(v) == 0 {
-		panic("Invalid slice length")
+		panic(ErrorInputSize)
 	}
 	C.glGetMapdv(C.GLenum(target), C.GLenum(query), (*C.GLdouble)(&v[0]))
 }
@@ -548,7 +554,7 @@ func GetMapdv(target GLenum, query GLenum, v []float64) {
 //void glGetMapfv (GLenum target, GLenum query, float *v)
 func GetMapfv(target GLenum, query GLenum, v []float32) {
 	if len(v) == 0 {
-		panic("Invalid slice length")
+		panic(ErrorInputSize)
 	}
 	C.glGetMapfv(C.GLenum(target), C.GLenum(query), (*C.GLfloat)(&v[0]))
 }
@@ -556,7 +562,7 @@ func GetMapfv(target GLenum, query GLenum, v []float32) {
 //void glGetMapiv (GLenum target, GLenum query, int *v)
 func GetMapiv(target GLenum, query GLenum, v []int32) {
 	if len(v) == 0 {
-		panic("Invalid slice length")
+		panic(ErrorInputSize)
 	}
 	C.glGetMapiv(C.GLenum(target), C.GLenum(query), (*C.GLint)(&v[0]))
 }
@@ -564,7 +570,7 @@ func GetMapiv(target GLenum, query GLenum, v []int32) {
 //void glGetMaterialfv (GLenum face, GLenum pname, float *params)
 func GetMaterialfv(face GLenum, pname GLenum, params []float32) {
 	if len(params) == 0 {
-		panic("Invalid params length")
+		panic(ErrorInputSize)
 	}
 	C.glGetMaterialfv(C.GLenum(face), C.GLenum(pname), (*C.GLfloat)(&params[0]))
 }
@@ -572,7 +578,7 @@ func GetMaterialfv(face GLenum, pname GLenum, params []float32) {
 //void glGetMaterialiv (GLenum face, GLenum pname, int *params)
 func GetMaterialiv(face GLenum, pname GLenum, params []int32) {
 	if len(params) == 0 {
-		panic("Invalid params length")
+		panic(ErrorInputSize)
 	}
 	C.glGetMaterialiv(C.GLenum(face), C.GLenum(pname), (*C.GLint)(&params[0]))
 }
@@ -580,7 +586,7 @@ func GetMaterialiv(face GLenum, pname GLenum, params []int32) {
 //void glGetPixelMapfv (GLenum map, float *values)
 func GetPixelMapfv(map_ GLenum, values []float32) {
 	if len(values) == 0 {
-		panic("Invalid values length")
+		panic(ErrorInputSize)
 	}
 	C.glGetPixelMapfv(C.GLenum(map_), (*C.GLfloat)(&values[0]))
 }
@@ -598,7 +604,7 @@ func GetPixelMapusv(map_ GLenum, values *uint16) {
 //void glGetPointerv (GLenum pname, GLvoid* *params)
 func GetPointerv(pname GLenum, params []unsafe.Pointer) {
 	if len(params) == 0 {
-		panic("Invalid params length")
+		panic(ErrorInputSize)
 	}
 	C.glGetPointerv(C.GLenum(pname), &params[0])
 }
@@ -635,7 +641,10 @@ func Indexd(c float64) {
 }
 
 //void glIndexdv (const float64 *c)
-func Indexdv(c *[1]float64) {
+func Indexdv(c []float64) {
+	if len(c) != 1 {
+		panic(ErrorInputSize)
+	}
 	C.glIndexdv((*C.GLdouble)(&c[0]))
 }
 
@@ -645,7 +654,10 @@ func Indexf(c float32) {
 }
 
 //void glIndexfv (const float32 *c)
-func Indexfv(c *[1]float32) {
+func Indexfv(c []float32) {
+	if len(c) != 1 {
+		panic(ErrorInputSize)
+	}
 	C.glIndexfv((*C.GLfloat)(&c[0]))
 }
 
@@ -655,7 +667,10 @@ func Indexi(c int) {
 }
 
 //void glIndexiv (const int *c)
-func Indexiv(c *[1]int32) {
+func Indexiv(c []int32) {
+	if len(c) != 1 {
+		panic(ErrorInputSize)
+	}
 	C.glIndexiv((*C.GLint)(&c[0]))
 }
 
@@ -665,7 +680,10 @@ func Indexs(c int16) {
 }
 
 //void glIndexsv (const int16 *c)
-func Indexsv(c *[1]int16) {
+func Indexsv(c []int16) {
+	if len(c) != 1 {
+		panic(ErrorInputSize)
+	}
 	C.glIndexsv((*C.GLshort)(&c[0]))
 }
 
@@ -675,7 +693,10 @@ func Indexub(c uint8) {
 }
 
 //void glIndexubv (const uint8 *c)
-func Indexubv(c *[1]uint8) {
+func Indexubv(c []uint8) {
+	if len(c) != 1 {
+		panic(ErrorInputSize)
+	}
 	C.glIndexubv((*C.GLubyte)(&c[0]))
 }
 
@@ -707,7 +728,7 @@ func LightModelf(pname GLenum, param float32) {
 //void glLightModelfv (GLenum pname, const float *params)
 func LightModelfv(pname GLenum, params []float32) {
 	if len(params) == 0 {
-		panic("Invalid params length")
+		panic(ErrorInputSize)
 	}
 	C.glLightModelfv(C.GLenum(pname), (*C.GLfloat)(&params[0]))
 }
@@ -720,7 +741,7 @@ func LightModeli(pname GLenum, param int) {
 //void glLightModeliv (GLenum pname, const int *params)
 func LightModeliv(pname GLenum, params []int32) {
 	if len(params) == 0 {
-		panic("Invalid params length")
+		panic(ErrorInputSize)
 	}
 	C.glLightModeliv(C.GLenum(pname), (*C.GLint)(&params[0]))
 }
@@ -733,7 +754,7 @@ func Lightf(light GLenum, pname GLenum, param float32) {
 //void glLightfv (GLenum light, GLenum pname, const float *params)
 func Lightfv(light GLenum, pname GLenum, params []float32) {
 	if len(params) == 0 {
-		panic("Invalid params length")
+		panic(ErrorInputSize)
 	}
 	C.glLightfv(C.GLenum(light), C.GLenum(pname), (*C.GLfloat)(&params[0]))
 }
@@ -746,7 +767,7 @@ func Lighti(light GLenum, pname GLenum, param int) {
 //void glLightiv (GLenum light, GLenum pname, const int *params)
 func Lightiv(light GLenum, pname GLenum, params []int32) {
 	if len(params) == 0 {
-		panic("Invalid params length")
+		panic(ErrorInputSize)
 	}
 	C.glLightiv(C.GLenum(light), C.GLenum(pname), (*C.GLint)(&params[0]))
 }
@@ -779,7 +800,7 @@ func LogicOp(opcode GLenum) {
 //void glMap1d (GLenum target, float64 u1, float64 u2, int stride, int order, const float64 *points)
 func Map1d(target GLenum, u1 float64, u2 float64, stride int, order int, points []float64) {
 	if len(points) == 0 {
-		panic("Invalid points size")
+		panic(ErrorInputSize)
 	}
 	C.glMap1d(C.GLenum(target), C.GLdouble(u1), C.GLdouble(u2),
 		C.GLint(stride), C.GLint(order), (*C.GLdouble)(&points[0]))
@@ -788,7 +809,7 @@ func Map1d(target GLenum, u1 float64, u2 float64, stride int, order int, points 
 //void glMap1f (GLenum target, float32 u1, float32 u2, int stride, int order, const float32 *points)
 func Map1f(target GLenum, u1 float32, u2 float32, stride int, order int, points []float32) {
 	if len(points) == 0 {
-		panic("Invalid points size")
+		panic(ErrorInputSize)
 	}
 	C.glMap1f(C.GLenum(target), C.GLfloat(u1), C.GLfloat(u2), C.GLint(stride),
 		C.GLint(order), (*C.GLfloat)(&points[0]))
@@ -797,7 +818,7 @@ func Map1f(target GLenum, u1 float32, u2 float32, stride int, order int, points 
 //void glMap2d (GLenum target, float64 u1, float64 u2, int ustride, int uorder, float64 v1, float64 v2, int vstride, int vorder, const float64 *points)
 func Map2d(target GLenum, u1 float64, u2 float64, ustride int, uorder int, v1 float64, v2 float64, vstride int, vorder int, points []float64) {
 	if len(points) == 0 {
-		panic("Invalid points size")
+		panic(ErrorInputSize)
 	}
 	C.glMap2d(C.GLenum(target), C.GLdouble(u1), C.GLdouble(u2), C.GLint(ustride),
 		C.GLint(uorder), C.GLdouble(v1), C.GLdouble(v2), C.GLint(vstride),
@@ -807,7 +828,7 @@ func Map2d(target GLenum, u1 float64, u2 float64, ustride int, uorder int, v1 fl
 //void glMap2f (GLenum target, float32 u1, float32 u2, int ustride, int uorder, float32 v1, float32 v2, int vstride, int vorder, const float32 *points)
 func Map2f(target GLenum, u1 float32, u2 float32, ustride int, uorder int, v1 float32, v2 float32, vstride int, vorder int, points []float32) {
 	if len(points) == 0 {
-		panic("Invalid points size")
+		panic(ErrorInputSize)
 	}
 	C.glMap2f(C.GLenum(target), C.GLfloat(u1), C.GLfloat(u2), C.GLint(ustride),
 		C.GLint(uorder), C.GLfloat(v1), C.GLfloat(v2), C.GLint(vstride),
@@ -842,7 +863,7 @@ func Materialf(face GLenum, pname GLenum, param float32) {
 //void glMaterialfv (GLenum face, GLenum pname, const float *params)
 func Materialfv(face GLenum, pname GLenum, params []float32) {
 	if len(params) == 0 {
-		panic("Invalid params length")
+		panic(ErrorInputSize)
 	}
 	C.glMaterialfv(C.GLenum(face), C.GLenum(pname), (*C.GLfloat)(&params[0]))
 }
@@ -855,7 +876,7 @@ func Materiali(face GLenum, pname GLenum, param int) {
 //void glMaterialiv (GLenum face, GLenum pname, const int *params)
 func Materialiv(face GLenum, pname GLenum, params []int32) {
 	if len(params) == 0 {
-		panic("Invalid params length")
+		panic(ErrorInputSize)
 	}
 	C.glMaterialiv(C.GLenum(face), C.GLenum(pname), (*C.GLint)(&params[0]))
 }
@@ -871,7 +892,10 @@ func Normal3b(nx int8, ny int8, nz int8) {
 }
 
 //void glNormal3bv (const int8 *v)
-func Normal3bv(v *[3]int8) {
+func Normal3bv(v []int8) {
+	if len(v) != 3 {
+		panic(ErrorInputSize)
+	}
 	C.glNormal3bv((*C.GLbyte)(&v[0]))
 }
 
@@ -881,7 +905,10 @@ func Normal3d(nx float64, ny float64, nz float64) {
 }
 
 //void glNormal3dv (const float64 *v)
-func Normal3dv(v *[3]float64) {
+func Normal3dv(v []float64) {
+	if len(v) != 3 {
+		panic(ErrorInputSize)
+	}
 	C.glNormal3dv((*C.GLdouble)(&v[0]))
 }
 
@@ -891,7 +918,10 @@ func Normal3f(nx float32, ny float32, nz float32) {
 }
 
 //void glNormal3fv (const float *v)
-func Normal3fv(v *[3]float32) {
+func Normal3fv(v []float32) {
+	if len(v) != 3 {
+		panic(ErrorInputSize)
+	}
 	C.glNormal3fv((*C.GLfloat)(&v[0]))
 }
 
@@ -901,7 +931,10 @@ func Normal3i(nx int, ny int, nz int) {
 }
 
 //void glNormal3iv (const int *v)
-func Normal3iv(v *[3]int32) {
+func Normal3iv(v []int32) {
+	if len(v) != 3 {
+		panic(ErrorInputSize)
+	}
 	C.glNormal3iv((*C.GLint)(&v[0]))
 }
 
@@ -911,7 +944,10 @@ func Normal3s(nx int16, ny int16, nz int16) {
 }
 
 //void glNormal3sv (const int16 *v)
-func Normal3sv(v *[3]int16) {
+func Normal3sv(v []int16) {
+	if len(v) != 3 {
+		panic(ErrorInputSize)
+	}
 	C.glNormal3sv((*C.GLshort)(&v[0]))
 }
 
@@ -1011,7 +1047,10 @@ func RasterPos2d(x float64, y float64) {
 }
 
 //void glRasterPos2dv (const float64 *v)
-func RasterPos2dv(v *[2]float64) {
+func RasterPos2dv(v []float64) {
+	if len(v) != 2 {
+		panic(ErrorInputSize)
+	}
 	C.glRasterPos2dv((*C.GLdouble)(&v[0]))
 }
 
@@ -1021,7 +1060,10 @@ func RasterPos2f(x float32, y float32) {
 }
 
 //void glRasterPos2fv (const float *v)
-func RasterPos2fv(v *[2]float32) {
+func RasterPos2fv(v []float32) {
+	if len(v) != 2 {
+		panic(ErrorInputSize)
+	}
 	C.glRasterPos2fv((*C.GLfloat)(&v[0]))
 }
 
@@ -1031,7 +1073,10 @@ func RasterPos2i(x int, y int) {
 }
 
 //void glRasterPos2iv (const int *v)
-func RasterPos2iv(v *[2]int32) {
+func RasterPos2iv(v []int32) {
+	if len(v) != 2 {
+		panic(ErrorInputSize)
+	}
 	C.glRasterPos2iv((*C.GLint)(&v[0]))
 }
 
@@ -1041,7 +1086,10 @@ func RasterPos2s(x int16, y int16) {
 }
 
 //void glRasterPos2sv (const int16 *v)
-func RasterPos2sv(v *[2]int16) {
+func RasterPos2sv(v []int16) {
+	if len(v) != 2 {
+		panic(ErrorInputSize)
+	}
 	C.glRasterPos2sv((*C.GLshort)(&v[0]))
 }
 
@@ -1051,7 +1099,10 @@ func RasterPos3d(x float64, y float64, z float64) {
 }
 
 //void glRasterPos3dv (const float64 *v)
-func RasterPos3dv(v *[3]float64) {
+func RasterPos3dv(v []float64) {
+	if len(v) != 3 {
+		panic(ErrorInputSize)
+	}
 	C.glRasterPos3dv((*C.GLdouble)(&v[0]))
 }
 
@@ -1061,7 +1112,10 @@ func RasterPos3f(x float32, y float32, z float32) {
 }
 
 //void glRasterPos3fv (const float *v)
-func RasterPos3fv(v *[3]float32) {
+func RasterPos3fv(v []float32) {
+	if len(v) != 3 {
+		panic(ErrorInputSize)
+	}
 	C.glRasterPos3fv((*C.GLfloat)(&v[0]))
 }
 
@@ -1071,7 +1125,10 @@ func RasterPos3i(x int, y int, z int) {
 }
 
 //void glRasterPos3iv (const int *v)
-func RasterPos3iv(v *[3]int32) {
+func RasterPos3iv(v []int32) {
+	if len(v) != 3 {
+		panic(ErrorInputSize)
+	}
 	C.glRasterPos3iv((*C.GLint)(&v[0]))
 }
 
@@ -1081,7 +1138,10 @@ func RasterPos3s(x int16, y int16, z int16) {
 }
 
 //void glRasterPos3sv (const int16 *v)
-func RasterPos3sv(v *[3]int16) {
+func RasterPos3sv(v []int16) {
+	if len(v) != 3 {
+		panic(ErrorInputSize)
+	}
 	C.glRasterPos3sv((*C.GLshort)(&v[0]))
 }
 
@@ -1091,7 +1151,10 @@ func RasterPos4d(x float64, y float64, z float64, w float64) {
 }
 
 //void glRasterPos4dv (const float64 *v)
-func RasterPos4dv(v *[3]float64) {
+func RasterPos4dv(v []float64) {
+	if len(v) != 3 {
+		panic(ErrorInputSize)
+	}
 	C.glRasterPos4dv((*C.GLdouble)(&v[0]))
 }
 
@@ -1101,7 +1164,10 @@ func RasterPos4f(x float32, y float32, z float32, w float32) {
 }
 
 //void glRasterPos4fv (const float *v)
-func RasterPos4fv(v *[4]float32) {
+func RasterPos4fv(v []float32) {
+	if len(v) != 4 {
+		panic(ErrorInputSize)
+	}
 	C.glRasterPos4fv((*C.GLfloat)(&v[0]))
 }
 
@@ -1111,7 +1177,10 @@ func RasterPos4i(x int, y int, z int, w int) {
 }
 
 //void glRasterPos4iv (const int *v)
-func RasterPos4iv(v *[4]int32) {
+func RasterPos4iv(v []int32) {
+	if len(v) != 4 {
+		panic(ErrorInputSize)
+	}
 	C.glRasterPos4iv((*C.GLint)(&v[0]))
 }
 
@@ -1121,7 +1190,10 @@ func RasterPos4s(x int16, y int16, z int16, w int16) {
 }
 
 //void glRasterPos4sv (const int16 *v)
-func RasterPos4sv(v *[4]int16) {
+func RasterPos4sv(v []int16) {
+	if len(v) != 4 {
+		panic(ErrorInputSize)
+	}
 	C.glRasterPos4sv((*C.GLshort)(&v[0]))
 }
 
@@ -1142,7 +1214,10 @@ func Rectd(x1 float64, y1 float64, x2 float64, y2 float64) {
 }
 
 //void glRectdv (const float64 *v1, const float64 *v2)
-func Rectdv(a, b *[2]float64) {
+func Rectdv(a, b []float64) {
+	if len(a) != 2 || len(b) != 2 {
+		panic(ErrorInputSize)
+	}
 	C.glRectdv((*C.GLdouble)(&a[0]), (*C.GLdouble)(&b[0]))
 }
 
@@ -1152,7 +1227,10 @@ func Rectf(x1 float32, y1 float32, x2 float32, y2 float32) {
 }
 
 //void glRectfv (const float *v1, const float *v2)
-func Rectfv(a, b *[2]float32) {
+func Rectfv(a, b []float32) {
+	if len(a) != 2 || len(b) != 2 {
+		panic(ErrorInputSize)
+	}
 	C.glRectfv((*C.GLfloat)(&a[0]), (*C.GLfloat)(&b[0]))
 }
 
@@ -1162,7 +1240,10 @@ func Recti(x1 int, y1 int, x2 int, y2 int) {
 }
 
 //void glRectiv (const int *v1, const int *v2)
-func Rectiv(a, b *[2]int32) {
+func Rectiv(a, b []int32) {
+	if len(a) != 2 || len(b) != 2 {
+		panic(ErrorInputSize)
+	}
 	C.glRectiv((*C.GLint)(&a[0]), (*C.GLint)(&b[0]))
 }
 
@@ -1172,7 +1253,10 @@ func Rects(x1 int16, y1 int16, x2 int16, y2 int16) {
 }
 
 //void glRectsv (const int16 *v1, const int16 *v2)
-func Rectsv(a, b *[2]int16) {
+func Rectsv(a, b []int16) {
+	if len(a) != 2 || len(b) != 2 {
+		panic(ErrorInputSize)
+	}
 	C.glRectsv((*C.GLshort)(&a[0]), (*C.GLshort)(&b[0]))
 }
 
@@ -1221,7 +1305,7 @@ func Viewport(x int, y int, width int, height int) {
 // void glGetFramebufferAttachmentParameter(GLenum target, GLenum attachment, GLenum pname, GLint* params);
 //func GetFramebufferAttachmentParameter (target, attachment, pname GLenum, params []int32) {
 //	if len(params) == 0 {
-//		panic("Invalid params size")
+//		panic(ErrorInputSize)
 //	}
 //  C.glGetFramebufferAttachmentParameter (C.GLenum(target), C.GLenum(attachment),
 //  	C.GLenum(pname), (*C.GLint)(&params[0]))

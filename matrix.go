@@ -18,12 +18,18 @@ func LoadIdentity() {
 }
 
 //void glLoadMatrixd (const float64 *m)
-func LoadMatrixd(m *[16]float64) {
+func LoadMatrixd(m []float64) {
+	if len(m) != 16 {
+		panic(ErrorInputSize)
+	}
 	C.glLoadMatrixd((*C.GLdouble)(&m[0]))
 }
 
 //void glLoadMatrixf (const float32 *m)
-func LoadMatrixf(m *[16]float32) {
+func LoadMatrixf(m []float32) {
+	if len(m) != 16 {
+		panic(ErrorInputSize)
+	}
 	C.glLoadMatrixf((*C.GLfloat)(&m[0]))
 }
 
@@ -33,12 +39,18 @@ func MatrixMode(mode GLenum) {
 }
 
 //void glMultMatrixd (const float64 *m)
-func MultMatrixd(m *[16]float64) {
+func MultMatrixd(m []float64) {
+	if len(m) != 16 {
+		panic(ErrorInputSize)
+	}
 	C.glMultMatrixd((*C.GLdouble)(&m[0]))
 }
 
 //void glMultMatrixf (const float32 *m)
-func MultMatrixf(m *[16]float32) {
+func MultMatrixf(m []float32) {
+	if len(m) != 16 {
+		panic(ErrorInputSize)
+	}
 	C.glMultMatrixf((*C.GLfloat)(&m[0]))
 }
 
