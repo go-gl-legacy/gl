@@ -4,6 +4,7 @@
 
 package gl
 
+//#cgo darwin CFLAGS: -I/usr/local/include
 // #include "gl.h"
 import "C"
 
